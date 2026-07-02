@@ -28,24 +28,32 @@
   html{scroll-behavior:smooth}
   body{
     background:var(--paper);
+    background-image:radial-gradient(rgba(26,39,64,.05) 1px,transparent 1px);
+    background-size:26px 26px;
     color:var(--ink);
     font-family:'IBM Plex Sans',system-ui,sans-serif;
     font-size:17px;
     line-height:1.65;
     -webkit-font-smoothing:antialiased;
   }
+  ::selection{background:rgba(17,160,90,.22)}
   .wrap{max-width:1020px;margin:0 auto;padding:0 24px}
 
   /* ---------- header ---------- */
   header{
     display:flex;justify-content:space-between;align-items:center;
-    padding:28px 0;border-bottom:1px solid var(--hairline);
+    padding:22px 0;border-bottom:1px solid var(--hairline);
+    position:sticky;top:0;z-index:20;
+    background:rgba(250,250,246,.88);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
   }
   .logo{font-family:'IBM Plex Mono',monospace;font-size:14px;letter-spacing:.06em;color:var(--ink);text-decoration:none}
   .logo b{color:var(--accent)}
   nav a{
     font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--muted);
     text-decoration:none;margin-left:22px;letter-spacing:.04em;
+    transition:color .15s ease;
   }
   nav a:hover,nav a:focus-visible{color:var(--accent)}
   a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
@@ -63,6 +71,7 @@
     font-family:'Archivo',sans-serif;font-weight:900;
     font-size:clamp(2.6rem,6vw,4.2rem);line-height:1.02;letter-spacing:-.02em;
   }
+  h1 .hl{background:linear-gradient(transparent 66%,rgba(17,160,90,.28) 66%)}
   .hero p.lede{
     margin-top:22px;font-size:1.13rem;max-width:34em;color:var(--ink);
   }
@@ -78,7 +87,9 @@
   .btn{
     font-family:'IBM Plex Mono',monospace;font-size:13.5px;text-decoration:none;
     padding:11px 20px;border-radius:6px;letter-spacing:.02em;
+    transition:transform .15s ease,box-shadow .15s ease,background .15s ease,color .15s ease,border-color .15s ease;
   }
+  .btn:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(26,39,64,.14)}
   .btn-primary{background:var(--ink);color:var(--paper)}
   .btn-primary:hover{background:#243450}
   .btn-ghost{color:var(--ink);border:1px solid var(--hairline);background:var(--card)}
@@ -107,7 +118,7 @@
   }
 
   /* ---------- sections ---------- */
-  section{padding:56px 0;border-top:1px solid var(--hairline)}
+  section{padding:56px 0;border-top:1px solid var(--hairline);scroll-margin-top:76px}
   .sec-head{
     font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;
     text-transform:uppercase;color:var(--muted);margin-bottom:34px;
@@ -118,6 +129,7 @@
   .pub{
     background:var(--card);border:1px solid var(--hairline);border-left:4px solid var(--accent);
     border-radius:8px;padding:34px 38px;
+    box-shadow:0 1px 2px rgba(26,39,64,.05),0 10px 30px rgba(26,39,64,.06);
   }
   .pub h2{font-family:'Archivo',sans-serif;font-weight:700;font-size:1.5rem;line-height:1.25;letter-spacing:-.01em}
   .pub .venue{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--muted);margin-top:10px}
@@ -135,8 +147,11 @@
   /* projects */
   .proj{
     display:grid;grid-template-columns:200px 1fr;gap:28px;
-    padding:30px 0;border-bottom:1px solid var(--hairline);
+    padding:30px 18px;margin:0 -18px;border-radius:10px;
+    border-bottom:1px solid var(--hairline);
+    transition:background .2s ease;
   }
+  .proj:hover{background:var(--card)}
   .proj:last-child{border-bottom:none}
   .proj .tag{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);padding-top:5px}
   .proj h3{font-family:'Archivo',sans-serif;font-weight:700;font-size:1.22rem;letter-spacing:-.01em}
@@ -160,12 +175,20 @@
   .cols .lang{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--muted);margin-top:14px}
 
   /* footer */
-  footer{border-top:1px solid var(--hairline);padding:56px 0 72px}
-  footer h2{font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(1.8rem,4vw,2.6rem);letter-spacing:-.02em}
-  footer p{margin-top:14px;color:var(--muted);max-width:38em}
+  footer{
+    background:var(--ink);border-radius:16px;
+    padding:52px 44px 44px;margin:32px 0 56px;
+    scroll-margin-top:76px;
+  }
+  footer h2{font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(1.8rem,4vw,2.6rem);letter-spacing:-.02em;color:var(--paper)}
+  footer p{margin-top:14px;color:#AAB6CC;max-width:38em}
+  footer .btn-primary{background:var(--accent);color:#fff}
+  footer .btn-primary:hover{background:#0E8C4E}
+  footer .btn-ghost{color:var(--paper);border-color:rgba(250,250,246,.25);background:transparent}
+  footer .btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
   .foot-links{margin-top:26px;display:flex;flex-wrap:wrap;gap:12px}
   .fineprint{
-    margin-top:52px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted);
+    margin-top:52px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:rgba(250,250,246,.55);
     display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
   }
 
@@ -176,6 +199,8 @@
     .cols{grid-template-columns:1fr}
     nav a{margin-left:14px}
     .pub{padding:26px 22px}
+    .proj{padding:24px 14px;margin:0 -14px}
+    footer{padding:36px 24px;border-radius:12px}
   }
 </style>
 </head>
@@ -195,7 +220,7 @@
     <div class="hero">
       <div>
         <div class="eyebrow">Akshay Ashok · M.Sc. Data Science &amp; AI · Saarland University</div>
-        <h1>Machine learning, end to end.</h1>
+        <h1>Machine learning, <span class="hl">end to end.</span></h1>
         <p class="lede">I take ML problems from dataset construction through model benchmarking to a documented, reproducible result. First author of a peer-reviewed computer vision paper (Sādhanā, Springer 2025). I work in Python daily and use the OpenAI and Anthropic APIs for LLM tooling and agentic workflows.</p>
         <span class="badge"><span class="dot" aria-hidden="true"></span>Open to Werkstudent roles · from Aug 2026 · Saarbrücken / remote</span>
         <span class="badge"><span class="dot" aria-hidden="true"></span>Now: reproducing MolCA (EMNLP 2023), graph-augmented LLMs</span>
