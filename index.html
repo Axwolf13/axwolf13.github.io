@@ -7,6 +7,17 @@
 <meta name="description" content="Akshay Ashok — Data Science & AI Master's student at Saarland University. First-author computer vision publication. Builds and benchmarks ML, OCR/translation and NLP pipelines in Python.">
 <link rel="canonical" href="https://axwolf13.github.io/">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta name="theme-color" content="#FAFAF6">
+<script>
+(function(){
+  var t = null;
+  try{ t = localStorage.getItem('theme'); }catch(e){}
+  if(t !== 'light' && t !== 'dark'){ t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
+  document.documentElement.setAttribute('data-theme', t);
+  var meta = document.querySelector('meta[name="theme-color"]');
+  if(meta && t === 'dark') meta.setAttribute('content', '#0F1626');
+})();
+</script>
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://axwolf13.github.io/">
 <meta property="og:title" content="Akshay Ashok — ML & Applied AI">
@@ -21,231 +32,31 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --paper:#FAFAF6;
-    --ink:#1A2740;
-    --muted:#5A6B85;
-    --accent:#11A05A;
-    --hairline:#E2E4DB;
-    --card:#FFFFFF;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{
-    background:var(--paper);
-    background-image:radial-gradient(rgba(26,39,64,.05) 1px,transparent 1px);
-    background-size:26px 26px;
-    color:var(--ink);
-    font-family:'IBM Plex Sans',system-ui,sans-serif;
-    font-size:17px;
-    line-height:1.65;
-    -webkit-font-smoothing:antialiased;
-  }
-  ::selection{background:rgba(17,160,90,.22)}
-  .wrap{max-width:1020px;margin:0 auto;padding:0 24px}
-
-  /* ---------- header ---------- */
-  header{
-    display:flex;justify-content:space-between;align-items:center;
-    padding:22px 0;border-bottom:1px solid var(--hairline);
-    position:sticky;top:0;z-index:20;
-    background:rgba(250,250,246,.88);
-    backdrop-filter:blur(10px);
-    -webkit-backdrop-filter:blur(10px);
-  }
-  .logo{
-    font-family:'IBM Plex Mono',monospace;font-size:14px;letter-spacing:.06em;
-    color:var(--ink);text-decoration:none;
-    display:inline-flex;align-items:center;gap:9px;
-  }
-  .logo b{color:var(--accent)}
-  .logo svg{width:22px;height:22px;display:block}
-  .skip{
-    position:absolute;left:-9999px;top:0;z-index:30;
-    background:var(--ink);color:var(--paper);padding:10px 16px;
-    font-family:'IBM Plex Mono',monospace;font-size:13px;text-decoration:none;
-    border-radius:0 0 6px 0;
-  }
-  .skip:focus{left:0}
-  nav a{
-    font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--muted);
-    text-decoration:none;margin-left:22px;letter-spacing:.04em;
-    transition:color .15s ease;
-  }
-  nav a:hover,nav a:focus-visible,nav a.active{color:var(--accent)}
-  a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
-
-  /* ---------- hero ---------- */
-  .hero{
-    display:grid;grid-template-columns:1.2fr .8fr;gap:48px;align-items:center;
-    padding:76px 0 64px;
-  }
-  .eyebrow{
-    font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;
-    text-transform:uppercase;color:var(--accent);margin-bottom:18px;
-  }
-  h1{
-    font-family:'Archivo',sans-serif;font-weight:900;
-    font-size:clamp(2.6rem,6vw,4.2rem);line-height:1.02;letter-spacing:-.02em;
-  }
-  h1 .hl{background:linear-gradient(transparent 66%,rgba(17,160,90,.28) 66%)}
-  .hero p.lede{
-    margin-top:22px;font-size:1.13rem;max-width:34em;color:var(--ink);
-  }
-  .hero p.lede em{font-style:normal;border-bottom:2px solid var(--accent)}
-  .badge{
-    display:inline-flex;align-items:center;gap:8px;margin-top:26px;
-    font-family:'IBM Plex Mono',monospace;font-size:12.5px;letter-spacing:.03em;
-    color:var(--ink);background:var(--card);border:1px solid var(--hairline);
-    border-radius:999px;padding:8px 16px;
-  }
-  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex:none}
-  .cta-row{margin-top:30px;display:flex;flex-wrap:wrap;gap:12px}
-  .btn{
-    font-family:'IBM Plex Mono',monospace;font-size:13.5px;text-decoration:none;
-    padding:11px 20px;border-radius:6px;letter-spacing:.02em;
-    transition:transform .15s ease,box-shadow .15s ease,background .15s ease,color .15s ease,border-color .15s ease;
-  }
-  .btn:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(26,39,64,.14)}
-  .btn-primary{background:var(--ink);color:var(--paper)}
-  .btn-primary:hover{background:#243450}
-  .btn-ghost{color:var(--ink);border:1px solid var(--hairline);background:var(--card)}
-  .btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
-
-  /* pose svg */
-  .pose{width:100%;max-width:340px;margin:0 auto;display:block}
-  .pose line{
-    stroke:var(--ink);stroke-width:1.4;opacity:.55;
-    stroke-dasharray:200;stroke-dashoffset:200;
-    animation:draw 1.6s ease forwards;
-  }
-  .pose circle{
-    fill:var(--accent);opacity:0;
-    animation:pop .5s ease forwards;
-  }
-  .pose .kp-label{
-    font-family:'IBM Plex Mono',monospace;font-size:8.5px;fill:var(--muted);
-    opacity:0;animation:pop .5s ease 1.9s forwards;
-  }
-  @keyframes draw{to{stroke-dashoffset:0}}
-  @keyframes pop{to{opacity:1}}
-  @media (prefers-reduced-motion:reduce){
-    .pose line{animation:none;stroke-dashoffset:0}
-    .pose circle,.pose .kp-label{animation:none;opacity:1}
-  }
-  @media (prefers-reduced-motion:no-preference){
-    .reveal{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
-    .reveal.in{opacity:1;transform:none}
-  }
-
-  /* ---------- sections ---------- */
-  section{padding:56px 0;border-top:1px solid var(--hairline);scroll-margin-top:76px}
-  .sec-head{
-    font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;
-    text-transform:uppercase;color:var(--muted);margin-bottom:34px;
-  }
-  .sec-head b{color:var(--accent);font-weight:500}
-
-  /* publication card */
-  .pub{
-    background:var(--card);border:1px solid var(--hairline);border-left:4px solid var(--accent);
-    border-radius:8px;padding:34px 38px;
-    box-shadow:0 1px 2px rgba(26,39,64,.05),0 10px 30px rgba(26,39,64,.06);
-  }
-  .pub h2{font-family:'Archivo',sans-serif;font-weight:700;font-size:1.5rem;line-height:1.25;letter-spacing:-.01em}
-  .pub .venue{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--muted);margin-top:10px}
-  .pub p{margin-top:16px;max-width:46em}
-  .stats{display:flex;flex-wrap:wrap;gap:34px;margin-top:24px}
-  .stat .n{font-family:'Archivo',sans-serif;font-weight:900;font-size:1.6rem;color:var(--ink)}
-  .stat .l{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-  .pub .links{margin-top:26px}
-  .textlink{
-    font-family:'IBM Plex Mono',monospace;font-size:13.5px;color:var(--accent);
-    text-decoration:none;border-bottom:1px solid transparent;margin-right:24px;
-  }
-  .textlink:hover{border-bottom-color:var(--accent)}
-
-  /* projects */
-  .proj{
-    display:grid;grid-template-columns:200px 1fr;gap:28px;
-    padding:30px 18px;margin:0 -18px;border-radius:10px;
-    border-bottom:1px solid var(--hairline);
-    transition:background .2s ease;
-  }
-  .proj:hover{background:var(--card)}
-  .proj:last-child{border-bottom:none}
-  .proj .tag{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);padding-top:5px}
-  .proj h3{font-family:'Archivo',sans-serif;font-weight:700;font-size:1.22rem;letter-spacing:-.01em}
-  .proj p{margin-top:10px;color:var(--ink);max-width:44em}
-  .proj .stack{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--muted);margin-top:12px}
-  .proj .links{margin-top:12px}
-
-  /* stack / how I work */
-  .cols{display:grid;grid-template-columns:1fr 1fr;gap:44px}
-  .cols h4{
-    font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.12em;
-    text-transform:uppercase;color:var(--muted);margin-bottom:14px;
-  }
-  .pill-row{display:flex;flex-wrap:wrap;gap:9px}
-  .pill{
-    font-family:'IBM Plex Mono',monospace;font-size:12.5px;
-    border:1px solid var(--hairline);background:var(--card);
-    border-radius:6px;padding:6px 12px;color:var(--ink);
-  }
-  .cols p{max-width:34em}
-  .cols .lang{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--muted);margin-top:14px}
-
-  /* footer */
-  footer{
-    background:var(--ink);border-radius:16px;
-    padding:52px 44px 44px;margin:32px 0 56px;
-    scroll-margin-top:76px;
-  }
-  footer h2{font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(1.8rem,4vw,2.6rem);letter-spacing:-.02em;color:var(--paper)}
-  footer p{margin-top:14px;color:#AAB6CC;max-width:38em}
-  footer .btn-primary{background:var(--accent);color:#fff}
-  footer .btn-primary:hover{background:#0E8C4E}
-  footer .btn-ghost{color:var(--paper);border-color:rgba(250,250,246,.25);background:transparent}
-  footer .btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
-  .foot-links{margin-top:26px;display:flex;flex-wrap:wrap;gap:12px}
-  .fineprint{
-    margin-top:52px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:rgba(250,250,246,.55);
-    display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
-  }
-
-  @media (max-width:760px){
-    .hero{grid-template-columns:1fr;padding:52px 0 44px}
-    .pose{max-width:250px;order:-1}
-    .proj{grid-template-columns:1fr;gap:8px}
-    .cols{grid-template-columns:1fr}
-    nav a{margin-left:14px}
-    .pub{padding:26px 22px}
-    .proj{padding:24px 14px;margin:0 -14px}
-    footer{padding:36px 24px;border-radius:12px}
-  }
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <a class="skip" href="#top">Skip to content</a>
+<div id="progress" aria-hidden="true"></div>
 <div class="wrap">
   <header>
-    <a class="logo" href="#top" aria-label="Akshay Ashok, home">
-      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#1A2740"/><line x1="32" y1="18" x2="32" y2="40" stroke="#FAFAF6" stroke-width="3" opacity=".65"/><line x1="32" y1="26" x2="19" y2="42" stroke="#FAFAF6" stroke-width="3" opacity=".65"/><line x1="32" y1="26" x2="45" y2="42" stroke="#FAFAF6" stroke-width="3" opacity=".65"/><circle cx="32" cy="14" r="6.5" fill="#11A05A"/><circle cx="32" cy="40" r="4.5" fill="#11A05A"/><circle cx="19" cy="44" r="4.5" fill="#11A05A"/><circle cx="45" cy="44" r="4.5" fill="#11A05A"/></svg>
-      aa<b>.</b>
-    </a>
+    <a class="logo" href="#top">Akshay Ashok<b>.</b></a>
     <nav aria-label="Main">
       <a href="#work">Work</a>
       <a href="#stack">Stack</a>
+      <a href="writing/">Writing</a>
       <a href="#contact">Contact</a>
+      <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
     </nav>
   </header>
 
   <main id="top">
     <div class="hero">
       <div>
-        <div class="eyebrow">Akshay Ashok · M.Sc. Data Science &amp; AI · Saarland University</div>
+        <div class="eyebrow">M.Sc. Data Science &amp; AI · Saarland University</div>
         <h1>Machine learning, <span class="hl">end to end.</span></h1>
         <p class="lede">I take ML problems from dataset construction through model benchmarking to a documented, reproducible result. First author of a peer-reviewed computer vision paper (Sādhanā, Springer 2025). I work in Python daily and use the OpenAI and Anthropic APIs for LLM tooling and agentic workflows.</p>
         <span class="badge"><span class="dot" aria-hidden="true"></span>Open to Werkstudent roles · from Aug 2026 · Saarbrücken / remote</span>
@@ -401,52 +212,8 @@
   </footer>
 </div>
 
-<script>
-(function(){
-  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  if(!reduce && 'IntersectionObserver' in window){
-    var els = document.querySelectorAll('section, footer');
-    els.forEach(function(el){ el.classList.add('reveal'); });
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
-      });
-    }, {threshold:.08});
-    els.forEach(function(el){ io.observe(el); });
-  }
-
-  if('IntersectionObserver' in window){
-    var links = document.querySelectorAll('nav a[href^="#"]');
-    var map = {};
-    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
-    var nio = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        var a = map[e.target.id];
-        if(a && e.isIntersecting){
-          links.forEach(function(l){ l.classList.remove('active'); });
-          a.classList.add('active');
-        }
-      });
-    }, {rootMargin:'-25% 0px -60% 0px'});
-    Object.keys(map).forEach(function(id){
-      var t = document.getElementById(id);
-      if(t) nio.observe(t);
-    });
-  }
-
-  function armPose(svg){
-    svg.style.cursor = 'pointer';
-    svg.addEventListener('click', function(){
-      var copy = svg.cloneNode(true);
-      svg.replaceWith(copy);
-      armPose(copy);
-    });
-  }
-  var pose = document.querySelector('.pose');
-  if(pose && !reduce) armPose(pose);
-})();
-</script>
+<script src="script.js"></script>
+<script data-goatcounter="https://akshayashok.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
 </body>
 </html>

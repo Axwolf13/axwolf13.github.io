@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Writing — Akshay Ashok</title>
+<meta name="description" content="Write-ups on ML benchmarks and paper reproductions by Akshay Ashok: OCR and translation model evaluation, pose estimation, graph-augmented LLMs.">
+<link rel="canonical" href="https://axwolf13.github.io/writing/">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta name="theme-color" content="#FAFAF6">
+<script>
+(function(){
+  var t = null;
+  try{ t = localStorage.getItem('theme'); }catch(e){}
+  if(t !== 'light' && t !== 'dark'){ t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
+  document.documentElement.setAttribute('data-theme', t);
+  var meta = document.querySelector('meta[name="theme-color"]');
+  if(meta && t === 'dark') meta.setAttribute('content', '#0F1626');
+})();
+</script>
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://axwolf13.github.io/writing/">
+<meta property="og:title" content="Writing — Akshay Ashok">
+<meta property="og:description" content="Write-ups on ML benchmarks and paper reproductions: OCR and translation model evaluation, pose estimation, graph-augmented LLMs.">
+<meta property="og:image" content="https://axwolf13.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<a class="skip" href="#top">Skip to content</a>
+<div id="progress" aria-hidden="true"></div>
+<div class="wrap">
+  <header>
+    <a class="logo" href="../">Akshay Ashok<b>.</b></a>
+    <nav aria-label="Main">
+      <a href="../#work">Work</a>
+      <a href="../#stack">Stack</a>
+      <a href="./" class="active">Writing</a>
+      <a href="../#contact">Contact</a>
+      <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+    </nav>
+  </header>
+
+  <main id="top">
+    <div class="page">
+      <div class="eyebrow">Writing</div>
+      <h1>Notes with numbers in them.</h1>
+      <p class="lede">Long-form write-ups of benchmarks and reproductions, published when there's something real to show. No posting schedule; depth over cadence.</p>
+    </div>
+
+    <section>
+      <div class="proj">
+        <div class="tag">Peer-reviewed · 2025</div>
+        <div>
+          <h3>Real-time yoga pose estimation with a hybrid MoveNet architecture</h3>
+          <p>My first-author paper: a Thunder-train, Lightning-infer MoveNet split that classifies 11 yoga asanas at 99% accuracy while holding 30+ FPS on consumer hardware. Published in Sādhanā (Indian Academy of Sciences, Springer).</p>
+          <div class="links">
+            <a class="textlink" href="https://doi.org/10.1007/s12046-025-02788-w" target="_blank" rel="noopener">Read the paper (DOI) →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="proj">
+        <div class="tag">Draft in progress</div>
+        <div>
+          <h3>Benchmarking Arabic OCR and translation on an 8 GB laptop GPU</h3>
+          <p>What Surya and PaddleOCR actually do on KITAB-Bench, how Opus-MT stacks up against NLLB-1.3B on Arabic→German, the failure modes that only show up on long legal text and why model licences decide your production architecture before the benchmarks do.</p>
+          <div class="stack">Surya OCR · PaddleOCR · Opus-MT · NLLB · CER/WER · confidence calibration</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <h2>Let's talk.</h2>
+    <p>Open to Werkstudent and internship roles in ML, data science and applied AI from August 2026.</p>
+    <div class="foot-links">
+      <a class="btn btn-primary" href="mailto:akshay57ax@gmail.com">akshay57ax@gmail.com</a>
+      <a class="btn btn-ghost" href="https://github.com/Axwolf13" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn btn-ghost" href="https://linkedin.com/in/akshay-a-ax13" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+    <div class="fineprint">
+      <span>© 2026 Akshay Ashok</span>
+      <span>Saarbrücken, Germany</span>
+    </div>
+  </footer>
+</div>
+
+<script src="../script.js"></script>
+<script data-goatcounter="https://akshayashok.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,111 @@
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // theme toggle (boot script in <head> sets the initial data-theme)
+  function applyTheme(t){
+    document.documentElement.setAttribute('data-theme', t);
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if(meta) meta.setAttribute('content', t === 'dark' ? '#0F1626' : '#FAFAF6');
+  }
+  var toggle = document.querySelector('.theme-toggle');
+  if(toggle){
+    toggle.addEventListener('click', function(){
+      var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+      try{ localStorage.setItem('theme', next); }catch(e){}
+    });
+  }
+  var mq = matchMedia('(prefers-color-scheme: dark)');
+  if(mq.addEventListener){
+    mq.addEventListener('change', function(e){
+      var stored = null;
+      try{ stored = localStorage.getItem('theme'); }catch(err){}
+      if(!stored) applyTheme(e.matches ? 'dark' : 'light');
+    });
+  }
+
+  // scroll reveal
+  if(!reduce && 'IntersectionObserver' in window){
+    var els = document.querySelectorAll('section, footer');
+    els.forEach(function(el){ el.classList.add('reveal'); });
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, {threshold:.08});
+    els.forEach(function(el){ io.observe(el); });
+  }
+
+  // active nav highlight
+  if('IntersectionObserver' in window){
+    var links = document.querySelectorAll('nav a[href^="#"]');
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var nio = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        var a = map[e.target.id];
+        if(a && e.isIntersecting){
+          links.forEach(function(l){ l.classList.remove('active'); });
+          a.classList.add('active');
+        }
+      });
+    }, {rootMargin:'-25% 0px -60% 0px'});
+    Object.keys(map).forEach(function(id){
+      var t = document.getElementById(id);
+      if(t) nio.observe(t);
+    });
+  }
+
+  // pose replay
+  function armPose(svg){
+    svg.style.cursor = 'pointer';
+    svg.addEventListener('click', function(){
+      var copy = svg.cloneNode(true);
+      svg.replaceWith(copy);
+      armPose(copy);
+    });
+  }
+  var pose = document.querySelector('.pose');
+  if(pose && !reduce) armPose(pose);
+
+  // scroll progress bar
+  var bar = document.getElementById('progress');
+  if(bar){
+    var onScroll = function(){
+      var h = document.documentElement;
+      var max = h.scrollHeight - h.clientHeight;
+      bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+    };
+    addEventListener('scroll', onScroll, {passive:true});
+    onScroll();
+  }
+
+  // stat count-up
+  function countUp(el){
+    var m = el.textContent.trim().match(/^([\d,]+)(%?)$/);
+    if(!m) return;
+    var target = parseInt(m[1].replace(/,/g,''), 10);
+    var suffix = m[2];
+    var t0 = null;
+    function step(t){
+      if(!t0) t0 = t;
+      var p = Math.min((t - t0) / 900, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * eased).toLocaleString('en-US') + suffix;
+      if(p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  var statsBox = document.querySelector('.stats');
+  if(statsBox && !reduce && 'IntersectionObserver' in window){
+    var sio = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          e.target.querySelectorAll('.stat .n').forEach(countUp);
+          sio.unobserve(e.target);
+        }
+      });
+    }, {threshold:.4});
+    sio.observe(statsBox);
+  }
+})();
