@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Akshay Ashok — ML & Applied AI</title>
-<meta name="description" content="Akshay Ashok — Data Science & AI Master's student at Saarland University. Published computer vision researcher. Builds ML pipelines, NLP systems, and LLM-powered tools in Python.">
+<meta name="description" content="Akshay Ashok — Data Science & AI Master's student at Saarland University. First-author computer vision publication. Builds and benchmarks ML, OCR/translation, and NLP pipelines in Python.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -187,9 +187,9 @@
   <main id="top">
     <div class="hero">
       <div>
-        <div class="eyebrow">M.Sc. Data Science &amp; AI · Saarland University</div>
-        <h1>Akshay Ashok builds with AI.</h1>
-        <p class="lede">Models, pipelines, and LLM-powered tools — <em>built and shipped, not just prompted</em>. First-author of a peer-reviewed computer vision paper; Python daily; Claude Code and the OpenAI &amp; Anthropic APIs in the loop.</p>
+        <div class="eyebrow">Akshay Ashok · M.Sc. Data Science &amp; AI · Saarland University</div>
+        <h1>Machine learning, end to end.</h1>
+        <p class="lede">I take ML problems from dataset construction through model benchmarking to a documented, reproducible result. First author of a peer-reviewed computer vision paper (Sādhanā, Springer 2025). I work in Python daily, and use the OpenAI and Anthropic APIs for LLM tooling and agentic workflows.</p>
         <span class="badge"><span class="dot" aria-hidden="true"></span>Open to Werkstudent roles · from Aug 2026 · Saarbrücken / remote</span>
         <div class="cta-row">
           <a class="btn btn-primary" href="mailto:akshay57ax@gmail.com">Email me</a>
@@ -241,11 +241,11 @@
       <div class="pub">
         <h2>Real-time yoga pose estimation with a hybrid MoveNet architecture</h2>
         <div class="venue">Sādhanā · Indian Academy of Sciences, Springer · 2025 · First author</div>
-        <p>Built during a computer vision research internship at NIT Puducherry: a real-time pose estimation pipeline using MoveNet Thunder for training and MoveNet Lightning for inference — a deliberate split to keep the system fast where it matters. Owned the full lifecycle: dataset construction, training, evaluation, and inference optimization.</p>
+        <p>Built during a computer vision research internship at NIT Puducherry. The architecture splits deliberately: MoveNet Thunder generates high-fidelity keypoints for training, while MoveNet Lightning handles inference at 30+ FPS on consumer hardware — accuracy where the model learns, speed where the user waits. I owned the dataset end to end, consolidating and curating 3,435 images across 11 asanas from Kaggle and Yoga-82 sources, then trained the keypoint-embedding classifier, ran the misclassification analysis, and carried the paper through two rounds of peer review.</p>
         <div class="stats">
           <div class="stat"><div class="n">99%</div><div class="l">classification accuracy</div></div>
           <div class="stat"><div class="n">11</div><div class="l">asana classes</div></div>
-          <div class="stat"><div class="n">3,400</div><div class="l">image dataset</div></div>
+          <div class="stat"><div class="n">3,435</div><div class="l">images curated</div></div>
           <div class="stat"><div class="n">2-stage</div><div class="l">train / infer split</div></div>
         </div>
         <div class="links">
@@ -260,9 +260,9 @@
       <div class="proj">
         <div class="tag">Applied ML · Consulting</div>
         <div>
-          <h3>Backend ML for a Gov/Justice-Tech platform</h3>
-          <p>Student consultant (AI/Data Science) via the UdS Innovation Center's Triathlon startup programme. Built the backend ML models for a language-services feasibility study for German public authorities, working in a mixed CS + business team, and delivered the live demo in the final case-study presentation to the company's CEO.</p>
-          <div class="stack">Python · ML modelling · stakeholder-to-spec translation · live demo</div>
+          <h3>AI document triage for a Gov/Justice-Tech platform</h3>
+          <p>Student consultant (AI/Data Science) via the UdS Innovation Center's Triathlon startup programme: built the ML backend of an AI-driven document-triage feasibility study for Lingomatch — turning photos of foreign-language documents into usable German gist translations for public authorities. I built and benchmarked the Arabic→German pipeline: Surya OCR evaluated on KITAB-Bench with CER/WER and confidence calibration, PaddleOCR stood up as an independent second engine for disagreement-based failure flagging, and Opus-MT benchmarked against NLLB-1.3B — matching translation quality (BLEU 43.8 vs 42.4) at a ninth of the memory, after catching the licence issue that ruled NLLB out for production. Delivered the live demo in the final case-study presentation to the company's CEO.</p>
+          <div class="stack">Python · Hugging Face Transformers · Surya OCR · PaddleOCR · Opus-MT · NLLB · BLEU / CER evaluation</div>
         </div>
       </div>
 
@@ -270,8 +270,8 @@
         <div class="tag">NLP · Pipeline</div>
         <div>
           <h3>DODI — deception scoring for Terms-of-Service documents</h3>
-          <p>An NLP system that takes consumer-facing ToS documents from raw text to quantified deception scores: surfacing vague obligations, asymmetric terms, and dark-pattern phrasing. Built as a reproducible Python pipeline with clause-level metrics rolling up to document-level scores.</p>
-          <div class="stack">Python · NLP · embeddings · reproducible pipeline design</div>
+          <p>DODI (Digital Ownership Deception Index) quantifies the gap between "Buy now" marketing and "you're only licensing this" fine print in consumer ToS documents. Dual-layer design: a deterministic, fully reproducible scorer — Flesch–Kincaid readability, licence-vs-ownership term ratio, red-flag clause detection, with spaCy dependency parsing to handle negation — audited against GPT-4o classifications on a subsample, plus OpenAI text-embedding-3-small embeddings to trace how clause language spreads between platforms. Corpus assembled from ToS snapshots (2015–2025) via the Wayback Machine.</p>
+          <div class="stack">Python · spaCy · textstat · OpenAI text-embedding-3-small · GPT-4o validation layer</div>
           <!-- TODO: <a class="textlink" href="GITHUB_REPO_URL">Code →</a> -->
         </div>
       </div>
@@ -280,8 +280,8 @@
         <div class="tag">Data analysis · Economics</div>
         <div>
           <h3>Shadow Correction — piracy as a market signal</h3>
-          <p>Quantitative study testing whether piracy behaves as a market-correction signal. Measured streaming-market fragmentation with the Herfindahl–Hirschman Index on demand-share data, built piracy-intent indices from Google Trends, and aligned them with PPP-adjusted wage data across 90+ countries.</p>
-          <div class="stack">Python · HHI · Google Trends · World Bank data · time-series design</div>
+          <p>Quantitative study (team of 3) testing whether piracy behaves as a market-correction signal, structured as three testable barriers. The primary parameter: streaming-market fragmentation, measured with the Herfindahl–Hirschman Index on Parrot Analytics demand-share data. The supporting parameters were designed as falsification tests — piracy-intent indices built from Google Trends (pytrends) aligned with World Bank PPP-adjusted hourly wages across 90+ countries, where the near-zero economic correlation (r = −0.06) is itself the finding, isolating fragmentation rather than affordability as the driver — plus event-study analysis of piracy spikes after content delistings.</p>
+          <div class="stack">Python · pandas · pytrends · HHI · Parrot Analytics / World Bank data · event-study design</div>
           <!-- TODO: <a class="textlink" href="GITHUB_REPO_URL">Code →</a> -->
         </div>
       </div>
@@ -293,28 +293,30 @@
         <div>
           <h4>Build with</h4>
           <div class="pill-row">
-            <span class="pill">Python</span><span class="pill">PyTorch</span><span class="pill">scikit-learn</span>
+            <span class="pill">Python</span><span class="pill">PyTorch</span><span class="pill">TensorFlow/Keras</span>
+            <span class="pill">Hugging Face Transformers</span><span class="pill">scikit-learn</span><span class="pill">spaCy</span>
             <span class="pill">pandas</span><span class="pill">NumPy</span><span class="pill">SQL</span>
             <span class="pill">R</span><span class="pill">Git</span><span class="pill">LaTeX</span>
           </div>
-          <h4 style="margin-top:26px">AI in the loop, daily</h4>
+          <h4 style="margin-top:26px">LLM work, daily</h4>
           <div class="pill-row">
+            <span class="pill">OpenAI API</span><span class="pill">Anthropic API</span>
+            <span class="pill">prompt design</span><span class="pill">embedding-based retrieval</span>
+            <span class="pill">LLM output evaluation</span><span class="pill">agentic workflows</span>
             <span class="pill">Claude Code</span><span class="pill">Cursor</span>
-            <span class="pill">Anthropic API</span><span class="pill">OpenAI API</span>
-            <span class="pill">agentic workflows</span>
           </div>
         </div>
         <div>
           <h4>How I work</h4>
-          <p>I like the full loop: take a fuzzy, real-world problem, turn it into a clean and reproducible pipeline, and ship something people can actually run. Documentation isn't an afterthought — it's how work stays usable after I hand it over.</p>
-          <div class="lang">EN — C1 fluent · DE — A2, working toward B1 · Tamil — native</div>
+          <p>I benchmark before I recommend: models get tested on realistic inputs, and failure modes go in the report next to the wins — a translation model that degrades on long legal text is a finding, not a footnote. I take deployment constraints seriously from day one: model licences, GDPR, EU AI Act obligations, and what actually fits in 8&nbsp;GB of VRAM. Everything ships version-controlled and documented so it survives handover. Where I'm still building depth — Docker, CI/CD, cloud deployment — I say so, and pick it up on the job.</p>
+          <div class="lang">EN — C1 fluent · DE — A2, in active study toward B1 · Tamil — native</div>
         </div>
       </div>
     </section>
   </main>
 
   <footer id="contact">
-    <h2>Let's build something.</h2>
+    <h2>Let's talk.</h2>
     <p>Open to Werkstudent and internship roles in ML, data science, and applied AI from August 2026 — remote from Saarbrücken now, open to relocating later.</p>
     <div class="foot-links">
       <a class="btn btn-primary" href="mailto:akshay57ax@gmail.com">akshay57ax@gmail.com</a>
