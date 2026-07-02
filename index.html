@@ -11,7 +11,13 @@
 <meta property="og:url" content="https://axwolf13.github.io/">
 <meta property="og:title" content="Akshay Ashok — ML & Applied AI">
 <meta property="og:description" content="Data Science & AI Master's student at Saarland University. First-author computer vision publication. Builds and benchmarks ML, OCR/translation and NLP pipelines in Python.">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://axwolf13.github.io/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Person","name":"Akshay Ashok","url":"https://axwolf13.github.io/","email":"mailto:akshay57ax@gmail.com","jobTitle":"Data Science & AI Master's student","affiliation":{"@type":"CollegeOrUniversity","name":"Saarland University"},"address":{"@type":"PostalAddress","addressLocality":"Saarbrücken","addressCountry":"DE"},"sameAs":["https://github.com/Axwolf13","https://linkedin.com/in/akshay-a-ax13"]}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -48,14 +54,26 @@
     backdrop-filter:blur(10px);
     -webkit-backdrop-filter:blur(10px);
   }
-  .logo{font-family:'IBM Plex Mono',monospace;font-size:14px;letter-spacing:.06em;color:var(--ink);text-decoration:none}
+  .logo{
+    font-family:'IBM Plex Mono',monospace;font-size:14px;letter-spacing:.06em;
+    color:var(--ink);text-decoration:none;
+    display:inline-flex;align-items:center;gap:9px;
+  }
   .logo b{color:var(--accent)}
+  .logo svg{width:22px;height:22px;display:block}
+  .skip{
+    position:absolute;left:-9999px;top:0;z-index:30;
+    background:var(--ink);color:var(--paper);padding:10px 16px;
+    font-family:'IBM Plex Mono',monospace;font-size:13px;text-decoration:none;
+    border-radius:0 0 6px 0;
+  }
+  .skip:focus{left:0}
   nav a{
     font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--muted);
     text-decoration:none;margin-left:22px;letter-spacing:.04em;
     transition:color .15s ease;
   }
-  nav a:hover,nav a:focus-visible{color:var(--accent)}
+  nav a:hover,nav a:focus-visible,nav a.active{color:var(--accent)}
   a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
 
   /* ---------- hero ---------- */
@@ -115,6 +133,10 @@
   @media (prefers-reduced-motion:reduce){
     .pose line{animation:none;stroke-dashoffset:0}
     .pose circle,.pose .kp-label{animation:none;opacity:1}
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .reveal{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
+    .reveal.in{opacity:1;transform:none}
   }
 
   /* ---------- sections ---------- */
@@ -206,9 +228,13 @@
 </head>
 <body>
 
+<a class="skip" href="#top">Skip to content</a>
 <div class="wrap">
   <header>
-    <a class="logo" href="#top">akshay<b>.</b>ashok</a>
+    <a class="logo" href="#top" aria-label="Akshay Ashok, home">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#1A2740"/><line x1="32" y1="18" x2="32" y2="40" stroke="#FAFAF6" stroke-width="3" opacity=".65"/><line x1="32" y1="26" x2="19" y2="42" stroke="#FAFAF6" stroke-width="3" opacity=".65"/><line x1="32" y1="26" x2="45" y2="42" stroke="#FAFAF6" stroke-width="3" opacity=".65"/><circle cx="32" cy="14" r="6.5" fill="#11A05A"/><circle cx="32" cy="40" r="4.5" fill="#11A05A"/><circle cx="19" cy="44" r="4.5" fill="#11A05A"/><circle cx="45" cy="44" r="4.5" fill="#11A05A"/></svg>
+      aa<b>.</b>
+    </a>
     <nav aria-label="Main">
       <a href="#work">Work</a>
       <a href="#stack">Stack</a>
@@ -374,6 +400,53 @@
     </div>
   </footer>
 </div>
+
+<script>
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if(!reduce && 'IntersectionObserver' in window){
+    var els = document.querySelectorAll('section, footer');
+    els.forEach(function(el){ el.classList.add('reveal'); });
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, {threshold:.08});
+    els.forEach(function(el){ io.observe(el); });
+  }
+
+  if('IntersectionObserver' in window){
+    var links = document.querySelectorAll('nav a[href^="#"]');
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var nio = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        var a = map[e.target.id];
+        if(a && e.isIntersecting){
+          links.forEach(function(l){ l.classList.remove('active'); });
+          a.classList.add('active');
+        }
+      });
+    }, {rootMargin:'-25% 0px -60% 0px'});
+    Object.keys(map).forEach(function(id){
+      var t = document.getElementById(id);
+      if(t) nio.observe(t);
+    });
+  }
+
+  function armPose(svg){
+    svg.style.cursor = 'pointer';
+    svg.addEventListener('click', function(){
+      var copy = svg.cloneNode(true);
+      svg.replaceWith(copy);
+      armPose(copy);
+    });
+  }
+  var pose = document.querySelector('.pose');
+  if(pose && !reduce) armPose(pose);
+})();
+</script>
 
 </body>
 </html>
