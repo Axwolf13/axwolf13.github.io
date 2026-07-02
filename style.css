@@ -187,6 +187,23 @@ section{padding:56px 0;border-top:1px solid var(--hairline);scroll-margin-top:76
 .proj .stack{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--muted);margin-top:12px}
 .proj .links{margin-top:12px}
 
+/* timeline */
+.tl{
+  border-left:2px solid var(--hairline);
+  margin-left:6px;padding-left:30px;
+  display:flex;flex-direction:column;gap:28px;
+}
+.tl-item{position:relative;max-width:46em}
+.tl-item::before{
+  content:"";position:absolute;left:-37px;top:7px;
+  width:10px;height:10px;border-radius:50%;background:var(--accent);
+}
+.tl-year{
+  font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;
+  color:var(--muted);margin-bottom:3px;
+}
+.tl-item b{font-weight:600}
+
 /* stack / how I work */
 .cols{display:grid;grid-template-columns:1fr 1fr;gap:44px}
 .cols h4{

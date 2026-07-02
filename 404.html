@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 — Akshay Ashok</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta name="theme-color" content="#FAFAF6">
+<script>
+(function(){
+  var t = null;
+  try{ t = localStorage.getItem('theme'); }catch(e){}
+  if(t !== 'light' && t !== 'dark'){ t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
+  document.documentElement.setAttribute('data-theme', t);
+  var meta = document.querySelector('meta[name="theme-color"]');
+  if(meta && t === 'dark') meta.setAttribute('content', '#0F1626');
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <a class="logo" href="/">Akshay Ashok<b>.</b></a>
+  </header>
+
+  <main>
+    <div class="page">
+      <div class="eyebrow">404 · keypoint not detected</div>
+      <h1>This page didn't make it past <span class="hl">the confidence threshold.</span></h1>
+      <p class="lede">Whatever was here scored too low to render. The homepage classifies just fine, though.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="/">Back to the homepage</a>
+        <a class="btn btn-ghost" href="/writing/">Writing</a>
+      </div>
+    </div>
+  </main>
+</div>
+
+</body>
+</html>
