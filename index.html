@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Akshay Ashok — ML & Applied AI</title>
+<meta name="description" content="Akshay Ashok — Data Science & AI Master's student at Saarland University. Published computer vision researcher. Builds ML pipelines, NLP systems, and LLM-powered tools in Python.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAFAF6;
+    --ink:#1A2740;
+    --muted:#5A6B85;
+    --accent:#11A05A;
+    --hairline:#E2E4DB;
+    --card:#FFFFFF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans',system-ui,sans-serif;
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1020px;margin:0 auto;padding:0 24px}
+
+  /* ---------- header ---------- */
+  header{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:28px 0;border-bottom:1px solid var(--hairline);
+  }
+  .logo{font-family:'IBM Plex Mono',monospace;font-size:14px;letter-spacing:.06em;color:var(--ink);text-decoration:none}
+  .logo b{color:var(--accent)}
+  nav a{
+    font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--muted);
+    text-decoration:none;margin-left:22px;letter-spacing:.04em;
+  }
+  nav a:hover,nav a:focus-visible{color:var(--accent)}
+  a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+
+  /* ---------- hero ---------- */
+  .hero{
+    display:grid;grid-template-columns:1.2fr .8fr;gap:48px;align-items:center;
+    padding:76px 0 64px;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--accent);margin-bottom:18px;
+  }
+  h1{
+    font-family:'Archivo',sans-serif;font-weight:900;
+    font-size:clamp(2.6rem,6vw,4.2rem);line-height:1.02;letter-spacing:-.02em;
+  }
+  .hero p.lede{
+    margin-top:22px;font-size:1.13rem;max-width:34em;color:var(--ink);
+  }
+  .hero p.lede em{font-style:normal;border-bottom:2px solid var(--accent)}
+  .badge{
+    display:inline-flex;align-items:center;gap:8px;margin-top:26px;
+    font-family:'IBM Plex Mono',monospace;font-size:12.5px;letter-spacing:.03em;
+    color:var(--ink);background:var(--card);border:1px solid var(--hairline);
+    border-radius:999px;padding:8px 16px;
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex:none}
+  .cta-row{margin-top:30px;display:flex;flex-wrap:wrap;gap:12px}
+  .btn{
+    font-family:'IBM Plex Mono',monospace;font-size:13.5px;text-decoration:none;
+    padding:11px 20px;border-radius:6px;letter-spacing:.02em;
+  }
+  .btn-primary{background:var(--ink);color:var(--paper)}
+  .btn-primary:hover{background:#243450}
+  .btn-ghost{color:var(--ink);border:1px solid var(--hairline);background:var(--card)}
+  .btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+
+  /* pose-estimation skeleton — the signature */
+  .pose{width:100%;max-width:340px;margin:0 auto;display:block}
+  .pose line{
+    stroke:var(--ink);stroke-width:1.4;opacity:.55;
+    stroke-dasharray:200;stroke-dashoffset:200;
+    animation:draw 1.6s ease forwards;
+  }
+  .pose circle{
+    fill:var(--accent);opacity:0;
+    animation:pop .5s ease forwards;
+  }
+  .pose .kp-label{
+    font-family:'IBM Plex Mono',monospace;font-size:8.5px;fill:var(--muted);
+    opacity:0;animation:pop .5s ease 1.9s forwards;
+  }
+  @keyframes draw{to{stroke-dashoffset:0}}
+  @keyframes pop{to{opacity:1}}
+  @media (prefers-reduced-motion:reduce){
+    .pose line{animation:none;stroke-dashoffset:0}
+    .pose circle,.pose .kp-label{animation:none;opacity:1}
+  }
+
+  /* ---------- sections ---------- */
+  section{padding:56px 0;border-top:1px solid var(--hairline)}
+  .sec-head{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:34px;
+  }
+  .sec-head b{color:var(--accent);font-weight:500}
+
+  /* publication card */
+  .pub{
+    background:var(--card);border:1px solid var(--hairline);border-left:4px solid var(--accent);
+    border-radius:8px;padding:34px 38px;
+  }
+  .pub h2{font-family:'Archivo',sans-serif;font-weight:700;font-size:1.5rem;line-height:1.25;letter-spacing:-.01em}
+  .pub .venue{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--muted);margin-top:10px}
+  .pub p{margin-top:16px;max-width:46em}
+  .stats{display:flex;flex-wrap:wrap;gap:34px;margin-top:24px}
+  .stat .n{font-family:'Archivo',sans-serif;font-weight:900;font-size:1.6rem;color:var(--ink)}
+  .stat .l{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .pub .links{margin-top:26px}
+  .textlink{
+    font-family:'IBM Plex Mono',monospace;font-size:13.5px;color:var(--accent);
+    text-decoration:none;border-bottom:1px solid transparent;margin-right:24px;
+  }
+  .textlink:hover{border-bottom-color:var(--accent)}
+
+  /* projects */
+  .proj{
+    display:grid;grid-template-columns:200px 1fr;gap:28px;
+    padding:30px 0;border-bottom:1px solid var(--hairline);
+  }
+  .proj:last-child{border-bottom:none}
+  .proj .tag{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);padding-top:5px}
+  .proj h3{font-family:'Archivo',sans-serif;font-weight:700;font-size:1.22rem;letter-spacing:-.01em}
+  .proj p{margin-top:10px;color:var(--ink);max-width:44em}
+  .proj .stack{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--muted);margin-top:12px}
+  .proj .links{margin-top:12px}
+
+  /* stack / how I work */
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:44px}
+  .cols h4{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:14px;
+  }
+  .pill-row{display:flex;flex-wrap:wrap;gap:9px}
+  .pill{
+    font-family:'IBM Plex Mono',monospace;font-size:12.5px;
+    border:1px solid var(--hairline);background:var(--card);
+    border-radius:6px;padding:6px 12px;color:var(--ink);
+  }
+  .cols p{max-width:34em}
+  .cols .lang{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--muted);margin-top:14px}
+
+  /* footer */
+  footer{border-top:1px solid var(--hairline);padding:56px 0 72px}
+  footer h2{font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(1.8rem,4vw,2.6rem);letter-spacing:-.02em}
+  footer p{margin-top:14px;color:var(--muted);max-width:38em}
+  .foot-links{margin-top:26px;display:flex;flex-wrap:wrap;gap:12px}
+  .fineprint{
+    margin-top:52px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted);
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+  }
+
+  @media (max-width:760px){
+    .hero{grid-template-columns:1fr;padding:52px 0 44px}
+    .pose{max-width:250px;order:-1}
+    .proj{grid-template-columns:1fr;gap:8px}
+    .cols{grid-template-columns:1fr}
+    nav a{margin-left:14px}
+    .pub{padding:26px 22px}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <a class="logo" href="#top">akshay<b>.</b>ashok</a>
+    <nav aria-label="Main">
+      <a href="#work">Work</a>
+      <a href="#stack">Stack</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <div class="hero">
+      <div>
+        <div class="eyebrow">M.Sc. Data Science &amp; AI · Saarland University</div>
+        <h1>Akshay Ashok builds with AI.</h1>
+        <p class="lede">Models, pipelines, and LLM-powered tools — <em>built and shipped, not just prompted</em>. First-author of a peer-reviewed computer vision paper; Python daily; Claude Code and the OpenAI &amp; Anthropic APIs in the loop.</p>
+        <span class="badge"><span class="dot" aria-hidden="true"></span>Open to Werkstudent roles · from Aug 2026 · Saarbrücken / remote</span>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="mailto:akshay57ax@gmail.com">Email me</a>
+          <a class="btn btn-ghost" href="https://github.com/Axwolf13">GitHub</a>
+          <a class="btn btn-ghost" href="https://linkedin.com/in/akshay-a-ax13">LinkedIn</a>
+        </div>
+      </div>
+
+      <!-- Signature: MoveNet-style pose skeleton, from the published paper -->
+      <svg class="pose" viewBox="0 0 300 380" role="img" aria-label="Stylized pose-estimation skeleton with keypoints, referencing the published MoveNet research">
+        <!-- limbs -->
+        <line x1="150" y1="60"  x2="150" y2="130"/>
+        <line x1="150" y1="130" x2="100" y2="140"/>
+        <line x1="150" y1="130" x2="200" y2="140"/>
+        <line x1="100" y1="140" x2="70"  y2="205"/>
+        <line x1="200" y1="140" x2="230" y2="205"/>
+        <line x1="70"  y1="205" x2="95"  y2="255"/>
+        <line x1="230" y1="205" x2="205" y2="255"/>
+        <line x1="150" y1="130" x2="150" y2="215"/>
+        <line x1="150" y1="215" x2="118" y2="222"/>
+        <line x1="150" y1="215" x2="182" y2="222"/>
+        <line x1="118" y1="222" x2="105" y2="295"/>
+        <line x1="182" y1="222" x2="195" y2="295"/>
+        <line x1="105" y1="295" x2="112" y2="358"/>
+        <line x1="195" y1="295" x2="188" y2="358"/>
+        <!-- keypoints (staggered) -->
+        <circle cx="150" cy="45"  r="7"  style="animation-delay:.15s"/>
+        <circle cx="150" cy="130" r="5.5" style="animation-delay:.3s"/>
+        <circle cx="100" cy="140" r="5.5" style="animation-delay:.45s"/>
+        <circle cx="200" cy="140" r="5.5" style="animation-delay:.45s"/>
+        <circle cx="70"  cy="205" r="5"   style="animation-delay:.6s"/>
+        <circle cx="230" cy="205" r="5"   style="animation-delay:.6s"/>
+        <circle cx="95"  cy="255" r="5"   style="animation-delay:.75s"/>
+        <circle cx="205" cy="255" r="5"   style="animation-delay:.75s"/>
+        <circle cx="150" cy="215" r="5.5" style="animation-delay:.9s"/>
+        <circle cx="118" cy="222" r="5"   style="animation-delay:1.05s"/>
+        <circle cx="182" cy="222" r="5"   style="animation-delay:1.05s"/>
+        <circle cx="105" cy="295" r="5"   style="animation-delay:1.2s"/>
+        <circle cx="195" cy="295" r="5"   style="animation-delay:1.2s"/>
+        <circle cx="112" cy="358" r="5"   style="animation-delay:1.35s"/>
+        <circle cx="188" cy="358" r="5"   style="animation-delay:1.35s"/>
+        <text class="kp-label" x="164" y="42">kp_00 · 0.98</text>
+        <text class="kp-label" x="240" y="208">kp_06 · 0.94</text>
+      </svg>
+    </div>
+
+    <section id="publication">
+      <div class="sec-head"><b>—</b> Peer-reviewed</div>
+      <div class="pub">
+        <h2>Real-time yoga pose estimation with a hybrid MoveNet architecture</h2>
+        <div class="venue">Sādhanā · Indian Academy of Sciences, Springer · 2025 · First author</div>
+        <p>Built during a computer vision research internship at NIT Puducherry: a real-time pose estimation pipeline using MoveNet Thunder for training and MoveNet Lightning for inference — a deliberate split to keep the system fast where it matters. Owned the full lifecycle: dataset construction, training, evaluation, and inference optimization.</p>
+        <div class="stats">
+          <div class="stat"><div class="n">99%</div><div class="l">classification accuracy</div></div>
+          <div class="stat"><div class="n">11</div><div class="l">asana classes</div></div>
+          <div class="stat"><div class="n">3,400</div><div class="l">image dataset</div></div>
+          <div class="stat"><div class="n">2-stage</div><div class="l">train / infer split</div></div>
+        </div>
+        <div class="links">
+          <a class="textlink" href="https://doi.org/10.1007/s12046-025-02788-w">Read the paper (DOI) →</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="work">
+      <div class="sec-head"><b>—</b> Selected work</div>
+
+      <div class="proj">
+        <div class="tag">Applied ML · Consulting</div>
+        <div>
+          <h3>Backend ML for a Gov/Justice-Tech platform</h3>
+          <p>Student consultant (AI/Data Science) via the UdS Innovation Center's Triathlon startup programme. Built the backend ML models for a language-services feasibility study for German public authorities, working in a mixed CS + business team, and delivered the live demo in the final case-study presentation to the company's CEO.</p>
+          <div class="stack">Python · ML modelling · stakeholder-to-spec translation · live demo</div>
+        </div>
+      </div>
+
+      <div class="proj">
+        <div class="tag">NLP · Pipeline</div>
+        <div>
+          <h3>DODI — deception scoring for Terms-of-Service documents</h3>
+          <p>An NLP system that takes consumer-facing ToS documents from raw text to quantified deception scores: surfacing vague obligations, asymmetric terms, and dark-pattern phrasing. Built as a reproducible Python pipeline with clause-level metrics rolling up to document-level scores.</p>
+          <div class="stack">Python · NLP · embeddings · reproducible pipeline design</div>
+          <!-- TODO: <a class="textlink" href="GITHUB_REPO_URL">Code →</a> -->
+        </div>
+      </div>
+
+      <div class="proj">
+        <div class="tag">Data analysis · Economics</div>
+        <div>
+          <h3>Shadow Correction — piracy as a market signal</h3>
+          <p>Quantitative study testing whether piracy behaves as a market-correction signal. Measured streaming-market fragmentation with the Herfindahl–Hirschman Index on demand-share data, built piracy-intent indices from Google Trends, and aligned them with PPP-adjusted wage data across 90+ countries.</p>
+          <div class="stack">Python · HHI · Google Trends · World Bank data · time-series design</div>
+          <!-- TODO: <a class="textlink" href="GITHUB_REPO_URL">Code →</a> -->
+        </div>
+      </div>
+    </section>
+
+    <section id="stack">
+      <div class="sec-head"><b>—</b> Tooling &amp; stack</div>
+      <div class="cols">
+        <div>
+          <h4>Build with</h4>
+          <div class="pill-row">
+            <span class="pill">Python</span><span class="pill">PyTorch</span><span class="pill">scikit-learn</span>
+            <span class="pill">pandas</span><span class="pill">NumPy</span><span class="pill">SQL</span>
+            <span class="pill">R</span><span class="pill">Git</span><span class="pill">LaTeX</span>
+          </div>
+          <h4 style="margin-top:26px">AI in the loop, daily</h4>
+          <div class="pill-row">
+            <span class="pill">Claude Code</span><span class="pill">Cursor</span>
+            <span class="pill">Anthropic API</span><span class="pill">OpenAI API</span>
+            <span class="pill">agentic workflows</span>
+          </div>
+        </div>
+        <div>
+          <h4>How I work</h4>
+          <p>I like the full loop: take a fuzzy, real-world problem, turn it into a clean and reproducible pipeline, and ship something people can actually run. Documentation isn't an afterthought — it's how work stays usable after I hand it over.</p>
+          <div class="lang">EN — C1 fluent · DE — A2, working toward B1 · Tamil — native</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <h2>Let's build something.</h2>
+    <p>Open to Werkstudent and internship roles in ML, data science, and applied AI from August 2026 — remote from Saarbrücken now, open to relocating later.</p>
+    <div class="foot-links">
+      <a class="btn btn-primary" href="mailto:akshay57ax@gmail.com">akshay57ax@gmail.com</a>
+      <a class="btn btn-ghost" href="https://github.com/Axwolf13">GitHub</a>
+      <a class="btn btn-ghost" href="https://linkedin.com/in/akshay-a-ax13">LinkedIn</a>
+    </div>
+    <div class="fineprint">
+      <span>© 2026 Akshay Ashok</span>
+      <span>Saarbrücken, Germany</span>
+    </div>
+  </footer>
+</div>
+
+</body>
+</html>
