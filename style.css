@@ -40,6 +40,7 @@ header{
   -webkit-backdrop-filter:blur(10px);
 }
 html[data-theme="dark"] header{background:rgba(15,22,38,.88)}
+header.scrolled{box-shadow:0 6px 20px rgba(26,39,64,.08)}
 .logo{
   font-family:'Archivo',sans-serif;font-weight:900;font-size:19px;
   letter-spacing:-.02em;line-height:1;
@@ -59,7 +60,14 @@ nav a{
   font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--muted);
   text-decoration:none;margin-left:22px;letter-spacing:.04em;
   transition:color .15s ease;
+  position:relative;
 }
+nav a::after{
+  content:"";position:absolute;left:0;right:0;bottom:-5px;height:1.5px;
+  background:var(--accent);transform:scaleX(0);transform-origin:left;
+  transition:transform .2s ease;
+}
+nav a:hover::after,nav a.active::after{transform:scaleX(1)}
 nav a:hover,nav a:focus-visible,nav a.active{color:var(--accent)}
 a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
 .theme-toggle{
@@ -99,7 +107,7 @@ h1 .hl{background:linear-gradient(transparent 66%,rgba(17,160,90,.28) 66%)}
   color:var(--ink);background:var(--card);border:1px solid var(--hairline);
   border-radius:999px;padding:8px 16px;
 }
-.badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex:none}
+.badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex:none;position:relative}
 .cta-row{margin-top:30px;display:flex;flex-wrap:wrap;gap:12px}
 .btn{
   font-family:'IBM Plex Mono',monospace;font-size:13.5px;text-decoration:none;
@@ -138,7 +146,22 @@ html[data-theme="dark"] .btn-primary:hover{background:#25A765}
 @media (prefers-reduced-motion:no-preference){
   .reveal{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
   .reveal.in{opacity:1;transform:none}
+  .hero .eyebrow,.hero h1,.hero .lede,.hero .badge,.hero .cta-row{
+    opacity:0;transform:translateY(12px);animation:rise .6s ease forwards;
+  }
+  .hero h1{animation-delay:.08s}
+  .hero .lede{animation-delay:.16s}
+  .hero .badge{animation-delay:.24s}
+  .hero .cta-row{animation-delay:.32s}
+  .badge .dot::after{
+    content:"";position:absolute;inset:0;border-radius:50%;
+    background:var(--accent);animation:ping 2.4s ease-out infinite;
+  }
+  .pose{animation:float 7s ease-in-out 2.4s infinite}
 }
+@keyframes rise{to{opacity:1;transform:none}}
+@keyframes ping{0%{transform:scale(1);opacity:.55}70%,100%{transform:scale(2.6);opacity:0}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 
 /* sections */
 section{padding:56px 0;border-top:1px solid var(--hairline);scroll-margin-top:76px}

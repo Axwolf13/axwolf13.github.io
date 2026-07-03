@@ -24,16 +24,23 @@
     });
   }
 
-  // scroll reveal
+  // scroll reveal, with stagger for list items
   if(!reduce && 'IntersectionObserver' in window){
     var els = document.querySelectorAll('section, footer');
     els.forEach(function(el){ el.classList.add('reveal'); });
+    var items = document.querySelectorAll('.proj, .tl-item');
+    items.forEach(function(el){
+      el.classList.add('reveal');
+      var idx = Array.prototype.indexOf.call(el.parentElement.children, el);
+      el.style.transitionDelay = Math.min(idx * 80, 400) + 'ms';
+    });
     var io = new IntersectionObserver(function(entries){
       entries.forEach(function(e){
         if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
       });
     }, {threshold:.08});
     els.forEach(function(el){ io.observe(el); });
+    items.forEach(function(el){ io.observe(el); });
   }
 
   // active nav highlight
@@ -68,16 +75,26 @@
   var pose = document.querySelector('.pose');
   if(pose && !reduce) armPose(pose);
 
-  // scroll progress bar
+  // scroll progress bar + header shadow
   var bar = document.getElementById('progress');
-  if(bar){
-    var onScroll = function(){
-      var h = document.documentElement;
-      var max = h.scrollHeight - h.clientHeight;
-      bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
-    };
-    addEventListener('scroll', onScroll, {passive:true});
-    onScroll();
+  var head = document.querySelector('header');
+  var onScroll = function(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    if(bar) bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+    if(head) head.classList.toggle('scrolled', h.scrollTop > 8);
+  };
+  addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // keypoint confidence jitter
+  if(!reduce){
+    setInterval(function(){
+      document.querySelectorAll('.pose .kp-label').forEach(function(el){
+        var base = el.textContent.split('·')[0].trim();
+        el.textContent = base + ' · 0.' + (93 + Math.floor(Math.random() * 6));
+      });
+    }, 1800);
   }
 
   // stat count-up
