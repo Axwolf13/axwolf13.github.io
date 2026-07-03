@@ -4,7 +4,7 @@
   // hello, DevTools person
   try{
     console.log('%ckp_dev · 0.99 · hello, fellow engineer.', 'font-family:monospace;font-size:13px;color:#11A05A');
-    console.log('Source: https://github.com/Axwolf13/axwolf13.github.io\nSay hi: akshay57ax@gmail.com\nTip: press "t" to toggle the theme.');
+    console.log('Source: https://github.com/Axwolf13/axwolf13.github.io\nSay hi: akshay57ax@gmail.com\nTips: press "t" to toggle the theme. Press "v" to run object detection on this page.');
   }catch(e){}
 
   // theme toggle (boot script in <head> sets the initial data-theme)
@@ -20,8 +20,40 @@
   }
   var toggle = document.querySelector('.theme-toggle');
   if(toggle) toggle.addEventListener('click', flipTheme);
+
+  // vision mode: draw detection boxes over the page's structure
+  var cvMap = [
+    ['h1', 'headline'],
+    ['.lede', 'text_block'],
+    ['.badge', 'status_chip'],
+    ['.pose', 'pose_input'],
+    ['.pub', 'publication_card'],
+    ['.proj', 'work_item'],
+    ['.tl-item', 'timeline_node'],
+    ['.pill-row', 'skill_cluster'],
+    ['.cta-row', 'action_row'],
+    ['.foot-links', 'action_row'],
+    ['.sec-head', 'section_label']
+  ];
+  function visionOn(){
+    cvMap.forEach(function(pair){
+      document.querySelectorAll(pair[0]).forEach(function(el){
+        var conf = (0.62 + Math.random() * 0.37).toFixed(2);
+        el.setAttribute('data-cv', pair[1] + ' · ' + conf);
+      });
+    });
+    document.body.classList.add('vision');
+  }
   addEventListener('keydown', function(e){
-    if(e.key === 't' && !e.ctrlKey && !e.metaKey && !e.altKey) flipTheme();
+    if(e.ctrlKey || e.metaKey || e.altKey) return;
+    if(e.key === 't') flipTheme();
+    if(e.key === 'v'){
+      if(document.body.classList.contains('vision')){
+        document.body.classList.remove('vision');
+      }else{
+        visionOn();
+      }
+    }
   });
   var mq = matchMedia('(prefers-color-scheme: dark)');
   if(mq.addEventListener){

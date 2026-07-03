@@ -169,6 +169,20 @@ html[data-theme="dark"] .btn-primary:hover{background:#25A765}
 @keyframes ping{0%{transform:scale(1);opacity:.55}70%,100%{transform:scale(2.6);opacity:0}}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 
+/* vision mode (press v) */
+body.vision [data-cv]{
+  outline:1.5px solid #FF3B30;outline-offset:3px;
+  position:relative;
+}
+body.vision [data-cv]::after{
+  content:attr(data-cv);
+  position:absolute;top:-22px;left:-2px;z-index:6;
+  background:#FF3B30;color:#fff;
+  font-family:'IBM Plex Mono',monospace;font-size:9.5px;font-weight:500;
+  line-height:1;padding:4px 7px;border-radius:3px;letter-spacing:.04em;
+  white-space:nowrap;pointer-events:none;
+}
+
 /* sections */
 section{padding:56px 0;border-top:1px solid var(--hairline);scroll-margin-top:76px}
 .sec-head{
