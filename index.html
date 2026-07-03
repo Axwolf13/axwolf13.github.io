@@ -151,9 +151,11 @@
         <div class="tag">NLP · Pipeline</div>
         <div>
           <h3>DODI — deception scoring for Terms-of-Service documents</h3>
-          <p>DODI (Digital Ownership Deception Index) quantifies the gap between "Buy now" marketing and "you're only licensing this" fine print in consumer ToS documents. Dual-layer design: a deterministic, fully reproducible scorer (Flesch–Kincaid readability, licence-vs-ownership term ratio, red-flag clause detection, with spaCy dependency parsing to handle negation) audited against GPT-4o classifications on a subsample, plus OpenAI text-embedding-3-small embeddings to trace how clause language spreads between platforms. Corpus assembled from ToS snapshots (2015–2025) via the Wayback Machine.</p>
-          <div class="stack">Python · spaCy · textstat · OpenAI text-embedding-3-small · GPT-4o validation layer</div>
-          <!-- TODO: repo link -->
+          <p>DODI (Digital Ownership Deception Index) quantifies the gap between "Buy now" marketing and "you're only licensing this" fine print in consumer ToS documents. A deterministic, fully reproducible scorer (Flesch–Kincaid readability, licence-vs-ownership term ratio, red-flag clause detection, weighted 25/50/25) validated against ToS;DR human expert grades (Spearman ρ = 0.54, n = 12) and applied as a temporal study: 10 platforms, four Wayback Machine snapshots each (2015–2024). The index passes its face-validity test: GOG, the DRM-free "you own your games" store, scores lowest of all ten platforms.</p>
+          <div class="stack">Python · textstat · pandas · SciPy · ToS;DR validation · Wayback Machine corpus</div>
+          <div class="links">
+            <a class="textlink" href="https://github.com/Axwolf13/dodi-analysis" target="_blank" rel="noopener">Code →</a>
+          </div>
         </div>
       </div>
 
