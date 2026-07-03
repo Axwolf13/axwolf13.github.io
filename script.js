@@ -1,20 +1,28 @@
 (function(){
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // hello, DevTools person
+  try{
+    console.log('%ckp_dev · 0.99 · hello, fellow engineer.', 'font-family:monospace;font-size:13px;color:#11A05A');
+    console.log('Source: https://github.com/Axwolf13/axwolf13.github.io\nSay hi: akshay57ax@gmail.com\nTip: press "t" to toggle the theme.');
+  }catch(e){}
+
   // theme toggle (boot script in <head> sets the initial data-theme)
   function applyTheme(t){
     document.documentElement.setAttribute('data-theme', t);
     var meta = document.querySelector('meta[name="theme-color"]');
     if(meta) meta.setAttribute('content', t === 'dark' ? '#0F1626' : '#FAFAF6');
   }
-  var toggle = document.querySelector('.theme-toggle');
-  if(toggle){
-    toggle.addEventListener('click', function(){
-      var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-      applyTheme(next);
-      try{ localStorage.setItem('theme', next); }catch(e){}
-    });
+  function flipTheme(){
+    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    try{ localStorage.setItem('theme', next); }catch(e){}
   }
+  var toggle = document.querySelector('.theme-toggle');
+  if(toggle) toggle.addEventListener('click', flipTheme);
+  addEventListener('keydown', function(e){
+    if(e.key === 't' && !e.ctrlKey && !e.metaKey && !e.altKey) flipTheme();
+  });
   var mq = matchMedia('(prefers-color-scheme: dark)');
   if(mq.addEventListener){
     mq.addEventListener('change', function(e){
