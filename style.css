@@ -196,6 +196,28 @@ section{padding:56px 0;border-top:1px solid var(--hairline);scroll-margin-top:76
 .page h1{font-size:clamp(2rem,4.5vw,3rem)}
 .page p.lede{margin-top:16px;font-size:1.08rem;color:var(--muted);max-width:40em}
 
+/* article */
+.article{max-width:46em;padding:56px 0 24px}
+.article .meta{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--muted);letter-spacing:.06em;margin-bottom:20px}
+.article h1{font-size:clamp(1.9rem,4.5vw,2.7rem);line-height:1.12}
+.article h2{font-family:'Archivo',sans-serif;font-weight:700;font-size:1.35rem;letter-spacing:-.01em;margin-top:44px}
+.article p{margin-top:16px}
+.article ul,.article ol{margin-top:14px;padding-left:26px}
+.article li{margin-top:8px}
+.article code{
+  font-family:'IBM Plex Mono',monospace;font-size:.85em;
+  background:var(--card);border:1px solid var(--hairline);
+  border-radius:4px;padding:2px 6px;
+}
+.article table{border-collapse:collapse;margin-top:18px;width:100%;font-size:.93em}
+.article th,.article td{border:1px solid var(--hairline);padding:8px 12px;text-align:left}
+.article th{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.article .callout{
+  background:var(--card);border:1px solid var(--hairline);border-left:4px solid var(--accent);
+  border-radius:8px;padding:18px 22px;margin-top:22px;
+}
+.article .backlink{margin-top:44px}
+
 /* publication card */
 .pub{
   background:var(--card);border:1px solid var(--hairline);border-left:4px solid var(--accent);

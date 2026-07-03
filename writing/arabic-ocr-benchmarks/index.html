@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Benchmarking Arabic OCR and translation on an 8 GB laptop GPU — Akshay Ashok</title>
+<meta name="description" content="What Surya and PaddleOCR actually do on KITAB-Bench, why Opus-MT replaced NLLB for licence reasons, the failure modes that only appear on long legal text and how to know when your pipeline is wrong.">
+<link rel="canonical" href="https://axwolf13.github.io/writing/arabic-ocr-benchmarks/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<meta name="theme-color" content="#FAFAF6">
+<script>
+(function(){
+  var t = null;
+  try{ t = localStorage.getItem('theme'); }catch(e){}
+  if(t !== 'light' && t !== 'dark'){ t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
+  document.documentElement.setAttribute('data-theme', t);
+  var meta = document.querySelector('meta[name="theme-color"]');
+  if(meta && t === 'dark') meta.setAttribute('content', '#0F1626');
+})();
+</script>
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://axwolf13.github.io/writing/arabic-ocr-benchmarks/">
+<meta property="og:title" content="Benchmarking Arabic OCR and translation on an 8 GB laptop GPU">
+<meta property="og:description" content="What Surya and PaddleOCR actually do on KITAB-Bench, why the licence picked the translation model, and how a triage pipeline learns to distrust itself.">
+<meta property="og:image" content="https://axwolf13.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+
+<a class="skip" href="#top">Skip to content</a>
+<div id="progress" aria-hidden="true"></div>
+<header>
+  <div class="wrap hrow">
+    <a class="logo" href="../../">Akshay Ashok<b>.</b></a>
+    <nav aria-label="Main">
+      <a href="../../#work">Work</a>
+      <a href="../../#stack">Stack</a>
+      <a href="../" class="active">Writing</a>
+      <a href="../../#contact">Contact</a>
+      <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+<div class="wrap">
+  <main id="top">
+    <article class="article">
+      <div class="meta">July 2026 · 9 min read · <a class="textlink" href="https://github.com/Axwolf13/arabic-doc-triage-research" target="_blank" rel="noopener">notebooks on GitHub →</a></div>
+      <h1>Benchmarking Arabic OCR and translation on an 8&nbsp;GB laptop GPU</h1>
+
+      <p>For ten weeks this year I worked on a feasibility question for lingomatch, a Gov/Justice-Tech startup in Saarbrücken: when a public authority is handed a document in Arabic, can software produce a usable German gist translation on modest hardware, and can it know when its own output shouldn't be trusted? The framing matters. This is a triage tool, not certified translation; the output is an investigative lead that tells an officer whether to call a human interpreter, never a substitute for one.</p>
+
+      <p>Everything below ran on a laptop RTX 4060 with 8&nbsp;GB of VRAM, on public data (KITAB-Bench, FLORES-200, Arabic Wikipedia) and open-weight models. The sixteen notebooks are <a class="textlink" href="https://github.com/Axwolf13/arabic-doc-triage-research" target="_blank" rel="noopener">public</a>. These are the four lessons I'd keep.</p>
+
+      <h2>1. The licence picked the translation model before the benchmark could</h2>
+
+      <p>The obvious starting point for Arabic→German was NLLB, Meta's 200-language model, and it worked well. Then a teammate caught something none of the benchmarks show: NLLB's weights are CC-BY-NC licensed. Non-commercial. For a company that intends to deploy, that's disqualifying regardless of quality, and it forced the question every model comparison should start with: what are you actually allowed to ship?</p>
+
+      <p>The Apache-2.0 candidate was Opus-MT-ar-de from Helsinki-NLP, a MarianMT model of roughly 300&nbsp;MB against NLLB-1.3B's multi-gigabyte footprint. On short sentences it matched NLLB, BLEU 43.8 against 42.4, at about a ninth of the memory and 2.4x the speed, running comfortably on CPU. At that point the tempting conclusion was "Opus-MT matches NLLB, migration free of charge."</p>
+
+      <p>It doesn't hold. On long legal text, Opus-MT degraded in ways the short-sentence benchmark never hinted at: it truncated clauses, collapsed a philosophical quotation into a repetition loop and mangled proper nouns, while NLLB stayed structurally coherent. Same models, longer inputs, opposite ranking. The production recommendation became conditional: Opus-MT for short documents, sentence-level reassembly to keep inputs short, escalation when documents run long. A model choice that looked settled after notebook 08 got properly qualified by notebook 09, which is exactly why the second notebook existed.</p>
+
+      <div class="callout">If your evaluation set doesn't include the inputs that hurt (long clauses, addresses, ID numbers, mixed scripts), your benchmark is a brochure, not a measurement.</div>
+
+      <h2>2. The best translator scored the worst BLEU</h2>
+
+      <p>TranslateGemma 4B produced the best German of anything I tested. It fixed every error the smaller models made on the hard sentences, including a Bossuet quotation both NLLB and Opus-MT butchered. It also scored the <em>lowest</em> BLEU of the lot, because BLEU counts n-gram overlap against a reference and punishes good paraphrase. If I had trusted the metric alone, I'd have ranked the best model last. Read the outputs, not just the scoreboard.</p>
+
+      <p>The same model also produced the project's most instructive failure. TranslateGemma accepts images directly, so I tried skipping OCR entirely: image in, German out. On an image it couldn't properly read, it didn't error out or produce garbage. It hallucinated a complete, fluent, plausible German document that had nothing to do with the input. For a casual use case that's a quirk; for a tool whose output influences what a police officer does next, it's disqualifying. A cascade (OCR, then text translation) is 35x cheaper and every stage of it can be inspected and flagged. Auditability beat quality, which was the right trade for this product even though it sounds wrong for a leaderboard.</p>
+
+      <h2>3. Accuracy is table stakes; knowing when you're wrong is the product</h2>
+
+      <p>Surya OCR, evaluated per-sample on 50 KITAB-Bench documents: 31 of 50 reached usable quality (character error rate under 10%), with failures concentrated in degraded scans and stylized fonts. That number by itself is almost useless for deployment. The useful question is whether the system can tell its 19 failures apart from its 31 successes on its own.</p>
+
+      <p>Mostly, yes. Surya's per-line confidence turned out to genuinely predict failure: a document-level confidence router flagged 4 of 4 catastrophic OCR failures in the evaluation set. That router is the heart of the triage design, since a low-confidence document becomes an automatic "call an interpreter" rather than a wrong translation delivered confidently.</p>
+
+      <p>Confidence alone has blind spots, so the final design layers four signals:</p>
+
+      <ul>
+        <li><strong>Confidence routing</strong> catches the failures the engine knows about.</li>
+        <li><strong>Perplexity scoring</strong> of the OCR output catches implausible text, once I found and fixed a confound where Arabic diacritics inflated perplexity on perfectly good text.</li>
+        <li><strong>Script-ratio and repetition heuristics</strong> catch contamination and the hallucination loops generative OCR falls into, which perplexity misses.</li>
+        <li><strong>Model disagreement</strong>: run PaddleOCR as an independent second engine and flag documents where the two engines diverge, on the logic that two different architectures rarely hallucinate the same way.</li>
+      </ul>
+
+      <p>One sample in fifty evaded all four signals: OCR output that was wrong but confident, plausible, clean and consistent across engines. I consider that the most valuable result in the project, because it's the empirical answer to "can we remove the human from the loop?" No. And under the EU AI Act's human-oversight requirements for high-risk systems, that answer needed to be demonstrated, not assumed.</p>
+
+      <h2>4. Field conditions are a preprocessing problem before they're a model problem</h2>
+
+      <p>Real inputs are phone photos: skewed, shadowed, creased. Before reaching for a bigger OCR model, notebook 16 tried classical preprocessing, projection-profile deskew plus CLAHE contrast recovery. On a multi-line Arabic page degraded with skew and shadow, that recovered about a third of the lost OCR quality, CER from 7.6% back to 4.9%, for the cost of a few milliseconds of OpenCV. The cheapest model upgrade is often not a model.</p>
+
+      <h2>What I'd tell someone starting the same project</h2>
+
+      <ul>
+        <li>Check the licence before the benchmark. It can end the comparison early.</li>
+        <li>Benchmark on inputs that look like production, especially the ugly ones. Short-input results don't generalize and you won't know until you test.</li>
+        <li>Metrics are instruments, not verdicts. When BLEU and your eyes disagree, investigate before trusting either.</li>
+        <li>Build the distrust machinery with the same seriousness as the pipeline. Confidence, perplexity, heuristics, disagreement: each catches something the others miss, and something still gets through.</li>
+        <li>8&nbsp;GB of VRAM is enough to answer real feasibility questions if you pick model sizes deliberately and quantise without shame.</li>
+      </ul>
+
+      <p>The full notebooks, including the raw outputs of both OCR engines on all 50 samples so you can reproduce the disagreement analysis without a GPU, are in the <a class="textlink" href="https://github.com/Axwolf13/arabic-doc-triage-research" target="_blank" rel="noopener">repo</a>.</p>
+
+      <div class="backlink"><a class="textlink" href="../">← All writing</a></div>
+    </article>
+  </main>
+
+  <footer id="contact">
+    <h2>Let's talk.</h2>
+    <p>Open to Werkstudent and internship roles in ML, data science and applied AI from August 2026.</p>
+    <div class="foot-links">
+      <a class="btn btn-primary" href="mailto:akshay57ax@gmail.com">akshay57ax@gmail.com</a>
+      <a class="btn btn-ghost" href="https://github.com/Axwolf13" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn btn-ghost" href="https://linkedin.com/in/akshay-a-ax13" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+    <div class="fineprint">
+      <span>© 2026 Akshay Ashok</span>
+      <span>Saarbrücken, Germany</span>
+      <a class="textlink" href="#top">Back to top ↑</a>
+    </div>
+  </footer>
+</div>
+
+<script src="../../script.js"></script>
+<script data-goatcounter="https://akshayashok.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
+</body>
+</html>
