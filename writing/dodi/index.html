@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buying nothing: scoring a decade of ownership deception in Terms of Service — Akshay Ashok</title>
+<meta name="description" content="DODI is a deterministic 0–100 index of how hard a platform's ToS works to hide that 'Buy now' means 'revocable licence'. Ten platforms, four snapshots each from 2015 to 2024, validated against ToS;DR — and the language got worse.">
+<link rel="canonical" href="https://axwolf13.github.io/writing/dodi/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<meta name="theme-color" content="#FAFAF6">
+<script>
+(function(){
+  var t = null;
+  try{ t = localStorage.getItem('theme'); }catch(e){}
+  if(t !== 'light' && t !== 'dark'){ t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
+  document.documentElement.setAttribute('data-theme', t);
+  var meta = document.querySelector('meta[name="theme-color"]');
+  if(meta && t === 'dark') meta.setAttribute('content', '#0F1626');
+})();
+</script>
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://axwolf13.github.io/writing/dodi/">
+<meta property="og:title" content="Buying nothing: scoring a decade of ownership deception in Terms of Service">
+<meta property="og:description" content="A deterministic index of how hard a platform's ToS works to hide that 'Buy now' means 'revocable licence'. Ten platforms, 2015–2024, validated against ToS;DR — and the language got worse.">
+<meta property="og:image" content="https://axwolf13.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../style.css">
+<style>
+.article figure{margin:2rem 0;}
+.article figure img{width:100%;height:auto;border-radius:10px;display:block;}
+.article figcaption{font-size:.85rem;opacity:.7;margin-top:.6rem;}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#top">Skip to content</a>
+<div id="progress" aria-hidden="true"></div>
+<header>
+  <div class="wrap hrow">
+    <a class="logo" href="../../">Akshay Ashok<b>.</b></a>
+    <nav aria-label="Main">
+      <a href="../../#work">Work</a>
+      <a href="../../#stack">Stack</a>
+      <a href="../" class="active">Writing</a>
+      <a href="../../#contact">Contact</a>
+      <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+<div class="wrap">
+  <main id="top">
+    <article class="article">
+      <div class="meta">July 2026 · 7 min read · <a class="textlink" href="https://github.com/Axwolf13/dodi-analysis" target="_blank" rel="noopener">code on GitHub →</a></div>
+      <h1>Buying nothing: scoring a decade of ownership deception in Terms of Service</h1>
+
+      <p>Quick question: what was the last movie you bought online?</p>
+
+      <p>Trick question. You didn't buy it. You clicked a button that said "Buy now" and what you got was a revocable licence the platform can pull whenever it feels like it.</p>
+
+      <p>And you're not careless for missing that. A 2017 study by Perzanowski and Hoofnagle found that <strong>83% of people read "Buy now" as actual ownership</strong>. The button is doing exactly what it was designed to do.</p>
+
+      <p>That gap bugged me enough to measure it. For the Data and Society seminar at Saarland University I built <strong>DODI — the Digital Ownership Deception Index</strong>: a 0–100 score of how hard a platform's Terms of Service works to keep you from noticing what you didn't buy. Higher means more deceptive. Everything is <a class="textlink" href="https://github.com/Axwolf13/dodi-analysis" target="_blank" rel="noopener">public</a>: scorer, corpus, figures.</p>
+
+      <h2>No LLM. On purpose.</h2>
+
+      <p>Here's the design choice I'll defend the hardest: DODI contains no model. No API calls. Nothing random. It's a plain function of the document text:</p>
+
+      <pre><code>DODI = 0.25 × readability penalty + 0.50 × licence ratio + 0.25 × red-flag score</code></pre>
+
+      <p>Three ingredients:</p>
+
+      <ul>
+        <li><strong>Licence ratio (half the score).</strong> Count licence words ("license", "subscription", "access", "grant"…) against ownership words ("buy", "own", "purchase"…). This is the core trick — storefront says buy, contract says licence — so it gets the dominant weight.</li>
+        <li><strong>Readability (a quarter).</strong> Flesch–Kincaid grade level via <code>textstat</code>. Grade 8 or below scores 0, grade 16+ scores 100. Complexity enables deception but isn't deception itself.</li>
+        <li><strong>Red flags (a quarter).</strong> Counts of aggressive clauses: unilateral termination ("sole discretion", "without notice"), rights waivers ("class action", "arbitration", "indemnify") and data exploitation ("third parties", "sell your", "track").</li>
+      </ul>
+
+      <p>Why does the no-LLM part matter so much? Because the whole study compares 2015 documents against 2024 documents. If your measuring stick drifts, you can't tell instrument drift from document drift.</p>
+
+      <p>Same text in, same score out, forever. No LLM will promise you that.</p>
+
+      <h2>Ten years of fine print, measured</h2>
+
+      <p>The corpus: 40 documents. Ten major platforms, four ToS snapshots each — 2015, 2018, 2021, 2024 — pulled from the Wayback Machine.</p>
+
+      <figure>
+        <img src="temporal-analysis.png" alt="Four-panel figure: DODI scores per platform over time, mean score trend rising from 72.5 to 77.3, per-component breakdown and per-platform change from 2015 to 2024" loading="lazy">
+        <figcaption>DODI across ten platforms, 2015–2024. The mean rises from 72.5 to 77.3. Seven of ten platforms drift upward.</figcaption>
+      </figure>
+
+      <p><strong>The language got worse.</strong> This is the decade regulators started taking dark patterns seriously. The mean DODI score still rose from 72.5 to 77.3 and seven of ten platforms drifted toward more licence-heavy, less readable, more aggressive terms.</p>
+
+      <p><strong>The score lands where it should.</strong> GOG — the DRM-free store whose entire brand is "you actually own your games" — scores lowest of all ten platforms in every single year. 25.9 in 2015. Adobe and Twitter sit at the top in the 86–100 range. I didn't tune anything to make that happen; it's the sanity check the 25/50/25 weighting had to pass before I trusted it.</p>
+
+      <p><strong>Netflix 2024 is my favourite data point.</strong> Ownership words in its ToS: 2. Licence words: 99. That's a ratio of 49.5, the highest in the corpus. Read that again the next time you "buy" something to watch.</p>
+
+      <h2>Does it agree with actual humans?</h2>
+
+      <p>Sort of. And I'd rather tell you "sort of" than dress it up.</p>
+
+      <p>I validated DODI against <a class="textlink" href="https://tosdr.org/" target="_blank" rel="noopener">ToS;DR</a>, the project where humans grade Terms of Service. On twelve current documents matched to ToS;DR grades, DODI correlates at Spearman ρ = 0.54 (p = 0.07). Pearson r = 0.39. Encouraging. Not proof.</p>
+
+      <p>To be fair, part of the gap isn't error at all. ToS;DR grades general fairness. DODI grades ownership transparency. Those are different things.</p>
+
+      <p>WhatsApp is the clean example: it gets a good ToS;DR grade (B) but a mediocre DODI score. A contract can be fair overall while staying vague about what you own. Both instruments are measuring what they claim to measure — they just claim different things.</p>
+
+      <h2>Where DODI is weak (I'll say it before you do)</h2>
+
+      <ul>
+        <li><strong>Keyword counting can't read negation.</strong> "You do not own this content" counts as an ownership word. Spot checks suggest deceptive ToS rarely negate like this — they avoid ownership words entirely, which the ratio catches — but it's a real blind spot.</li>
+        <li><strong>n = 12 is small.</strong> ρ = 0.54 at p = 0.07 is a promising direction, not a result you should bet on.</li>
+        <li><strong>Wayback timing is coarse.</strong> A "2015" document is the nearest capture to that year, not January 1st.</li>
+        <li><strong>The score is gameable.</strong> A platform could stuff its ToS with ownership words without changing a single legal term. DODI measures language, not legal substance. Don't pretend otherwise if you use it.</li>
+      </ul>
+
+      <h2>What I'd build next</h2>
+
+      <p>Negation-aware clause parsing with spaCy dependency trees would close the biggest blind spot. An LLM-as-judge validation layer on a bigger sample would complement ToS;DR. Clause-level embeddings could trace how licence clauses copy themselves between platforms over time.</p>
+
+      <p>But the metric I actually want? The <strong>marketing-vs-ToS gap</strong>. The deception is largest exactly where the storefront screams "buy" and the contract whispers "licence". That gap is measurable. Someone should measure it at scale.</p>
+
+      <p>Everything here reproduces from <a class="textlink" href="https://github.com/Axwolf13/dodi-analysis" target="_blank" rel="noopener">the repo</a> with three scripts and no GPU. Go score your favourite platform. You won't like the number.</p>
+
+      <div class="backlink"><a class="textlink" href="../">← All writing</a></div>
+    </article>
+  </main>
+
+  <footer id="contact">
+    <h2>Let's talk.</h2>
+    <p>Open to Werkstudent and internship roles in ML, data science and applied AI from August 2026.</p>
+    <div class="foot-links">
+      <a class="btn btn-primary" href="mailto:akshay57ax@gmail.com">akshay57ax@gmail.com</a>
+      <a class="btn btn-ghost" href="https://github.com/Axwolf13" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn btn-ghost" href="https://linkedin.com/in/akshay-a-ax13" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+    <div class="fineprint">
+      <span>© 2026 Akshay Ashok</span>
+      <span>Saarbrücken, Germany</span>
+      <a class="textlink" href="#top">Back to top ↑</a>
+    </div>
+  </footer>
+</div>
+
+<script src="../../script.js"></script>
+<script data-goatcounter="https://akshayashok.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
+</body>
+</html>
