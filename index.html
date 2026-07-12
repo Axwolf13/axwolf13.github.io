@@ -160,6 +160,7 @@
           <p>DODI (Digital Ownership Deception Index) quantifies the gap between "Buy now" marketing and "you're only licensing this" fine print in consumer ToS documents. A deterministic, fully reproducible scorer (Flesch–Kincaid readability, licence-vs-ownership term ratio, red-flag clause detection, weighted 25/50/25) validated against ToS;DR human expert grades (Spearman ρ = 0.54, n = 12) and applied as a temporal study: 10 platforms, four Wayback Machine snapshots each (2015–2024). The index passes its face-validity test: GOG, the DRM-free "you own your games" store, scores lowest of all ten platforms.</p>
           <div class="stack">Python · textstat · pandas · SciPy · ToS;DR validation · Wayback Machine corpus</div>
           <div class="links">
+            <a class="textlink" href="https://dodi-web.onrender.com/" target="_blank" rel="noopener">Live scorer →</a>
             <a class="textlink" href="https://github.com/Axwolf13/dodi-analysis" target="_blank" rel="noopener">Code →</a>
             <a class="textlink" href="writing/dodi/">Write-up →</a>
           </div>
@@ -200,7 +201,7 @@
         </div>
         <div>
           <h4>How I work</h4>
-          <p>I benchmark before I recommend: models get tested on realistic inputs, and failure modes go in the report next to the wins; a translation model that degrades on long legal text is a finding, not a footnote. I take deployment constraints seriously from day one: model licences, GDPR, EU AI Act obligations and what actually fits in 8&nbsp;GB of VRAM. Everything ships version-controlled and documented so it survives handover. Where I'm still building depth (Docker, CI/CD, cloud deployment) I say so and pick it up on the job.</p>
+          <p>I benchmark before I recommend: models get tested on realistic inputs, and failure modes go in the report next to the wins; a translation model that degrades on long legal text is a finding, not a footnote. I take deployment constraints seriously from day one: model licences, GDPR, EU AI Act obligations and what actually fits in 8&nbsp;GB of VRAM. Everything ships version-controlled and documented so it survives handover. Where I'm still building depth I say so and pick it up fast: Docker, CI/CD and cloud deployment were on that list until I shipped DODI's live scorer as a Dockerized FastAPI service with CI on every push.</p>
           <div class="lang">EN: C1 fluent · DE: A2, in active study toward B1 · Tamil: native · Hindi: conversational</div>
         </div>
       </div>
