@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Benchmarking Arabic OCR and translation on an 8 GB laptop GPU — Akshay Ashok</title>
+<title>Benchmarking Arabic OCR and translation on an 8 GB laptop GPU · Akshay Ashok</title>
 <meta name="description" content="What Surya and PaddleOCR actually do on KITAB-Bench, why Opus-MT replaced NLLB for licence reasons, the failure modes that only appear on long legal text and how to know when your pipeline is wrong.">
 <link rel="canonical" href="https://axwolf13.github.io/writing/arabic-ocr-benchmarks/">
 <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
@@ -56,7 +56,7 @@
 
       <p>A police officer gets handed a document in Arabic. No interpreter in the building. What happens next?</p>
 
-      <p>That's the question I spent ten weeks on for lingomatch, a Gov/Justice-Tech startup in Saarbrücken. Can software produce a usable German gist on modest hardware — and more importantly, can it <em>know</em> when its own output shouldn't be trusted?</p>
+      <p>That's the question I spent ten weeks on for lingomatch, a Gov/Justice-Tech startup in Saarbrücken. Can software produce a usable German gist on modest hardware? And more importantly, can it <em>know</em> when its own output shouldn't be trusted?</p>
 
       <p>One thing before we start: this is a triage tool, not certified translation. The output tells an officer whether to call a human interpreter. It never replaces one. That framing shaped every decision below.</p>
 
@@ -66,11 +66,11 @@
 
       <p>For Arabic→German the obvious pick was NLLB, Meta's 200-language model. It worked well. I was happy.</p>
 
-      <p>Then a teammate caught something no benchmark shows: NLLB's weights are CC-BY-NC. Non-commercial. For a company that intends to ship, that's dead on arrival — doesn't matter how good the BLEU is.</p>
+      <p>Then a teammate caught something no benchmark shows: NLLB's weights are CC-BY-NC. Non-commercial. For a company that intends to ship, that's dead on arrival. Doesn't matter how good the BLEU is.</p>
 
       <p>Here's the thing: every model comparison should start with the question nobody puts on the leaderboard. <strong>What are you actually allowed to ship?</strong></p>
 
-      <p>The Apache-2.0 candidate was Opus-MT-ar-de from Helsinki-NLP. Roughly 300&nbsp;MB against NLLB-1.3B's multi-gigabyte footprint. On short sentences it matched NLLB — BLEU 43.8 against 42.4 — at about a ninth of the memory, 2.4x the speed, running happily on CPU. Tempting conclusion: migration free of charge.</p>
+      <p>The Apache-2.0 candidate was Opus-MT-ar-de from Helsinki-NLP. Roughly 300&nbsp;MB against NLLB-1.3B's multi-gigabyte footprint. On short sentences it matched NLLB (BLEU 43.8 against 42.4) at about a ninth of the memory, 2.4x the speed, running happily on CPU. Tempting conclusion: migration free of charge.</p>
 
       <p>It doesn't hold. On long legal text Opus-MT fell apart in ways the short-sentence benchmark never hinted at:</p>
 
@@ -80,7 +80,7 @@
         <li>It mangled proper nouns.</li>
       </ul>
 
-      <p>NLLB stayed structurally coherent the whole time. Same models, longer inputs, opposite ranking. So the recommendation became conditional: Opus-MT for short documents, sentence-level reassembly to keep inputs short, escalation when documents run long. A choice that looked settled after notebook 08 got properly humbled by notebook 09 — which is exactly why notebook 09 existed.</p>
+      <p>NLLB stayed structurally coherent the whole time. Same models, longer inputs, opposite ranking. So the recommendation became conditional: Opus-MT for short documents, sentence-level reassembly to keep inputs short, escalation when documents run long. A choice that looked settled after notebook 08 got properly humbled by notebook 09. Which is exactly why notebook 09 existed.</p>
 
       <div class="callout">If your evaluation set doesn't include the inputs that hurt (long clauses, addresses, ID numbers, mixed scripts), your benchmark is a brochure, not a measurement.</div>
 
@@ -96,7 +96,7 @@
 
       <p>It hallucinated a complete, fluent, plausible German document that had nothing to do with the input.</p>
 
-      <p>For a casual app, that's a quirk. For a tool whose output influences what a police officer does next, it's disqualifying. A cascade — OCR first, then text translation — is 35x cheaper and every stage of it can be inspected and flagged. Auditability beat quality. Sounds wrong for a leaderboard. It was right for this product.</p>
+      <p>For a casual app, that's a quirk. For a tool whose output influences what a police officer does next, it's disqualifying. A cascade (OCR first, then text translation) is 35x cheaper and every stage of it can be inspected and flagged. Auditability beat quality. Sounds wrong for a leaderboard. It was right for this product.</p>
 
       <h2>3. Accuracy is table stakes. Knowing when you're wrong is the product.</h2>
 
@@ -104,13 +104,13 @@
 
       <p>Honestly? That number alone is almost useless for deployment. The real question is whether the system can tell its 19 failures apart from its 31 successes <em>on its own</em>.</p>
 
-      <p>Mostly, yes. Surya's per-line confidence genuinely predicts failure: a document-level confidence router flagged 4 of 4 catastrophic OCR failures in the evaluation set. That router is the heart of the design — a low-confidence document becomes an automatic "call an interpreter", never a wrong translation delivered confidently.</p>
+      <p>Mostly, yes. Surya's per-line confidence genuinely predicts failure: a document-level confidence router flagged 4 of 4 catastrophic OCR failures in the evaluation set. That router is the heart of the design: a low-confidence document becomes an automatic "call an interpreter", never a wrong translation delivered confidently.</p>
 
       <p>Confidence alone has blind spots, so the final design layers four signals:</p>
 
       <ul>
         <li><strong>Confidence routing</strong> catches the failures the engine knows about.</li>
-        <li><strong>Perplexity scoring</strong> catches implausible text — after I fixed a confound where Arabic diacritics inflated perplexity on perfectly good text.</li>
+        <li><strong>Perplexity scoring</strong> catches implausible text, after I fixed a confound where Arabic diacritics inflated perplexity on perfectly good text.</li>
         <li><strong>Script-ratio and repetition heuristics</strong> catch contamination plus the hallucination loops generative OCR falls into. Perplexity misses those.</li>
         <li><strong>Model disagreement:</strong> run PaddleOCR as an independent second engine and flag documents where the two diverge. Two different architectures rarely hallucinate the same way.</li>
       </ul>
@@ -121,9 +121,9 @@
 
       <h2>4. Field conditions are a preprocessing problem before they're a model problem</h2>
 
-      <p>Real inputs aren't clean scans. They're phone photos — skewed, shadowed, creased.</p>
+      <p>Real inputs aren't clean scans. They're phone photos: skewed, shadowed, creased.</p>
 
-      <p>Before reaching for a bigger OCR model, notebook 16 tried classical preprocessing: projection-profile deskew plus CLAHE contrast recovery. On a multi-line Arabic page degraded with skew and shadow, that recovered about a third of the lost OCR quality — CER from 7.6% back to 4.9% — for a few milliseconds of OpenCV.</p>
+      <p>Before reaching for a bigger OCR model, notebook 16 tried classical preprocessing: projection-profile deskew plus CLAHE contrast recovery. On a multi-line Arabic page degraded with skew and shadow, that recovered about a third of the lost OCR quality (CER from 7.6% back to 4.9%) for a few milliseconds of OpenCV.</p>
 
       <p>The cheapest model upgrade is often not a model.</p>
 
@@ -131,13 +131,13 @@
 
       <ul>
         <li><strong>Check the licence before the benchmark.</strong> It can end the comparison early.</li>
-        <li><strong>Benchmark on inputs that look like production</strong> — especially the ugly ones. Short-input results don't generalize and you won't know until you test.</li>
+        <li><strong>Benchmark on inputs that look like production</strong>, especially the ugly ones. Short-input results don't generalize and you won't know until you test.</li>
         <li><strong>Metrics are instruments, not verdicts.</strong> When BLEU and your eyes disagree, investigate before trusting either.</li>
         <li><strong>Build the distrust machinery with the same seriousness as the pipeline.</strong> Confidence, perplexity, heuristics, disagreement: each catches something the others miss. Something still gets through.</li>
-        <li><strong>8&nbsp;GB of VRAM is enough</strong> to answer real feasibility questions — if you pick model sizes deliberately and quantise without shame.</li>
+        <li><strong>8&nbsp;GB of VRAM is enough</strong> to answer real feasibility questions, if you pick model sizes deliberately and quantise without shame.</li>
       </ul>
 
-      <p>The full notebooks — including raw outputs of both OCR engines on all 50 samples, so you can reproduce the disagreement analysis without a GPU — are in the <a class="textlink" href="https://github.com/Axwolf13/arabic-doc-triage-research" target="_blank" rel="noopener">repo</a>.</p>
+      <p>The full notebooks are in the <a class="textlink" href="https://github.com/Axwolf13/arabic-doc-triage-research" target="_blank" rel="noopener">repo</a>, including raw outputs of both OCR engines on all 50 samples so you can reproduce the disagreement analysis without a GPU.</p>
 
       <div class="backlink"><a class="textlink" href="../">← All writing</a></div>
     </article>

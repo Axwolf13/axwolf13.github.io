@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Buying nothing: scoring a decade of ownership deception in Terms of Service — Akshay Ashok</title>
-<meta name="description" content="DODI is a deterministic 0–100 index of how hard a platform's ToS works to hide that 'Buy now' means 'revocable licence'. Ten platforms, four snapshots each from 2015 to 2024, validated against ToS;DR — and the language got worse.">
+<title>Buying nothing: scoring a decade of ownership deception in Terms of Service · Akshay Ashok</title>
+<meta name="description" content="DODI is a deterministic 0–100 index of how hard a platform's ToS works to hide that 'Buy now' means 'revocable licence'. Ten platforms, four snapshots each from 2015 to 2024, validated against ToS;DR. And the language got worse.">
 <link rel="canonical" href="https://axwolf13.github.io/writing/dodi/">
 <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <meta name="theme-color" content="#FAFAF6">
@@ -21,7 +21,7 @@
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://axwolf13.github.io/writing/dodi/">
 <meta property="og:title" content="Buying nothing: scoring a decade of ownership deception in Terms of Service">
-<meta property="og:description" content="A deterministic index of how hard a platform's ToS works to hide that 'Buy now' means 'revocable licence'. Ten platforms, 2015–2024, validated against ToS;DR — and the language got worse.">
+<meta property="og:description" content="A deterministic index of how hard a platform's ToS works to hide that 'Buy now' means 'revocable licence'. Ten platforms, 2015–2024, validated against ToS;DR. And the language got worse.">
 <meta property="og:image" content="https://axwolf13.github.io/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -65,7 +65,7 @@
 
       <p>And you're not careless for missing that. A 2017 study by Perzanowski and Hoofnagle found that <strong>83% of people read "Buy now" as actual ownership</strong>. The button is doing exactly what it was designed to do.</p>
 
-      <p>That gap bugged me enough to measure it. For the Data and Society seminar at Saarland University I built <strong>DODI — the Digital Ownership Deception Index</strong>: a 0–100 score of how hard a platform's Terms of Service works to keep you from noticing what you didn't buy. Higher means more deceptive. Everything is <a class="textlink" href="https://github.com/Axwolf13/dodi-analysis" target="_blank" rel="noopener">public</a>: scorer, corpus, figures.</p>
+      <p>That gap bugged me enough to measure it. For the Data and Society seminar at Saarland University I built <strong>DODI, the Digital Ownership Deception Index</strong>: a 0–100 score of how hard a platform's Terms of Service works to keep you from noticing what you didn't buy. Higher means more deceptive. Everything is <a class="textlink" href="https://github.com/Axwolf13/dodi-analysis" target="_blank" rel="noopener">public</a>: scorer, corpus, figures.</p>
 
       <h2>No LLM. On purpose.</h2>
 
@@ -76,7 +76,7 @@
       <p>Three ingredients:</p>
 
       <ul>
-        <li><strong>Licence ratio (half the score).</strong> Count licence words ("license", "subscription", "access", "grant"…) against ownership words ("buy", "own", "purchase"…). This is the core trick — storefront says buy, contract says licence — so it gets the dominant weight.</li>
+        <li><strong>Licence ratio (half the score).</strong> Count licence words ("license", "subscription", "access", "grant"…) against ownership words ("buy", "own", "purchase"…). This is the core trick (storefront says buy, contract says licence) so it gets the dominant weight.</li>
         <li><strong>Readability (a quarter).</strong> Flesch–Kincaid grade level via <code>textstat</code>. Grade 8 or below scores 0, grade 16+ scores 100. Complexity enables deception but isn't deception itself.</li>
         <li><strong>Red flags (a quarter).</strong> Counts of aggressive clauses: unilateral termination ("sole discretion", "without notice"), rights waivers ("class action", "arbitration", "indemnify") and data exploitation ("third parties", "sell your", "track").</li>
       </ul>
@@ -87,7 +87,7 @@
 
       <h2>Ten years of fine print, measured</h2>
 
-      <p>The corpus: 40 documents. Ten major platforms, four ToS snapshots each — 2015, 2018, 2021, 2024 — pulled from the Wayback Machine.</p>
+      <p>The corpus: 40 documents. Ten major platforms, four ToS snapshots each (2015, 2018, 2021, 2024) pulled from the Wayback Machine.</p>
 
       <figure>
         <img src="temporal-analysis.png" alt="Four-panel figure: DODI scores per platform over time, mean score trend rising from 72.5 to 77.3, per-component breakdown and per-platform change from 2015 to 2024" loading="lazy">
@@ -96,7 +96,7 @@
 
       <p><strong>The language got worse.</strong> This is the decade regulators started taking dark patterns seriously. The mean DODI score still rose from 72.5 to 77.3 and seven of ten platforms drifted toward more licence-heavy, less readable, more aggressive terms.</p>
 
-      <p><strong>The score lands where it should.</strong> GOG — the DRM-free store whose entire brand is "you actually own your games" — scores lowest of all ten platforms in every single year. 25.9 in 2015. Adobe and Twitter sit at the top in the 86–100 range. I didn't tune anything to make that happen; it's the sanity check the 25/50/25 weighting had to pass before I trusted it.</p>
+      <p><strong>The score lands where it should.</strong> GOG, the DRM-free store whose entire brand is "you actually own your games", scores lowest of all ten platforms in every single year. 25.9 in 2015. Adobe and Twitter sit at the top in the 86–100 range. I didn't tune anything to make that happen; it's the sanity check the 25/50/25 weighting had to pass before I trusted it.</p>
 
       <p><strong>Netflix 2024 is my favourite data point.</strong> Ownership words in its ToS: 2. Licence words: 99. That's a ratio of 49.5, the highest in the corpus. Read that again the next time you "buy" something to watch.</p>
 
@@ -108,12 +108,12 @@
 
       <p>To be fair, part of the gap isn't error at all. ToS;DR grades general fairness. DODI grades ownership transparency. Those are different things.</p>
 
-      <p>WhatsApp is the clean example: it gets a good ToS;DR grade (B) but a mediocre DODI score. A contract can be fair overall while staying vague about what you own. Both instruments are measuring what they claim to measure — they just claim different things.</p>
+      <p>WhatsApp is the clean example: it gets a good ToS;DR grade (B) but a mediocre DODI score. A contract can be fair overall while staying vague about what you own. Both instruments are measuring what they claim to measure. They just claim different things.</p>
 
       <h2>Where DODI is weak (I'll say it before you do)</h2>
 
       <ul>
-        <li><strong>Keyword counting can't read negation.</strong> "You do not own this content" counts as an ownership word. Spot checks suggest deceptive ToS rarely negate like this — they avoid ownership words entirely, which the ratio catches — but it's a real blind spot.</li>
+        <li><strong>Keyword counting can't read negation.</strong> "You do not own this content" counts as an ownership word. Spot checks suggest deceptive ToS rarely negate like this (they avoid ownership words entirely, which the ratio catches) but it's a real blind spot.</li>
         <li><strong>n = 12 is small.</strong> ρ = 0.54 at p = 0.07 is a promising direction, not a result you should bet on.</li>
         <li><strong>Wayback timing is coarse.</strong> A "2015" document is the nearest capture to that year, not January 1st.</li>
         <li><strong>The score is gameable.</strong> A platform could stuff its ToS with ownership words without changing a single legal term. DODI measures language, not legal substance. Don't pretend otherwise if you use it.</li>
