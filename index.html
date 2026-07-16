@@ -114,7 +114,7 @@
         <div class="venue">Sādhanā · Indian Academy of Sciences, Springer · 2025 · First author</div>
         <p>Built during a computer vision research internship at NIT Puducherry. The architecture splits deliberately: MoveNet Thunder generates high-fidelity keypoints for training, while MoveNet Lightning handles inference at 30+ FPS on consumer hardware: accuracy where the model learns, speed where the user waits. I owned the dataset end to end, consolidating and curating 3,435 images across 11 asanas from Kaggle and Yoga-82 sources, then trained the keypoint-embedding classifier, ran the misclassification analysis and carried the paper through two rounds of peer review.</p>
         <div class="stats">
-          <div class="stat"><div class="n">99%</div><div class="l">classification accuracy</div></div>
+          <div class="stat"><div class="n">98.8%</div><div class="l">test accuracy · 98.4% on-device, verifiable</div></div>
           <div class="stat"><div class="n">11</div><div class="l">asana classes</div></div>
           <div class="stat"><div class="n">3,435</div><div class="l">images curated</div></div>
           <div class="stat"><div class="n">2-stage</div><div class="l">train / infer split</div></div>
@@ -154,11 +154,12 @@
       </div>
 
       <div class="proj">
-        <div class="tag">NLP · Pipeline</div>
+        <div class="tag">NLP · Shipped web service</div>
         <div>
           <h3>DODI: deception scoring for Terms-of-Service documents</h3>
           <p>DODI (Digital Ownership Deception Index) quantifies the gap between "Buy now" marketing and "you're only licensing this" fine print in consumer ToS documents. A deterministic, fully reproducible scorer (Flesch–Kincaid readability, licence-vs-ownership term ratio, red-flag clause detection, weighted 25/50/25) validated against ToS;DR human expert grades (Spearman ρ = 0.54, n = 12) and applied as a temporal study: 10 platforms, four Wayback Machine snapshots each (2015–2024). The index passes its face-validity test: GOG, the DRM-free "you own your games" store, scores lowest of all ten platforms.</p>
-          <div class="stack">Python · textstat · pandas · SciPy · ToS;DR validation · Wayback Machine corpus</div>
+          <p>Shipped end to end, not just analysed: the scorer runs as a public web service, a Dockerized FastAPI app with a test suite and CI on every push, deployed on Render.</p>
+          <div class="stack">Python · textstat · pandas · SciPy · FastAPI · Docker · CI (GitHub Actions) · ToS;DR validation · Wayback Machine corpus</div>
           <div class="links">
             <a class="textlink" href="https://dodi-web.onrender.com/" target="_blank" rel="noopener">Live scorer →</a>
             <a class="textlink" href="https://github.com/Axwolf13/dodi-analysis" target="_blank" rel="noopener">Code →</a>
