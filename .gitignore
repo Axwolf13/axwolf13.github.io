@@ -1,0 +1,4 @@
+# Private source material: never publish to the public Pages site
+*.pdf
+!Akshay_Ashok_CV.pdf
+*.txt.txt
