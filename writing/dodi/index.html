@@ -56,8 +56,10 @@
 <div class="wrap">
   <main id="top">
     <article class="article">
-      <div class="meta">July 2026 · 7 min read · <a class="textlink" href="https://github.com/Axwolf13/dodi-analysis" target="_blank" rel="noopener">code on GitHub →</a> · <a class="textlink" href="https://dodi-web.onrender.com/" target="_blank" rel="noopener">live scorer →</a></div>
+      <div class="meta">July 2026, corrected September 2026 · 8 min read · <a class="textlink" href="https://github.com/Axwolf13/dodi-analysis" target="_blank" rel="noopener">code on GitHub →</a> · <a class="textlink" href="https://dodi-web.onrender.com/" target="_blank" rel="noopener">live scorer →</a></div>
       <h1>Buying nothing: scoring a decade of ownership deception in Terms of Service</h1>
+
+      <div class="callout"><strong>Corrected in September 2026.</strong> Two months after publishing this, I audited my own project and found real problems. The scorer counted substrings, so "own" also matched "download" and "rent" matched "different". The validation run used different weights from the index and counted Reddit twice. Every number below now comes from the corrected version, DODI v1.1. The headline findings held up. The agreement with human experts didn't: it's weaker than I first reported. The <a class="textlink" href="https://github.com/Axwolf13/dodi-analysis#corrections-september-2026" target="_blank" rel="noopener">repo's README</a> lists every correction.</div>
 
       <p>Quick question: what was the last movie you bought online?</p>
 
@@ -81,6 +83,8 @@
         <li><strong>Red flags (a quarter).</strong> Counts of aggressive clauses: unilateral termination ("sole discretion", "without notice"), rights waivers ("class action", "arbitration", "indemnify") and data exploitation ("third parties", "sell your", "track").</li>
       </ul>
 
+      <p>Every term counts as a whole word, along with its real forms ("purchased", "licences", "terminated"). The first version counted raw substrings, which turned out to matter.</p>
+
       <p>Why does the no-LLM part matter so much? Because the whole study compares 2015 documents against 2024 documents. If your measuring stick drifts, you can't tell instrument drift from document drift.</p>
 
       <p>Same text in, same score out, forever. No LLM will promise you that.</p>
@@ -90,40 +94,43 @@
       <p>The corpus: 40 documents. Ten major platforms, four ToS snapshots each (2015, 2018, 2021, 2024) pulled from the Wayback Machine.</p>
 
       <figure>
-        <img src="temporal-analysis.png" alt="Four-panel figure: DODI scores per platform over time, mean score trend rising from 72.5 to 77.3, per-component breakdown and per-platform change from 2015 to 2024" loading="lazy">
-        <figcaption>DODI across ten platforms, 2015–2024. The mean rises from 72.5 to 77.3. Seven of ten platforms drift upward.</figcaption>
+        <img src="temporal-analysis.png" alt="Four-panel figure: DODI scores per platform over time, average score by industry, per-platform change from 2015 to 2024 and the score distribution by year" loading="lazy">
+        <figcaption>DODI across ten platforms, 2015–2024. The mean rises from 77.5 to 81.7. Seven of ten platforms drift upward.</figcaption>
       </figure>
 
-      <p><strong>The language got worse.</strong> This is the decade regulators started taking dark patterns seriously. The mean DODI score still rose from 72.5 to 77.3 and seven of ten platforms drifted toward more licence-heavy, less readable, more aggressive terms.</p>
+      <p><strong>The language got worse.</strong> This is the decade regulators started taking dark patterns seriously. The mean DODI score still rose from 77.5 to 81.7 and seven of ten platforms drifted toward more licence-heavy, less readable, more aggressive terms.</p>
 
-      <p><strong>The score lands where it should at the honest end.</strong> GOG, the DRM-free store whose entire brand is "you actually own your games", scores lowest of all ten platforms in every single year. 25.9 in 2015. I didn't tune anything to make that happen; it's the sanity check the 25/50/25 weighting had to pass before I trusted it. The deceptive end is less clean. Adobe and Twitter score 86 to 100, but a licence-heavy contract isn't automatically a dishonest one. Adobe openly says "licensed, not sold" and never dangles a "buy" button, so is it really deceiving anyone? That gap between counting licence words and judging actual deception is the thing I went after next, and it's a separate write-up.</p>
+      <p><strong>The score lands where it should at the honest end.</strong> GOG, the DRM-free store whose entire brand is "you actually own your games", scores lowest of all ten platforms in every single year. 27.4 in 2015. I didn't tune anything to make that happen; it's the sanity check the 25/50/25 weighting had to pass before I trusted it. The deceptive end is less clean. Adobe and Twitter score 86 to 100, but a licence-heavy contract isn't automatically a dishonest one. Adobe openly says "licensed, not sold" and never dangles a "buy" button, so is it really deceiving anyone? That gap between counting licence words and judging actual deception is the thing I went after next, in <a class="textlink" href="../llm-judge/">a separate write-up</a>.</p>
 
-      <p><strong>Netflix 2024 is my favourite data point.</strong> Ownership words in its ToS: 2. Licence words: 99. That's a ratio of 49.5, the highest in the corpus. Read that again the next time you "buy" something to watch.</p>
+      <p><strong>Netflix 2024 is my favourite data point.</strong> Ownership words in its ToS: 1. Licence words: 98. That's a ratio of 98, the highest in the corpus. (The first version said 2 and 99. One of those two "ownership" words wasn't one.) Read that again the next time you "buy" something to watch.</p>
 
       <h2>Does it agree with actual humans?</h2>
 
-      <p>Sort of. And I'd rather tell you "sort of" than dress it up.</p>
+      <p>Weakly. And I'd rather tell you that than dress it up.</p>
 
-      <p>I validated DODI against <a class="textlink" href="https://tosdr.org/" target="_blank" rel="noopener">ToS;DR</a>, the project where humans grade Terms of Service. On twelve current documents matched to ToS;DR grades, DODI correlates at Spearman ρ = 0.54 (p = 0.07). Pearson r = 0.39. Encouraging. Not proof.</p>
+      <p>I validated DODI against <a class="textlink" href="https://tosdr.org/" target="_blank" rel="noopener">ToS;DR</a>, the project where humans grade Terms of Service. On the ten documents with reviewed ToS;DR grades, DODI correlates at Spearman ρ = 0.45 (p = 0.19). Pearson r = 0.20. That's a weak signal and it isn't significant.</p>
+
+      <p>The first version of this post said ρ = 0.54 on twelve documents. That run used different weights from the index. Two of its twelve documents weren't what their labels said: one was a second copy of Reddit and one was Salesforce's terms with an unreviewed grade. Fixed, the number went down. It's the number I should have published.</p>
 
       <p>To be fair, part of the gap isn't error at all. ToS;DR grades general fairness. DODI grades ownership transparency. Those are different things.</p>
 
-      <p>Wikipedia is the clean example: it gets a good ToS;DR grade (B) but a mediocre DODI score. Its content is free under a copyleft license, so the text is packed with licensing language, which is exactly what DODI counts. A contract can be fair overall while scoring high on ownership-opacity. Both instruments measure what they claim to. They just claim different things.</p>
+      <p>Wikipedia is the clean example: it gets a good ToS;DR grade (B) but a high DODI score of 88. Its content is free under a copyleft license, so the text is packed with licensing language, which is exactly what DODI counts. Part of that is a real difference in what the two measure. Part of it is DODI's actual flaw: honest licensing looks like deception to a word counter.</p>
 
-      <p>Full disclosure on that example: I originally had this document labeled "WhatsApp" in my corpus. It's Wikipedia. The grade and the ToS;DR ID were right, the name on the file was wrong, and my keyword scorer never noticed because it doesn't read, it counts. What caught it was a later pass where I had an LLM grade the same documents: it read the text, said "this is community-contributed copyleft content, not a messaging app," and the mismatch fell out. That's the whole argument for adding a second kind of check. The deterministic scorer is reproducible and blind. The reader is fallible and awake. You want both.</p>
+      <p>Full disclosure on that example: I originally had this document labeled "WhatsApp" in my corpus. It's Wikipedia. The grade and the ToS;DR ID were right. The name on the file was wrong. My keyword scorer never noticed because it doesn't read, it counts. What caught it was a later pass where I had an LLM grade the same documents: it read the text, said "this is community-contributed copyleft content, not a messaging app." The mismatch fell out. That's the whole argument for adding a second kind of check. The deterministic scorer is reproducible and blind. The reader is fallible and awake. You want both. (The September audit found two more mislabeled files the same way.)</p>
 
       <h2>Where DODI is weak (I'll say it before you do)</h2>
 
       <ul>
         <li><strong>Keyword counting can't read negation.</strong> "You do not own this content" counts as an ownership word. Spot checks suggest deceptive ToS rarely negate like this (they avoid ownership words entirely, which the ratio catches) but it's a real blind spot.</li>
-        <li><strong>n = 12 is small.</strong> ρ = 0.54 at p = 0.07 is a promising direction, not a result you should bet on.</li>
+        <li><strong>n = 10 is small.</strong> ρ = 0.45 at p = 0.19 is a weak signal, not a result you should bet on.</li>
+        <li><strong>"Service" dominates the licence count.</strong> Every ToS says "Services" constantly, so about two thirds of all licence hits are that one word. The ratio partly measures how often a document names its own product.</li>
         <li><strong>Wayback timing is coarse.</strong> A "2015" document is the nearest capture to that year, not January 1st.</li>
         <li><strong>The score is gameable.</strong> A platform could stuff its ToS with ownership words without changing a single legal term. DODI measures language, not legal substance. Don't pretend otherwise if you use it.</li>
       </ul>
 
       <h2>What I'd build next</h2>
 
-      <p>Negation-aware clause parsing with spaCy dependency trees would close the biggest blind spot. An LLM-as-judge validation layer on a bigger sample would complement ToS;DR. Clause-level embeddings could trace how licence clauses copy themselves between platforms over time.</p>
+      <p>Negation-aware clause parsing with spaCy dependency trees would close the biggest blind spot. I've since checked DODI against two LLM judges. They barely agree with it (<a class="textlink" href="../llm-judge/">write-up</a>). Clause-level embeddings could trace how licence clauses copy themselves between platforms over time.</p>
 
       <p>But the metric I actually want? The <strong>marketing-vs-ToS gap</strong>. The deception is largest exactly where the storefront screams "buy" and the contract whispers "licence". That gap is measurable. Someone should measure it at scale.</p>
 
@@ -135,7 +142,7 @@
 
   <footer id="contact">
     <h2>Let's talk.</h2>
-    <p>Open to Werkstudent and internship roles in ML, data science and applied AI from August 2026.</p>
+    <p>Open to a Master's thesis topic from late 2027, research collaborations and conversations about evaluating models and agents.</p>
     <div class="foot-links">
       <a class="btn btn-primary" href="mailto:akshay57ax@gmail.com">akshay57ax@gmail.com</a>
       <a class="btn btn-ghost" href="https://github.com/Axwolf13" target="_blank" rel="noopener">GitHub</a>

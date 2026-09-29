@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>I built an LLM judge to check my own scorer. It disagreed with me. · Akshay Ashok</title>
-<meta name="description" content="I had two language models grade the same Terms of Service documents as my deterministic index. The correlation was 0.11. Here is what the disagreement taught me about both instruments.">
+<meta name="description" content="I had two language models grade the same Terms of Service documents as my deterministic index. The correlation was 0.12. Here is what the disagreement taught me about both instruments.">
 <link rel="canonical" href="https://axwolf13.github.io/writing/llm-judge/">
 <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <meta name="theme-color" content="#FAFAF6">
@@ -21,7 +21,7 @@
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://axwolf13.github.io/writing/llm-judge/">
 <meta property="og:title" content="I built an LLM judge to check my own scorer. It disagreed with me.">
-<meta property="og:description" content="Two language models graded the same ToS documents as my deterministic index. The correlation was 0.11. The disagreement was more useful than agreement would have been.">
+<meta property="og:description" content="Two language models graded the same ToS documents as my deterministic index. The correlation was 0.12. The disagreement was more useful than agreement would have been.">
 <meta property="og:image" content="https://axwolf13.github.io/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -58,22 +58,24 @@
 <div class="wrap">
   <main id="top">
     <article class="article">
-      <div class="meta">August 2026 · 6 min read ·<a class="textlink" href="https://github.com/Axwolf13/dodi-analysis" target="_blank" rel="noopener">code on GitHub →</a> · <a class="textlink" href="../dodi/">the scorer being tested →</a></div>
+      <div class="meta">August 2026, corrected September 2026 · 7 min read · <a class="textlink" href="https://github.com/Axwolf13/dodi-analysis" target="_blank" rel="noopener">code on GitHub →</a> · <a class="textlink" href="../dodi/">the scorer being tested →</a></div>
       <h1>I built an LLM judge to check my own scorer. It disagreed with me.</h1>
 
-      <p class="lede">I wrote a deterministic index that scores how hard a Terms of Service document works to hide that "Buy now" means "revocable licence". Then I had two language models read the same documents and score them independently. I expected a nice validation number. I got a correlation of 0.11.</p>
+      <div class="callout"><strong>Corrected in September 2026.</strong> An audit of this project found errors in the data behind this post and two mistakes of my own in writing it up. The scorer counted substrings, the human-grade comparison used the wrong weights and two documents weren't what their labels said. I also named Adobe the most deceptive document in the study (it ranked 6th) and reported a Sonnet score for Adobe that Sonnet never gave. The numbers below are corrected. The headline held. One of my three conclusions didn't. I've rewritten it. The <a class="textlink" href="https://github.com/Axwolf13/dodi-analysis#corrections-september-2026" target="_blank" rel="noopener">repo's README</a> lists every correction.</div>
 
-      <p>That is roughly the correlation between two things that have nothing to do with each other.</p>
+      <p class="lede">I wrote a deterministic index that scores how hard a Terms of Service document works to hide that "Buy now" means "revocable licence". Then I had two language models read the same documents and score them independently. I expected a nice validation number. I got a correlation of 0.12.</p>
 
-      <p>My first instinct was that I had a bug. I didn't. The disagreement is real, it survives a much bigger model, and it turned out to be the most useful thing the whole experiment produced. Here is what happened and what I actually believe now.</p>
+      <p>That's roughly the correlation between two things that have nothing to do with each other.</p>
+
+      <p>My first instinct was that I had a bug. I didn't. The disagreement is real. It survives a much bigger model. It turned out to be the most useful thing the whole experiment produced. Here's what happened and what I actually believe now.</p>
 
       <h2>The setup</h2>
 
-      <p><a class="textlink" href="../dodi/">DODI</a> is a keyword scorer. It counts licence words against ownership words, penalises unreadable prose, counts red-flag clauses, and weights those 50/25/25 into a 0 to 100 score. Same document in, same score out, no model involved. That determinism is the point: it's what makes a 2015-to-2024 comparison honest.</p>
+      <p><a class="textlink" href="../dodi/">DODI</a> is a keyword scorer. It counts licence words against ownership words, penalises unreadable prose, counts red-flag clauses and weights those 50/25/25 into a 0 to 100 score. Same document in, same score out, no model involved. That determinism is the point: it's what makes a 2015-to-2024 comparison honest.</p>
 
-      <p>The judge is the opposite kind of instrument. Each document goes to a language model with a rubric that mirrors DODI's three components, and the model returns structured JSON: subscores, an overall deception score, a letter grade and a short rationale. Every response is cached to disk, so the analysis reruns without touching a model and anyone can check my numbers without paying for tokens.</p>
+      <p>The judge is the opposite kind of instrument. Each document goes to a language model with a rubric that mirrors DODI's three components. The model returns structured JSON: subscores, an overall deception score, a letter grade and a short rationale. Every response is cached to disk, so the analysis reruns without touching a model. Anyone can check my numbers without paying for tokens.</p>
 
-      <p>Two judges, deliberately different sizes. Claude Haiku, small and fast, on all 52 documents. Claude Sonnet, considerably stronger, on the 12 documents that also have human expert grades from <a class="textlink" href="https://tosdr.org/" target="_blank" rel="noopener">ToS;DR</a>. Both ran locally through the Claude CLI on my normal subscription, so this cost me nothing but time.</p>
+      <p>Two judges, deliberately different sizes. Claude Haiku, small and fast, on all 51 documents. Claude Sonnet, considerably stronger, on the 11 validation documents, ten of which have reviewed human grades from <a class="textlink" href="https://tosdr.org/" target="_blank" rel="noopener">ToS;DR</a>. Both ran locally through the Claude CLI on my normal subscription, so this cost me nothing but time.</p>
 
       <p>Before looking at agreement I checked the judge was stable at all. Ten documents, three runs each: mean per-document standard deviation of 6.3 points, worst spread 20. Not noise-free, but nowhere near enough noise to explain what came next.</p>
 
@@ -81,62 +83,66 @@
 
       <div class="tablewrap">
       <table>
-        <thead><tr><th>Grader</th><th>vs DODI</th><th>vs ToS;DR humans (n=12)</th></tr></thead>
+        <thead><tr><th>Grader</th><th>vs DODI</th><th>vs ToS;DR humans (n=10)</th></tr></thead>
         <tbody>
-          <tr><td>DODI (counts words)</td><td class="num">—</td><td class="num">0.54</td></tr>
-          <tr><td>Claude Sonnet (reads)</td><td class="num">0.10</td><td class="num">0.46</td></tr>
-          <tr><td>Claude Haiku (reads)</td><td class="num">0.11 (n=52)</td><td class="num">0.30</td></tr>
-          <tr><td>Sonnet vs Haiku</td><td class="num">0.44</td><td class="num">—</td></tr>
+          <tr><td>DODI (counts words)</td><td class="num"></td><td class="num">0.45</td></tr>
+          <tr><td>Claude Sonnet (reads)</td><td class="num">0.26 (n=11)</td><td class="num">0.34</td></tr>
+          <tr><td>Claude Haiku (reads)</td><td class="num">0.12 (n=51)</td><td class="num">0.34</td></tr>
+          <tr><td>Sonnet vs Haiku</td><td class="num">0.50 (n=11)</td><td class="num"></td></tr>
         </tbody>
       </table>
       </div>
 
-      <p>Spearman rank correlations. Three things fall out of that table, and I trust them in this order.</p>
+      <p>Spearman rank correlations. Three things fall out of that table. I trust them in this order.</p>
 
-      <p><strong>One: the disagreement is not a small-model artifact.</strong> This was my main worry. Cheap model, sloppy scores, case closed. So I ran a much stronger model over the validation set and it landed at 0.10, essentially identical. The two models even fail differently. Haiku scores high and narrow, handing out a lot of 68s. Sonnet scores lower and wider, putting most mainstream contracts at "moderate". Different distributions, same verdict: neither of them reads these documents the way DODI counts them.</p>
+      <p><strong>One: the disagreement isn't a small-model artifact.</strong> This was my main worry. Cheap model, sloppy scores, case closed. So I ran a much stronger model over the validation set. It landed at 0.26: a bit higher, still weak, nowhere near significant. The two models even fail differently. Haiku scores high and narrow, handing out a lot of 68s. Sonnet scores lower and wider, putting most mainstream contracts at "moderate". Different distributions, same verdict: neither of them reads these documents the way DODI counts them.</p>
 
-      <p><strong>Two: the readers agree with each other more than either agrees with me.</strong> Sonnet and Haiku correlate at 0.44 with each other, against roughly 0.10 with DODI. There is a rough LLM consensus about these documents and my index is not part of it.</p>
+      <p><strong>Two: the readers agree with each other more than either agrees with me.</strong> Sonnet and Haiku correlate at 0.50 with each other, against 0.12 and 0.26 with DODI. There's a rough LLM consensus about these documents and my index isn't part of it.</p>
 
-      <p><strong>Three, and this is the part I did not expect: DODI still tracks the humans best.</strong> Against ToS;DR's expert grades, my word-counter scores 0.54, Sonnet 0.46, Haiku 0.30. The dumb instrument matches the humans better than the smart ones do.</p>
+      <p><strong>Three: nobody wins against the humans.</strong> The first version of this post said DODI tracked the human grades best. I called it "the dumb instrument beating the smart ones". With the corrected data it's a wash. DODI scores 0.45 and both judges' scores 0.34. Haiku's letter grade reaches 0.56. At ten documents you can't rank these at all. I liked that line. It doesn't survive the correction, so it's gone.</p>
 
-      <p>So this is not a story about the LLM being right and my scorer being wrong. It's messier and more interesting than that.</p>
+      <p>So this isn't a story about the LLM being right and my scorer being wrong. It's messier and more interesting than that.</p>
 
       <h2>Adobe is where you can see it</h2>
 
-      <p>The single clearest disagreement in the corpus is Adobe's 2024 terms. DODI gives it <strong>95.7</strong>, the most deceptive document in the entire study. Sonnet gives it <strong>20</strong>. Haiku gives it 44. When something is that far apart, one of the two instruments is measuring the wrong thing.</p>
+      <p>The clearest disagreement in the corpus is Adobe's 2024 terms. DODI gives it <strong>95.7</strong>, the 7th most deceptive of 40 documents. Haiku gives it <strong>44</strong>. Sonnet gives it <strong>32</strong>. When something is that far apart, one of the instruments is measuring the wrong thing.</p>
 
-      <p>Both models pointed at the same reason. Adobe states plainly that its software is licensed and not sold. It carries plain-language summaries. It says it won't train AI on your content. And critically, Adobe never dangles a "Buy" button and then hands you a licence, because everybody already knows Adobe is a subscription.</p>
+      <p>(The first version of this post called Adobe DODI's most deceptive document and said Sonnet scored it 20. Sonnet had never seen Adobe: 20 was its score for a different document. I mixed them up. In September I ran Sonnet on Adobe properly. The model version is in the repo.)</p>
 
-      <p>DODI cannot see any of that. It sees a document stuffed with the word "licence" and almost no "buy" or "own", so the ratio metric maxes out and the score goes to 96. My index conflates <em>licensing-language density</em> with <em>deception</em>. An honest subscription service that never pretends you're buying anything scores as maximally deceptive. That is a false positive, and it took a reader to find it, because a counter cannot find it by construction.</p>
+      <p>Both judges pointed at the same reason. Adobe states plainly that its software is "licensed, not sold". It says you own your content and that it won't train AI on it. And critically, Adobe never dangles a "Buy" button and then hands you a licence, because everybody already knows Adobe is a subscription.</p>
 
-      <p>Which points straight at the fix, and it's one I'd already written into the repo's future work without realising it was load-bearing. Ownership deception is not "how much licence language is there". It's <strong>the gap between what the storefront promises and what the contract grants</strong>. High only when the button says Buy and the fine print says licence. Under that definition Adobe drops to honest and Netflix stays exactly where it is. That's DODI v2 and it exists because the judge disagreed with v1.</p>
+      <p>DODI can't see any of that. It sees a document stuffed with the word "licence" and very few "buy" or "own", so the ratio metric maxes out and the score lands near the top. My index conflates <em>licensing-language density</em> with <em>deception</em>. An honest subscription service that never pretends you're buying anything scores as highly deceptive. That's a false positive. It took a reader to find it, because a counter can't find it by construction.</p>
 
-      <h2>The judge also caught something I got wrong</h2>
+      <p>Which points straight at the fix. It's one I'd already written into the repo's future work without realising it was load-bearing. Ownership deception isn't "how much licence language is there". It's <strong>the gap between what the storefront promises and what the contract grants</strong>. High only when the button says Buy and the fine print says licence. Under that definition Adobe drops to honest and Netflix stays exactly where it is. That's DODI v2. It exists because the judges disagreed with v1.</p>
 
-      <p>Separately, and slightly embarrassingly: one document in my corpus was mislabeled. I had a file called <code>whatsapp_tos.txt</code>. It was Wikipedia's Terms of Use. Forty-three mentions of "Wikimedia", zero mentions of "WhatsApp".</p>
+      <h2>The judges also caught something I got wrong</h2>
 
-      <p>The grade and the service ID attached to it were both correct and both Wikipedia's, so the correlation was never affected. Only the name on the file was wrong. My deterministic pipeline had scored that document happily for weeks, because it doesn't read, it counts, and a keyword counter has no opinion about whether a document is what you claim it is.</p>
+      <p>Separately (and slightly embarrassingly): one document in my corpus was mislabeled. I had a file called <code>whatsapp_tos.txt</code>. It was Wikipedia's Terms of Use. Forty-three mentions of "Wikimedia", zero mentions of "WhatsApp".</p>
 
-      <p>The judge opened it, scored it a 6 out of 100, and explained that it governs community-contributed content under copyleft licences. Not a messaging app. The mismatch was obvious the second something actually read the text.</p>
+      <p>The grade and the service ID attached to it were both Wikipedia's, so the document still matched its grade. Only the name on the file was wrong. My deterministic pipeline had scored that document happily for weeks, because it doesn't read, it counts. A keyword counter has no opinion about whether a document is what you claim it is.</p>
 
-      <p>That is the argument for a second instrument in one paragraph. The deterministic scorer is reproducible and blind. The reader is fallible and awake. You want both, and you especially want them when they disagree.</p>
+      <p>Both judges scored it 6 out of 100 and described a nonprofit agreement for content licensed under copyleft terms. Not a messaging app. The mismatch was obvious the second something actually read the text.</p>
+
+      <p>It wasn't the only one. When I audited the project in September I found the same mistake twice more: my "Apple" document was Salesforce's terms and my "Amazon" document was a second copy of Reddit's. The cause was a table of wrong ToS;DR record numbers in my collection script.</p>
+
+      <p>That's the argument for a second instrument in one paragraph. The deterministic scorer is reproducible and blind. The reader is fallible and awake. You want both. You especially want them when they disagree.</p>
 
       <h2>What I actually believe now</h2>
 
-      <p>Three defensible methods for measuring the same construct barely converge. A keyword index, two language models and a panel of human volunteers produce four different rankings of the same twelve contracts. The index that agrees most with humans is the one that gets Adobe spectacularly wrong.</p>
+      <p>Three defensible methods for measuring the same construct barely converge. A keyword index, two language models and a panel of human volunteers produce four different rankings of the same ten contracts. None of them agrees convincingly with the humans.</p>
 
-      <p>The honest conclusion is not "use the LLM" or "use the counter". It's that <strong>ownership deception is not one number</strong>, and any single automated ToS score, including mine, should be read as one instrument's opinion rather than a measurement. I would rather publish that than a tidy validation plot.</p>
+      <p>The honest conclusion isn't "use the LLM" or "use the counter". It's that <strong>ownership deception isn't one number</strong>. Any single automated ToS score, including mine, should be read as one instrument's opinion rather than a measurement. I'd rather publish that than a tidy validation plot.</p>
 
       <h2>Where this is weak</h2>
 
       <ul>
-        <li><strong>Twelve documents.</strong> Every human comparison in that table is n=12 and not one of them is statistically significant (p = 0.07, 0.13, 0.34). DODI beating Sonnet against the humans is a near-tie, not a result. Only the Haiku-vs-DODI number rests on the full 52.</li>
+        <li><strong>Ten documents.</strong> Every human comparison in that table is n=10 and not one of them is statistically significant (p = 0.19, 0.34, 0.34). Only the Haiku-vs-DODI number rests on the full 51.</li>
         <li><strong>Uncontrolled temperature.</strong> The judges run through the CLI, so I can't pin sampling. The three-run consistency check measures the judge as deployed, not the judge at temperature zero. Defensible, but it isn't the cleaner experiment.</li>
-        <li><strong>One vendor.</strong> Two Claude models are not two independent opinions. A cross-vendor judge is the obvious next check and it's queued.</li>
-        <li><strong>The rubric is mine.</strong> I wrote both the index and the prompt that grades it. Some shared bias between them is likely, which if anything makes a 0.11 correlation stranger, not safer.</li>
+        <li><strong>One vendor.</strong> Two Claude models aren't two independent opinions. A cross-vendor judge (Gemini) is running. The free tier's daily quota ran out partway through, so I won't report it until it's complete.</li>
+        <li><strong>The rubric is mine.</strong> I wrote both the index and the prompt that grades it. Some shared bias between them is likely, which if anything makes a 0.12 correlation stranger, not safer.</li>
       </ul>
 
-      <p>Everything reproduces from <a class="textlink" href="https://github.com/Axwolf13/dodi-analysis" target="_blank" rel="noopener">the repo</a>. The cached judge responses are committed, so you can rerun the whole agreement analysis without a model or an API key and check whether I read my own numbers correctly.</p>
+      <p>Everything reproduces from <a class="textlink" href="https://github.com/Axwolf13/dodi-analysis" target="_blank" rel="noopener">the repo</a>. The cached judge responses are committed, so you can rerun the whole agreement analysis without a model or an API key and check whether I read my own numbers correctly. That last part turned out to matter.</p>
 
       <div class="backlink"><a class="textlink" href="../">← All writing</a></div>
     </article>
@@ -144,7 +150,7 @@
 
   <footer id="contact">
     <h2>Let's talk.</h2>
-    <p>Open to Werkstudent and internship roles in ML, data science and applied AI from August 2026.</p>
+    <p>Open to a Master's thesis topic from late 2027, research collaborations and conversations about evaluating models and agents.</p>
     <div class="foot-links">
       <a class="btn btn-primary" href="mailto:akshay57ax@gmail.com">akshay57ax@gmail.com</a>
       <a class="btn btn-ghost" href="https://github.com/Axwolf13" target="_blank" rel="noopener">GitHub</a>

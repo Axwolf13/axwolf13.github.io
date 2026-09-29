@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I made a molecule model's two inputs disagree. It believed the graph. · Akshay Ashok</title>
+<meta name="description" content="MolCA reads a molecule as text and as a graph at the same time. I reproduced it on two machines, then gave it one molecule's text and a different molecule's graph. It described the graph about 90% of the time.">
+<link rel="canonical" href="https://axwolf13.github.io/writing/molca/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<meta name="theme-color" content="#FAFAF6">
+<script>
+(function(){
+  var t = null;
+  try{ t = localStorage.getItem('theme'); }catch(e){}
+  if(t !== 'light' && t !== 'dark'){ t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
+  document.documentElement.setAttribute('data-theme', t);
+  var meta = document.querySelector('meta[name="theme-color"]');
+  if(meta && t === 'dark') meta.setAttribute('content', '#0F1626');
+})();
+</script>
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://axwolf13.github.io/writing/molca/">
+<meta property="og:title" content="I made a molecule model's two inputs disagree. It believed the graph.">
+<meta property="og:description" content="A reproduction of MolCA (EMNLP 2023) on two machines, then the experiment the paper never ran: one molecule's text, a different molecule's graph. The model described the graph.">
+<meta property="og:image" content="https://axwolf13.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../style.css">
+<style>
+.article table{width:100%;border-collapse:collapse;margin:1.6rem 0;font-size:.95rem;}
+.article th,.article td{text-align:left;padding:.55rem .7rem;border-bottom:1px solid rgba(128,128,128,.25);}
+.article th{font-weight:600;}
+.article td.num{font-variant-numeric:tabular-nums;}
+.article .tablewrap{overflow-x:auto;}
+.article pre{overflow-x:auto;padding:1rem 1.1rem;border-radius:10px;background:rgba(128,128,128,.1);font-size:.85rem;line-height:1.55;}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#top">Skip to content</a>
+<div id="progress" aria-hidden="true"></div>
+<header>
+  <div class="wrap hrow">
+    <a class="logo" href="../../">Akshay Ashok<b>.</b></a>
+    <nav aria-label="Main">
+      <a href="../../#work">Work</a>
+      <a href="../../#stack">Stack</a>
+      <a href="../" class="active">Writing</a>
+      <a href="../../#contact">Contact</a>
+      <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+<div class="wrap">
+  <main id="top">
+    <article class="article">
+      <div class="meta">September 2026 · 8 min read · <a class="textlink" href="https://github.com/Axwolf13/molca-reproduction" target="_blank" rel="noopener">code on GitHub →</a> · <a class="textlink" href="https://openreview.net/forum?id=14WRhMNq7H" target="_blank" rel="noopener">the paper →</a></div>
+      <h1>I made a molecule model's two inputs disagree. It believed the graph.</h1>
+
+      <p class="lede">A molecule can be written down two ways. As a line of text called a SMILES string, where aspirin is <code>CC(=O)Oc1ccccc1C(=O)O</code>. Or as a graph, atoms as nodes and bonds as edges. MolCA reads both at once and writes an English description of the molecule. The paper treats the two views as partners. Nobody had checked which one the model actually believes when they disagree.</p>
+
+      <p>So I made them disagree. I handed the model one molecule's text and a different molecule's graph.</p>
+
+      <p>It described the graph.</p>
+
+      <p>This was my project for Prof. Dietrich Klakow's graduate seminar on language models at Saarland University. The brief was a critical verification, not a demo: reproduce a published result, then test whether the paper's central claim holds up. Here's what that turned into.</p>
+
+      <h2>What MolCA is</h2>
+
+      <p><a class="textlink" href="https://openreview.net/forum?id=14WRhMNq7H" target="_blank" rel="noopener">MolCA</a> (Liu et al., EMNLP 2023) teaches a text-only language model to see molecular structure. A graph neural network encodes the molecule. A Q-Former projector compresses that into eight soft prompts, which sit in the language model's input next to the SMILES string. The language model is Galactica. A LoRA adapter does the task-specific fine-tuning.</p>
+
+      <p>The paper's own ablation measures what each view is worth during training: 34.6 BLEU-2 with text alone, 34.5 with the graph alone, 38.7 with both. Read on its own, that table says two roughly interchangeable views combine for a modest gain. It says nothing about what the trained model does when the two views contradict each other. That's the gap I went after.</p>
+
+      <h2>Step one: reproduce it, on two very different machines</h2>
+
+      <p>Before you can make a claim about a model, you have to show you're running the model the paper describes. I evaluated the released checkpoint on the full 3,300-molecule ChEBI-20 test split, twice, on hardware that could hardly be further apart.</p>
+
+      <div class="tablewrap">
+      <table>
+        <thead><tr><th>Source</th><th>BLEU-2</th></tr></thead>
+        <tbody>
+          <tr><td>Paper, Table 2b</td><td class="num">62.0</td></tr>
+          <tr><td>Tesla P100, university cluster</td><td class="num">62.32</td></tr>
+          <tr><td>RTX 4060, my laptop</td><td class="num">62.77</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <p>Two GPU generations, two Python versions, two major PyTorch versions and two transformers versions. The scores still land within 0.8 of each other. The aggregate hides how close they really are: <strong>93.8% of the 3,300 captions are character-for-character identical</strong> between the two machines.</p>
+
+      <p>I also reproduced the paper's second task, molecule-to-text retrieval. Checking the cluster logs against the paper's tables covers all 32 published retrieval metrics. On the full test set, the largest deviation is 0.12.</p>
+
+      <h2>Getting there took 14 patches</h2>
+
+      <p>The released code assumes the authors' rig: two A100s, bfloat16 and a distributed process group. On a single consumer GPU, each of those assumptions breaks somewhere different. A few of the ones worth knowing about:</p>
+
+      <ul>
+        <li><strong>The checkpoints carry <code>cuda:4</code> device tags</strong>, so they won't even unpickle on a one-GPU machine.</li>
+        <li><strong>Two distributed calls run unguarded.</strong> The one in the evaluation hook crashes on a single GPU at the very last step, throwing away a two-hour run that had already finished.</li>
+        <li><strong>Validation uses the training batch size instead of the inference one.</strong> On an 8&nbsp;GB card under Windows, that doesn't raise an out-of-memory error. It spills silently into system RAM until throughput drops to 0.03 iterations a second and the machine freezes.</li>
+        <li><strong>Every documented retrieval command crashes</strong>, because a data module never receives a tokenizer. That one isn't mine: it's issue #13 upstream, open since July 2024. I rediscovered it before reading the tracker. My patched run does settle the question that issue left open: wiring in the model's own tokenizer reproduces all 32 metrics, so a correctly connected tokenizer is all the retrieval code was missing.</li>
+        <li><strong>PyTorch 2.6 changed a default in <code>torch.load</code></strong>, which now rejects the pickled graph objects the retrieval data ships as. It was invisible on the authors' PyTorch 2.0.</li>
+      </ul>
+
+      <p>I searched all fourteen upstream issues and their comments for each finding. Several of these have never been reported. Every patch is idempotent and lives in one script, so anyone can apply them to the upstream code and get the same model I ran.</p>
+
+      <h2>Step two: make the inputs disagree</h2>
+
+      <p>With a faithful reproduction in hand, the experiment is simple. For each test molecule, keep its own SMILES string but swap in the graph of the next molecule in the list. Then read what the model writes. Here's the first test molecule:</p>
+
+<pre>its own SMILES describes : a steroid ester
+the graph it was given   : a branched amino tetrasaccharide
+the model wrote          : "The molecule is a branched amino tetrasaccharide ..."</pre>
+
+      <p>A sugar. Not a steroid. The text sitting right there in its prompt said steroid. The model ignored it.</p>
+
+      <p>One example is an anecdote, so I scored it across 1,000 molecules. For every caption, I extracted the chemical class it asserts and checked which of the two molecules it matched. <strong>In roughly 90% of the decisive cases, the model describes the molecule that supplied the graph.</strong> Measured as class-agreement F1, the graph wins by about 9 to 1, against a floor near zero.</p>
+
+      <p>Then the cost of breaking each channel, with the same kind of damage applied to each:</p>
+
+      <div class="tablewrap">
+      <table>
+        <thead><tr><th>What I swapped</th><th>BLEU-2</th><th>Cost</th></tr></thead>
+        <tbody>
+          <tr><td>Nothing (baseline)</td><td class="num">62.65</td><td class="num">0</td></tr>
+          <tr><td>The SMILES text</td><td class="num">48.05</td><td class="num">14.6</td></tr>
+          <tr><td>The graph</td><td class="num">25.71</td><td class="num">36.9</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <p>Breaking the graph costs about 2.5 times what breaking the text costs. On the full 3,300-molecule split the gap between the two costs is 21.8 BLEU-2. A paired bootstrap puts its 95% interval at 20.9 to 22.5. Nowhere near zero.</p>
+
+      <h2>A wrong graph is worse than no graph</h2>
+
+      <p>This is the result I find most telling. If the graph were a weak side channel, feeding it garbage should cost about the same as feeding it nothing. It doesn't:</p>
+
+      <div class="tablewrap">
+      <table>
+        <thead><tr><th>Graph condition</th><th>BLEU-2</th></tr></thead>
+        <tbody>
+          <tr><td>Uninformative (atom features zeroed)</td><td class="num">28.19</td></tr>
+          <tr><td>Wrong (a different real molecule)</td><td class="num">25.71</td></tr>
+          <tr><td>Incoherent (bonds randomly rewired)</td><td class="num">20.46</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <p>A real but wrong graph hurts more than an empty one. A scrambled one hurts more still. The model isn't hedging between two sources. It treats those eight graph prompts as authoritative evidence and follows them wherever they point.</p>
+
+      <p>The gap between "no graph" and "wrong graph" is small, 1.78 BLEU-2 on the full split. The whole argument leans on it. So I bootstrapped it: 95% interval 1.37 to 2.30. It holds.</p>
+
+      <h2>Is it the graph, or just the position?</h2>
+
+      <p>There's a boring explanation I had to rule out. The graph prompts sit closest to where the model starts writing. Maybe the model simply trusts whatever it read last. Then "the graph wins" is really "the nearest input wins."</p>
+
+      <p>The clean test would be to swap the order and put the graph first. I tried it and the model collapsed to 0.01 BLEU-2. So that instrument failed: it tells you MolCA is brittle to prompt layout, not which explanation is right.</p>
+
+      <p>The test that worked was gentler. I pushed the SMILES text 37 tokens further from the generation point and left everything else alone. Recency is real: the text loses a little influence when it's further away. But it's far too small to be the mechanism. The ratio between the two channels only moves from 2.46 to 2.74, so recency can't produce a 2.5-times dominance.</p>
+
+      <h2>Does it survive a second dataset?</h2>
+
+      <p>I pointed the ChEBI-20 checkpoint at a different dataset, PubChem324kV2, a pairing the authors never ran. The raw score came out at 49.04 BLEU-2. That looks wonderful, because the paper reports 38.7 for a model trained on PubChem itself.</p>
+
+      <p>It's wrong. Finding out why was the most useful part of the project. <strong>49.25% of that test set is structurally present in ChEBI-20's training data.</strong> The model had seen half the exam. Split it cleanly and the story changes:</p>
+
+      <div class="tablewrap">
+      <table>
+        <thead><tr><th>Subset of the 2,000 test molecules</th><th>Normal</th><th>Neighbour's graph</th></tr></thead>
+        <tbody>
+          <tr><td>Whole split</td><td class="num">49.04</td><td class="num">18.63</td></tr>
+          <tr><td>Never seen in ChEBI-20 training</td><td class="num">28.45</td><td class="num">15.61</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <p>On the molecules the model provably never trained on, it scores 28.45, which is 10.25 <em>below</em> the paper's in-domain number rather than above it. And the finding I care about doesn't need either reading: swapping in the wrong graph still roughly halves the score on the clean half.</p>
+
+      <p>I also checked the one contamination claim the whole reproduction depends on. The paper says its pretraining data excludes ChEBI-20's validation and test molecules. Compared on canonical structures, zero of 6,601 appear among the 298,010 pretraining molecules. Exact, not approximate. Their filter holds.</p>
+
+      <h2>Why this matters beyond molecules</h2>
+
+      <p>A multimodal model that silently lets one input override the other is a model whose failures are hard to see. If MolCA's graph encoder gets a structure wrong, the correct text sitting in the prompt won't rescue it. The model will confidently describe the wrong molecule.</p>
+
+      <p>The paper's ablation couldn't show this, because it averages what each view contributes during training. You only see it when you test behaviour under conflict. That's the same lesson I keep running into in evaluation work: a model can look balanced on the average and be completely lopsided in the case you actually care about.</p>
+
+      <h2>Where this is weak</h2>
+
+      <ul>
+        <li><strong>One of my controls turned out not to be independent.</strong> I designed a mirror condition that swaps the text instead of the graph. It turns out rotating one list forward and the other backward produces the same pairing: 983 of 1,000 predictions match exactly. It's a consistency check between two code paths, not extra evidence.</li>
+        <li><strong>The position confound isn't fully closed.</strong> The displacement test says recency is small, but the clean reordering test failed, so the strongest version of that argument isn't available.</li>
+        <li><strong>My chemical-class extractor has a ceiling.</strong> It's built on regular expressions over ChEBI's phrasing and only matches 76.3% of <em>correct</em> captions. The absolute rates are underestimates. The ratios between conditions hold.</li>
+        <li><strong>One checkpoint, no training variance.</strong> The bootstrap measures which molecules happened to be in the test set, not what happens if you retrain. The authors released one fine-tuned captioning model, so that's the one I could test.</li>
+        <li><strong>Captioning and retrieval only.</strong> The paper also reports property prediction and IUPAC naming, but the weights for those tasks were never released. The release, not my budget, set the boundary.</li>
+      </ul>
+
+      <p>Everything is in <a class="textlink" href="https://github.com/Axwolf13/molca-reproduction" target="_blank" rel="noopener">the repo</a>: the 14 patches, every prediction file, the analysis and bootstrap scripts, plus a <code>verify_numbers.py</code> that re-derives the figures no other saved output records. There's also a <code>NOTES.md</code> for the one question I couldn't close: whether the PubChem split in the public release is the one the paper's 38.7 was measured on. The evidence leans against it. The files needed to settle it no longer exist in public.</p>
+
+      <div class="backlink"><a class="textlink" href="../">← All writing</a></div>
+    </article>
+  </main>
+
+  <footer id="contact">
+    <h2>Let's talk.</h2>
+    <p>Open to a Master's thesis topic from late 2027, research collaborations and conversations about evaluating models and agents.</p>
+    <div class="foot-links">
+      <a class="btn btn-primary" href="mailto:akshay57ax@gmail.com">akshay57ax@gmail.com</a>
+      <a class="btn btn-ghost" href="https://github.com/Axwolf13" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn btn-ghost" href="https://linkedin.com/in/akshay-a-ax13" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+    <div class="fineprint">
+      <span>© 2026 Akshay Ashok</span>
+      <span>Saarbrücken, Germany</span>
+      <a class="textlink" href="#top">Back to top ↑</a>
+    </div>
+  </footer>
+</div>
+
+<script src="../../script.js"></script>
+<script data-goatcounter="https://akshayashok.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
+</body>
+</html>
