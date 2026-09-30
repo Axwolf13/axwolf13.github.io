@@ -301,6 +301,8 @@ html[data-theme="dark"]{--chart-accent:#24AC68;--chart-muted:#63738E;--chart-hov
   white-space:nowrap;
 }
 .textlink:hover{border-bottom-color:var(--accent)}
+/* inside running text a link is just a word: no row spacing, normal wrapping */
+p .textlink,li .textlink,.callout .textlink{margin-right:0;white-space:normal}
 
 /* projects */
 .proj{

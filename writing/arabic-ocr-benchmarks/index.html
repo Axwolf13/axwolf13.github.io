@@ -31,7 +31,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../style.css">
 <script type="application/ld+json">
-{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Benchmarking Arabic OCR and translation on an 8 GB laptop GPU", "description": "What Surya and PaddleOCR actually do on KITAB-Bench, why Opus-MT replaced NLLB for licence reasons, the failure modes that only appear on long legal text and how to know when your pipeline is wrong.", "datePublished": "2026-07-03", "dateModified": "2026-07-03", "url": "https://axwolf13.github.io/writing/arabic-ocr-benchmarks/", "image": "https://axwolf13.github.io/writing/arabic-ocr-benchmarks/og.png", "author": {"@type": "Person", "name": "Akshay Ashok", "url": "https://axwolf13.github.io/"}}
+{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Benchmarking Arabic OCR and translation on an 8 GB laptop GPU", "description": "What Surya and PaddleOCR actually do on KITAB-Bench, why Opus-MT replaced NLLB for licence reasons, the failure modes that only appear on long legal text and how to know when your pipeline is wrong.", "datePublished": "2026-07-03", "dateModified": "2026-09-30", "url": "https://axwolf13.github.io/writing/arabic-ocr-benchmarks/", "image": "https://axwolf13.github.io/writing/arabic-ocr-benchmarks/og.png", "author": {"@type": "Person", "name": "Akshay Ashok", "url": "https://axwolf13.github.io/"}}
 </script>
 </head>
 <body>
@@ -56,8 +56,10 @@
 <div class="wrap">
   <main id="top">
     <article class="article">
-      <div class="meta">July 2026 · 9 min read · <a class="textlink" href="https://github.com/Axwolf13/arabic-doc-triage-research" target="_blank" rel="noopener">notebooks on GitHub →</a></div>
+      <div class="meta">July 2026, corrected September 2026 · 9 min read · <a class="textlink" href="https://github.com/Axwolf13/arabic-doc-triage-research" target="_blank" rel="noopener">notebooks on GitHub →</a></div>
       <h1>Benchmarking Arabic OCR and translation on an 8&nbsp;GB laptop GPU</h1>
+
+      <div class="callout"><strong>Corrected in September 2026.</strong> Rechecking this post against the notebooks' saved outputs turned up three misstated numbers. The usable OCR count was 39 of 50, not 31 (31 is the count at 5% error or less). The "35x cheaper" cascade figure compared two translators, not the cascade against end-to-end mode. Preprocessing recovered almost half of the lost quality, not a third. The text below is corrected and none of the conclusions change. The <a class="textlink" href="https://github.com/Axwolf13/arabic-doc-triage-research#corrections-september-2026" target="_blank" rel="noopener">repo's README</a> has the details.</div>
 
       <p>A police officer gets handed a document in Arabic. No interpreter in the building. What happens next?</p>
 
@@ -101,15 +103,15 @@
 
       <p>It hallucinated a complete, fluent, plausible German document that had nothing to do with the input.</p>
 
-      <p>For a casual app, that's a quirk. For a tool whose output influences what a police officer does next, it's disqualifying. A cascade (OCR first, then text translation) is 35x cheaper and every stage of it can be inspected and flagged. Auditability beat quality. Sounds wrong for a leaderboard. It was right for this product.</p>
+      <p>For a casual app, that's a quirk. For a tool whose output influences what a police officer does next, it's disqualifying. A cascade (OCR first, then text translation) can be inspected and flagged at every stage. Auditability beat quality. Sounds wrong for a leaderboard. It was right for this product.</p>
 
       <h2>3. Accuracy is table stakes. Knowing when you're wrong is the product.</h2>
 
-      <p>Surya OCR on 50 KITAB-Bench documents, evaluated per-sample: 31 of 50 reached usable quality (character error rate under 10%). Failures clustered in degraded scans and stylized fonts.</p>
+      <p>Surya OCR on 50 KITAB-Bench documents, evaluated per-sample: 39 of 50 reached usable quality (character error rate of 10% or less), 31 of them 5% or less. Failures clustered in degraded scans and stylized fonts.</p>
 
-      <p>Honestly? That number alone is almost useless for deployment. The real question is whether the system can tell its 19 failures apart from its 31 successes <em>on its own</em>.</p>
+      <p>Honestly? That number alone is almost useless for deployment. The real question is whether the system can tell its 11 failures apart from its 39 successes <em>on its own</em>.</p>
 
-      <p>Mostly, yes. Surya's per-line confidence genuinely predicts failure: a document-level confidence router flagged 4 of 4 catastrophic OCR failures in the evaluation set. That router is the heart of the design: a low-confidence document becomes an automatic "call an interpreter", never a wrong translation delivered confidently.</p>
+      <p>Mostly, yes. Surya's per-line confidence genuinely predicts failure: a document-level confidence router flagged all 4 catastrophic OCR failures I tested it on. Run later over all 50 samples at the same threshold, it flags all 5 documents above 30% error and 9 of the 11 above 10%, with one false alarm. That router is the heart of the design: a low-confidence document becomes an automatic "call an interpreter", never a wrong translation delivered confidently.</p>
 
       <p>Confidence alone has blind spots, so the final design layers four signals:</p>
 
@@ -128,7 +130,7 @@
 
       <p>Real inputs aren't clean scans. They're phone photos: skewed, shadowed, creased.</p>
 
-      <p>Before reaching for a bigger OCR model, notebook 16 tried classical preprocessing: projection-profile deskew plus CLAHE contrast recovery. On a multi-line Arabic page degraded with skew and shadow, that recovered about a third of the lost OCR quality (CER from 7.6% back to 4.9%) for a few milliseconds of OpenCV.</p>
+      <p>Before reaching for a bigger OCR model, notebook 16 tried classical preprocessing: projection-profile deskew plus CLAHE contrast recovery. On a multi-line Arabic page degraded with skew and shadow, that recovered almost half of the lost OCR quality (CER from 7.6% back to 4.9%, against 1.6% on the clean page) for a few milliseconds of OpenCV.</p>
 
       <p>The cheapest model upgrade is often not a model.</p>
 
