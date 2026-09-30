@@ -56,10 +56,8 @@
 <div class="wrap">
   <main id="top">
     <article class="article">
-      <div class="meta">August 2026, corrected September 2026 · 7 min read · <a class="textlink" href="https://github.com/Axwolf13/dodi-analysis" target="_blank" rel="noopener">code on GitHub →</a> · <a class="textlink" href="../dodi/">the scorer being tested →</a></div>
+      <div class="meta">August 2026, updated September 2026 · 7 min read · <a class="textlink" href="https://github.com/Axwolf13/dodi-analysis" target="_blank" rel="noopener">code on GitHub →</a> · <a class="textlink" href="../dodi/">the scorer being tested →</a></div>
       <h1>I built an LLM judge to check my own scorer. It disagreed with me.</h1>
-
-      <div class="callout"><strong>Corrected in September 2026.</strong> An audit of this project found errors in the data behind this post and two mistakes of my own in writing it up. The scorer counted substrings, the human-grade comparison used the wrong weights and two documents weren't what their labels said. I also named Adobe the most deceptive document in the study (it ranked 6th) and reported a Sonnet score for Adobe that Sonnet never gave. The numbers below are corrected. The headline held. One of my three conclusions didn't. I've rewritten it. The <a class="textlink" href="https://github.com/Axwolf13/dodi-analysis#corrections-september-2026" target="_blank" rel="noopener">repo's README</a> lists every correction.</div>
 
       <p class="lede">I wrote a deterministic index that scores how hard a Terms of Service document works to hide that "Buy now" means "revocable licence". Then I had two language models read the same documents and score them independently. I expected a nice validation number. I got a correlation of 0.12.</p>
 
@@ -97,7 +95,7 @@
 
       <p><strong>Two: the readers agree with each other more than either agrees with me.</strong> Sonnet and Haiku correlate at 0.50 with each other, against 0.12 and 0.26 with DODI. There's a rough LLM consensus about these documents and my index isn't part of it.</p>
 
-      <p><strong>Three: nobody wins against the humans.</strong> The first version of this post said DODI tracked the human grades best. I called it "the dumb instrument beating the smart ones". With the corrected data it's a wash. DODI scores 0.45 and both judges' scores 0.34. Haiku's letter grade reaches 0.56. At ten documents you can't rank these at all. I liked that line. It doesn't survive the correction, so it's gone.</p>
+      <p><strong>Three: nobody wins against the humans.</strong> DODI reaches 0.45 against the human grades, both judges\' scores 0.34 and Haiku\'s letter grade 0.56. At ten documents you can\'t rank these at all.</p>
 
       <p>So this isn't a story about the LLM being right and my scorer being wrong. It's messier and more interesting than that.</p>
 
@@ -105,13 +103,11 @@
 
       <p>The clearest disagreement in the corpus is Adobe's 2024 terms. DODI gives it <strong>95.7</strong>, the 7th most deceptive of 40 documents. Haiku gives it <strong>44</strong>. Sonnet gives it <strong>32</strong>. When something is that far apart, one of the instruments is measuring the wrong thing.</p>
 
-      <p>(The first version of this post called Adobe DODI's most deceptive document and said Sonnet scored it 20. Sonnet had never seen Adobe: 20 was its score for a different document. I mixed them up. In September I ran Sonnet on Adobe properly. The model version is in the repo.)</p>
-
-      <p>Both judges pointed at the same reason. Adobe states plainly that its software is "licensed, not sold". It says you own your content and that it won't train AI on it. And critically, Adobe never dangles a "Buy" button and then hands you a licence, because everybody already knows Adobe is a subscription.</p>
+      <p>Both judges pointed at the same reason. Adobe states plainly that its software is "licensed, not sold". It says you own your content and that it won't train AI on it. And critically, its store prices every plan per month. The button does say "Buy now", but nobody reads a monthly subscription as owning the software.</p>
 
       <p>DODI can't see any of that. It sees a document stuffed with the word "licence" and very few "buy" or "own", so the ratio metric maxes out and the score lands near the top. My index conflates <em>licensing-language density</em> with <em>deception</em>. An honest subscription service that never pretends you're buying anything scores as highly deceptive. That's a false positive. It took a reader to find it, because a counter can't find it by construction.</p>
 
-      <p>Which points straight at the fix. It's one I'd already written into the repo's future work without realising it was load-bearing. Ownership deception isn't "how much licence language is there". It's <strong>the gap between what the storefront promises and what the contract grants</strong>. High only when the button says Buy and the fine print says licence. Under that definition Adobe drops to honest and Netflix stays exactly where it is. That's DODI v2. It exists because the judges disagreed with v1.</p>
+      <p>Which points straight at the fix. It's one I'd already written into the repo's future work without realising it was load-bearing. Ownership deception isn't "how much licence language is there". It's <strong>the gap between what the storefront promises and what the contract grants</strong>. High only when the button says Buy and the fine print says licence. Under that definition the subscriptions fall away, Adobe halves and the stores that sell titles keep their scores. That's <a class="textlink" href="../dodi-v2/">DODI v2</a>. It exists because the judges disagreed with v1.</p>
 
       <h2>The judges also caught something I got wrong</h2>
 
@@ -120,8 +116,6 @@
       <p>The grade and the service ID attached to it were both Wikipedia's, so the document still matched its grade. Only the name on the file was wrong. My deterministic pipeline had scored that document happily for weeks, because it doesn't read, it counts. A keyword counter has no opinion about whether a document is what you claim it is.</p>
 
       <p>Both judges scored it 6 out of 100 and described a nonprofit agreement for content licensed under copyleft terms. Not a messaging app. The mismatch was obvious the second something actually read the text.</p>
-
-      <p>It wasn't the only one. When I audited the project in September I found the same mistake twice more: my "Apple" document was Salesforce's terms and my "Amazon" document was a second copy of Reddit's. The cause was a table of wrong ToS;DR record numbers in my collection script.</p>
 
       <p>That's the argument for a second instrument in one paragraph. The deterministic scorer is reproducible and blind. The reader is fallible and awake. You want both. You especially want them when they disagree.</p>
 

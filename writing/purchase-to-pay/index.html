@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What 1.6 million purchasing events say about how a company actually buys things · Akshay Ashok</title>
+<meta name="description" content="A process mining pass over a real purchase-to-pay log: orders take 77 days to close, one in five needs a payment block lifted and almost every invoice is handled by hand.">
+<link rel="canonical" href="https://axwolf13.github.io/writing/purchase-to-pay/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<meta name="theme-color" content="#FAFAF6">
+<script>
+(function(){
+  var t = null;
+  try{ t = localStorage.getItem('theme'); }catch(e){}
+  if(t !== 'light' && t !== 'dark'){ t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
+  document.documentElement.setAttribute('data-theme', t);
+  var meta = document.querySelector('meta[name="theme-color"]');
+  if(meta && t === 'dark') meta.setAttribute('content', '#0F1626');
+})();
+</script>
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://axwolf13.github.io/writing/purchase-to-pay/">
+<meta property="og:title" content="What 1.6 million purchasing events say about how a company actually buys things">
+<meta property="og:description" content="A process mining pass over a real purchase-to-pay log: orders take 77 days to close, one in five needs a payment block lifted and almost every invoice is handled by hand.">
+<meta property="og:image" content="https://axwolf13.github.io/writing/purchase-to-pay/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../style.css">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "What 1.6 million purchasing events say about how a company actually buys things", "description": "A process mining pass over a real purchase-to-pay log: orders take 77 days to close, one in five needs a payment block lifted and almost every invoice is handled by hand.", "datePublished": "2026-09-30", "dateModified": "2026-09-30", "url": "https://axwolf13.github.io/writing/purchase-to-pay/", "image": "https://axwolf13.github.io/writing/purchase-to-pay/og.png", "author": {"@type": "Person", "name": "Akshay Ashok", "url": "https://axwolf13.github.io/"}}
+</script>
+</head>
+<body>
+
+<a class="skip" href="#top">Skip to content</a>
+<div id="progress" aria-hidden="true"></div>
+<header>
+  <div class="wrap hrow">
+    <a class="logo" href="../../">Akshay Ashok<b>.</b></a>
+    <nav aria-label="Main">
+      <a href="../../#work">Work</a>
+      <a href="../../#stack">Stack</a>
+      <a href="../" class="active">Writing</a>
+      <a href="../../#contact">Contact</a>
+      <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+<div class="wrap">
+  <main id="top">
+    <article class="article">
+      <div class="meta">September 2026 · 6 min read · <a class="textlink" href="https://github.com/Axwolf13/p2p-process-mining" target="_blank" rel="noopener">code on GitHub →</a> · <a class="textlink" href="https://doi.org/10.4121/uuid:d06aff4b-79f0-45e6-8ec8-e19730c248f1" target="_blank" rel="noopener">the dataset →</a></div>
+      <h1>What 1.6 million purchasing events say about how a company actually buys things</h1>
+
+      <p class="lede">A process manual says: order, receive, invoice, pay. The event log says it takes 77 days, one order item in five needs a payment block lifted and almost every invoice passes through a person's hands.</p>
+
+      <h2>The log</h2>
+
+      <p>The <a class="textlink" href="https://doi.org/10.4121/uuid:d06aff4b-79f0-45e6-8ec8-e19730c248f1" target="_blank" rel="noopener">BPI Challenge 2019</a> dataset is one year of purchasing at a large Dutch coatings and paints company: 251,734 purchase-order items and 1,595,923 events across 42 activities. Every event is a step someone (or some batch job) took: create the order item, record the goods receipt, record the invoice, clear it.</p>
+
+      <p>Items run through one of four flows. 88% are three-way matched with the invoice allowed to arrive first, as long as it's only cleared once the goods are in. The rest split between invoice-after-receipt, consignment and a handful of two-way matches.</p>
+
+      <p>Before measuring anything I dropped 464 items with impossible dates. The earliest event in the raw log is from 1948, in a dataset about 2018.</p>
+
+      <h2>Buying takes eleven weeks</h2>
+
+      <figure class="chart dumbbell wide-labels">
+        <div class="chart-title">Days from purchase-order item to last invoice cleared</div>
+        <div class="chart-legend" aria-hidden="true"><span><span class="key dot accent"></span>median</span><span><span class="key dot muted"></span>90th percentile</span></div>
+        <div class="chart-rows">
+        <div class="chart-row" tabindex="0" aria-label="3-way match, invoice before GR: median 77 days, 90th percentile 128 days, 173,636 completed items">
+          <span class="lbl">3-way match, invoice before GR</span>
+          <span class="plot" aria-hidden="true">
+            <span class="db-line" style="left:48.3%;width:31.7%"></span>
+            <span class="db-dot now" style="left:48.3%"></span>
+            <span class="db-dot then" style="left:80.0%"></span>
+            <span class="tip"><b>77 to 128 days</b>173,636 items</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="3-way match, invoice after GR: median 80 days, 90th percentile 129 days, 9,656 completed items">
+          <span class="lbl">3-way match, invoice after GR</span>
+          <span class="plot" aria-hidden="true">
+            <span class="db-line" style="left:49.7%;width:30.8%"></span>
+            <span class="db-dot now" style="left:49.7%"></span>
+            <span class="db-dot then" style="left:80.4%"></span>
+            <span class="tip"><b>80 to 129 days</b>9,656 items</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="2-way match: median 7 days, 90th percentile 47 days, 253 completed items">
+          <span class="lbl">2-way match</span>
+          <span class="plot" aria-hidden="true">
+            <span class="db-line" style="left:4.6%;width:25.0%"></span>
+            <span class="db-dot now" style="left:4.6%"></span>
+            <span class="db-dot then" style="left:29.6%"></span>
+            <span class="tip"><b>7 to 47 days</b>253 items</span>
+          </span>
+        </div>
+        </div>
+        <div class="chart-axis" aria-hidden="true"><span></span><span class="ticks"><span style="left:0%">0</span><span style="left:25%">40</span><span style="left:50%">80</span><span style="left:75%">120</span><span style="left:100%">160</span></span></div>
+        <figcaption>Completed items only. Consignment items never reach "Clear Invoice" on the item, so they have no throughput here.</figcaption>
+        <details class="chart-data">
+          <summary>Show the numbers</summary>
+          <div class="tablewrap"><table>
+            <thead><tr><th>Flow</th><th>Completed</th><th>Median</th><th>p75</th><th>p90</th></tr></thead>
+            <tbody>
+            <tr><td>3-way match, invoice before GR</td><td class="num">173,636</td><td class="num">77.3</td><td class="num">106.2</td><td class="num">128.0</td></tr>
+            <tr><td>3-way match, invoice after GR</td><td class="num">9,656</td><td class="num">79.5</td><td class="num">104.6</td><td class="num">128.7</td></tr>
+            <tr><td>2-way match</td><td class="num">253</td><td class="num">7.3</td><td class="num">22.2</td><td class="num">47.3</td></tr>
+            </tbody>
+          </table></div>
+        </details>
+      </figure>
+
+      <p>From creating a purchase-order item to clearing its last invoice, the median is 77 days and one in ten takes more than 128. Two-way matching, with no goods receipt to wait for, closes in about a week.</p>
+
+      <h2>Do the matching rules hold?</h2>
+
+      <p>Mostly. No invoice-after-receipt item recorded its invoice before the goods arrived. No consignment item carries an invoice at all. Both rules hold without a single exception in the log.</p>
+
+      <p>The exception is in the big flow. 654 items (0.4% of the completed ones) had their invoice cleared before any goods receipt was recorded. That's a small share and it may include partial deliveries my simple rule can't see. It's also exactly the list an auditor would ask for first.</p>
+
+      <h2>Some orders are paperwork after the fact</h2>
+
+      <p>For 3,528 items (1.7%) the vendor's invoice is dated before the purchase-order item was even created, by a median of 12 days. The buying happened first and the purchase order caught up later. Process teams call these after-the-fact POs. They're one of the first things a purchasing department wants to see.</p>
+
+      <h2>Where people still do the work</h2>
+
+      <figure class="chart bars wide-labels">
+        <div class="chart-title">Share of each step done by a person rather than a batch job</div>
+        <div class="chart-legend" aria-hidden="true"><span><span class="key accent"></span>invoice steps</span><span><span class="key muted"></span>other steps</span></div>
+        <div class="chart-rows">
+        <div class="chart-row" tabindex="0" aria-label="Change Quantity: 100% of 21,433 events done by people, 0% by batch jobs">
+          <span class="lbl">Change Quantity</span>
+          <span class="plot" aria-hidden="true">
+            <span class="bar" style="width:85.0%"></span>
+            <span class="bar-val" style="left:85.0%">100%</span>
+            <span class="tip"><b>100% manual</b>21,433 events</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="Change Price: 100% of 12,402 events done by people, 0% by batch jobs">
+          <span class="lbl">Change Price</span>
+          <span class="plot" aria-hidden="true">
+            <span class="bar" style="width:85.0%"></span>
+            <span class="bar-val" style="left:85.0%">100%</span>
+            <span class="tip"><b>100% manual</b>12,402 events</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="Record Invoice Receipt: 96% of 228,020 events done by people, 4% by batch jobs">
+          <span class="lbl">Record Invoice Receipt</span>
+          <span class="plot" aria-hidden="true">
+            <span class="bar accent" style="width:81.5%"></span>
+            <span class="bar-val" style="left:81.5%">96%</span>
+            <span class="tip"><b>96% manual</b>228,020 events</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="Clear Invoice: 96% of 194,120 events done by people, 0% by batch jobs">
+          <span class="lbl">Clear Invoice</span>
+          <span class="plot" aria-hidden="true">
+            <span class="bar accent" style="width:81.5%"></span>
+            <span class="bar-val" style="left:81.5%">96%</span>
+            <span class="tip"><b>96% manual</b>194,120 events</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="Create Purchase Order Item: 92% of 251,270 events done by people, 8% by batch jobs">
+          <span class="lbl">Create Purchase Order Item</span>
+          <span class="plot" aria-hidden="true">
+            <span class="bar" style="width:78.5%"></span>
+            <span class="bar-val" style="left:78.5%">92%</span>
+            <span class="tip"><b>92% manual</b>251,270 events</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="Receive Order Confirmation: 85% of 32,065 events done by people, 15% by batch jobs">
+          <span class="lbl">Receive Order Confirmation</span>
+          <span class="plot" aria-hidden="true">
+            <span class="bar" style="width:72.6%"></span>
+            <span class="bar-val" style="left:72.6%">85%</span>
+            <span class="tip"><b>85% manual</b>32,065 events</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="Create Purchase Requisition Item: 78% of 46,590 events done by people, 22% by batch jobs">
+          <span class="lbl">Create Purchase Requisition Item</span>
+          <span class="plot" aria-hidden="true">
+            <span class="bar" style="width:66.3%"></span>
+            <span class="bar-val" style="left:66.3%">78%</span>
+            <span class="tip"><b>78% manual</b>46,590 events</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="Remove Payment Block: 73% of 57,124 events done by people, 27% by batch jobs">
+          <span class="lbl">Remove Payment Block</span>
+          <span class="plot" aria-hidden="true">
+            <span class="bar" style="width:62.0%"></span>
+            <span class="bar-val" style="left:62.0%">73%</span>
+            <span class="tip"><b>73% manual</b>57,124 events</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="Record Goods Receipt: 73% of 313,486 events done by people, 27% by batch jobs">
+          <span class="lbl">Record Goods Receipt</span>
+          <span class="plot" aria-hidden="true">
+            <span class="bar" style="width:62.0%"></span>
+            <span class="bar-val" style="left:62.0%">73%</span>
+            <span class="tip"><b>73% manual</b>313,486 events</span>
+          </span>
+        </div>
+        </div>
+        <figcaption>Steps with a recorded resource only. "Vendor creates invoice" and "Record Service Entry Sheet" carry no user, so they're left out.</figcaption>
+        <details class="chart-data">
+          <summary>Show the numbers</summary>
+          <div class="tablewrap"><table>
+            <thead><tr><th>Step</th><th>Events</th><th>% manual</th><th>% batch</th></tr></thead>
+            <tbody>
+            <tr><td>Change Quantity</td><td class="num">21,433</td><td class="num">100.0</td><td class="num">0.0</td></tr>
+            <tr><td>Change Price</td><td class="num">12,402</td><td class="num">100.0</td><td class="num">0.0</td></tr>
+            <tr><td>Record Invoice Receipt</td><td class="num">228,020</td><td class="num">95.9</td><td class="num">4.1</td></tr>
+            <tr><td>Clear Invoice</td><td class="num">194,120</td><td class="num">95.9</td><td class="num">0.0</td></tr>
+            <tr><td>Create Purchase Order Item</td><td class="num">251,270</td><td class="num">92.3</td><td class="num">7.7</td></tr>
+            <tr><td>Receive Order Confirmation</td><td class="num">32,065</td><td class="num">85.4</td><td class="num">14.6</td></tr>
+            <tr><td>Create Purchase Requisition Item</td><td class="num">46,590</td><td class="num">78.0</td><td class="num">22.0</td></tr>
+            <tr><td>Remove Payment Block</td><td class="num">57,124</td><td class="num">73.0</td><td class="num">27.0</td></tr>
+            <tr><td>Record Goods Receipt</td><td class="num">313,486</td><td class="num">72.9</td><td class="num">27.1</td></tr>
+            </tbody>
+          </table></div>
+        </details>
+      </figure>
+
+      <p>Batch jobs record 27% of goods receipts. For invoices it's a different story: 96% of invoice receipts and 96% of invoice clearings are done by people.</p>
+
+      <p>The biggest source of rework points the same way. 22% of items needed a payment block removed, far more than price changes (4.5%) or quantity changes (7.0%). A payment block usually means the invoice didn't match the order or the receipt. So the manual work sits exactly where matching fails.</p>
+
+      <h2>The long tail</h2>
+
+      <p>11,938 distinct paths for 251,270 items. The happy path (create, vendor invoice, goods receipt, invoice receipt, clear) covers 20% on its own. The ten most common paths cover 60% and 45 paths cover 80%. Then come 9,001 paths that happen exactly once. That tail is where a process map turns into spaghetti. It's why variant analysis starts with the top 45 rather than the whole thing.</p>
+
+      <h2>Where this is weak</h2>
+
+      <ul>
+        <li><strong>The rules are simplified.</strong> Real matching logic has tolerances and partial deliveries, so the 654 early clearings are candidates for review, not confirmed violations.</li>
+        <li><strong>"Vendor creates invoice" is a document date.</strong> It's the date on the invoice, not when it arrived. A vendor who backdates invoices would show up as an after-the-fact PO.</li>
+        <li><strong>No payment terms.</strong> The log has no due dates, so it can say when invoices were cleared but not whether they were paid on time.</li>
+        <li><strong>One company, one year.</strong> These numbers describe this log, not purchasing in general.</li>
+      </ul>
+
+      <p>Everything here comes from three scripts and one results file in <a class="textlink" href="https://github.com/Axwolf13/p2p-process-mining" target="_blank" rel="noopener">the repo</a>.</p>
+
+      <div class="backlink"><a class="textlink" href="../">← All writing</a></div>
+    </article>
+  </main>
+
+  <footer id="contact">
+    <h2>Let's talk.</h2>
+    <p>Open to a Master's thesis topic from late 2027, research collaborations and conversations about evaluating models and agents.</p>
+    <div class="foot-links">
+      <a class="btn btn-primary" href="mailto:akshay57ax@gmail.com">akshay57ax@gmail.com</a>
+      <a class="btn btn-ghost" href="https://github.com/Axwolf13" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn btn-ghost" href="https://linkedin.com/in/akshay-a-ax13" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+    <div class="fineprint">
+      <span>© 2026 Akshay Ashok</span>
+      <span>Saarbrücken, Germany</span>
+      <a class="textlink" href="#top">Back to top ↑</a>
+    </div>
+  </footer>
+</div>
+
+<script src="../../script.js"></script>
+<script data-goatcounter="https://akshayashok.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
+</body>
+</html>

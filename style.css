@@ -281,6 +281,7 @@ html[data-theme="dark"]{--chart-accent:#24AC68;--chart-muted:#63738E;--chart-hov
 .chart-data{margin-top:14px;font-size:.9rem}
 .chart-data summary{cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--accent-ink)}
 .chart-data table{margin-top:10px}
+.chart.wide-labels{--label-w:15em}
 
 /* publication card */
 .pub{
@@ -433,6 +434,9 @@ html[data-theme="dark"] .fineprint{color:rgba(232,236,244,.5)}
   .dumbbell{--label-w:6.5em}
   .dumbbell .chart-row{gap:10px}
   .dumbbell .chart-axis{gap:10px}
+  .chart.wide-labels .chart-row,.chart.wide-labels .chart-axis{grid-template-columns:1fr;gap:0}
+  .chart.wide-labels .chart-axis>span:first-child{display:none}
+  .chart.wide-labels .chart-row .lbl{padding-bottom:0}
   .wrap{padding:0 18px}
   .logo{font-size:17px}
   nav a{margin-left:11px;font-size:12px;letter-spacing:.01em}

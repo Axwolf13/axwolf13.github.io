@@ -72,6 +72,30 @@
       <div class="proj">
         <div class="tag">September 2026</div>
         <div>
+          <h3>What 1.6 million purchasing events say about how a company actually buys things</h3>
+          <p>Process mining on a real purchase-to-pay log: orders take 77 days to close, one in five needs a payment block lifted and almost every invoice is handled by hand. Plus the 3,528 orders placed after their invoice.</p>
+          <div class="stack">process mining · pandas · variant analysis · conformance checking</div>
+          <div class="links">
+            <a class="textlink" href="purchase-to-pay/">Read the post →</a>
+            <a class="textlink" href="https://github.com/Axwolf13/p2p-process-mining" target="_blank" rel="noopener">Code →</a>
+          </div>
+        </div>
+      </div>
+      <div class="proj">
+        <div class="tag">September 2026</div>
+        <div>
+          <h3>The store says Buy. The contract says licence. DODI v2 scores the gap.</h3>
+          <p>DODI v1 read the contract alone, so honest subscriptions looked deceptive. v2 reads the archived store page first: X drops from 99.5 to 0, Steam keeps its 94.1. Plus the moment Amazon's Kindle button started saying "you're purchasing a content license".</p>
+          <div class="stack">Wayback Machine · evidence coding · Python · pandas</div>
+          <div class="links">
+            <a class="textlink" href="dodi-v2/">Read the post →</a>
+            <a class="textlink" href="https://github.com/Axwolf13/dodi-analysis#dodi-v2-what-the-store-promises-against-what-the-contract-grants" target="_blank" rel="noopener">Code →</a>
+          </div>
+        </div>
+      </div>
+      <div class="proj">
+        <div class="tag">September 2026</div>
+        <div>
           <h3>I made a molecule model's two inputs disagree. It believed the graph.</h3>
           <p>MolCA reads a molecule as SMILES text and as a graph at the same time. I reproduced it on two machines (62.32 and 62.77 BLEU-2 against the paper's 62.0), then gave it one molecule's text and a different molecule's graph. It described the graph about 90% of the time. A wrong graph did more damage than no graph at all.</p>
           <div class="stack">Reproduction · multimodal LLMs · controlled ablations · paired bootstrap · contamination checks</div>
@@ -86,7 +110,7 @@
         <div class="tag">August 2026</div>
         <div>
           <h3>I built an LLM judge to check my own scorer. It disagreed with me.</h3>
-          <p>Two language models graded the same Terms of Service documents as my deterministic index. The correlation was 0.12. A much bigger model didn't fix it. What the disagreement exposed: my scorer can't tell honest licensing from deceptive licensing. The readers agree with each other more than with me. Corrected in September 2026.</p>
+          <p>Two language models graded the same Terms of Service documents as my deterministic index. The correlation was 0.12. A much bigger model didn't fix it. What the disagreement exposed: my scorer can't tell honest licensing from deceptive licensing. The readers agree with each other more than with me. Updated September 2026.</p>
           <div class="stack">LLM-as-judge · rubric design · structured outputs · inter-rater agreement · Spearman ρ</div>
           <div class="links">
             <a class="textlink" href="llm-judge/">Read the post →</a>
@@ -99,7 +123,7 @@
         <div class="tag">July 2026</div>
         <div>
           <h3>Buying nothing: scoring a decade of ownership deception in Terms of Service</h3>
-          <p>DODI is a deterministic 0–100 index of how hard a platform's ToS works to hide that "Buy now" means "revocable licence". Ten platforms, four Wayback snapshots each from 2015 to 2024: the language got worse, GOG scores best exactly as it should and Netflix's licence-to-ownership ratio hit 98. Corrected in September 2026.</p>
+          <p>DODI is a deterministic 0–100 index of how hard a platform's ToS works to hide that "Buy now" means "revocable licence". Ten platforms, four Wayback snapshots each from 2015 to 2024: the language got worse, GOG scores best exactly as it should and Netflix's licence-to-ownership ratio hit 98. Updated September 2026.</p>
           <div class="stack">Python · textstat · SciPy · ToS;DR validation · Wayback Machine corpus</div>
           <div class="links">
             <a class="textlink" href="dodi/">Read the post →</a>
@@ -113,7 +137,7 @@
         <div class="tag">July 2026</div>
         <div>
           <h3>Benchmarking Arabic OCR and translation on an 8 GB laptop GPU</h3>
-          <p>What Surya and PaddleOCR actually do on KITAB-Bench, how Opus-MT stacks up against NLLB&#8209;1.3B on Arabic-to-German, why the best translator scored the worst BLEU, the failure modes that only show up on long legal text and how a triage pipeline learns to distrust itself. Corrected in September 2026.</p>
+          <p>What Surya and PaddleOCR actually do on KITAB-Bench, how Opus-MT stacks up against NLLB&#8209;1.3B on Arabic-to-German, why the best translator scored the worst BLEU, the failure modes that only show up on long legal text and how a triage pipeline learns to distrust itself. Updated September 2026.</p>
           <div class="stack">Surya OCR · PaddleOCR · Opus-MT · NLLB · CER/WER · confidence calibration</div>
           <div class="links">
             <a class="textlink" href="arabic-ocr-benchmarks/">Read the post →</a>

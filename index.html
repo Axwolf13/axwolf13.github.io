@@ -163,7 +163,7 @@
         <div>
           <h3>DODI: deception scoring for Terms-of-Service documents</h3>
           <p>DODI (Digital Ownership Deception Index) quantifies the gap between "Buy now" marketing and "you're only licensing this" fine print in consumer ToS documents. A deterministic, fully reproducible scorer (Flesch–Kincaid readability, licence-vs-ownership term ratio, red-flag clause detection, weighted 25/50/25) compared against ToS;DR human expert grades (Spearman ρ = 0.45, n = 10, not significant) and applied as a temporal study: 10 platforms, four Wayback Machine snapshots each (2015–2024). The index passes its face-validity test: GOG, the DRM-free "you own your games" store, scores lowest of all ten platforms in every year.</p>
-          <p>Then I checked my own index with two LLM judges. They barely agree with it (ρ = 0.12 and 0.26). The disagreement exposed a real flaw: DODI can't tell an honest subscription from a deceptive "Buy" button. In September I audited my own work, found a counting bug and a flawed validation run, fixed both and published the corrections.</p>
+          <p>Then I checked my own index with two LLM judges. They barely agree with it (ρ = 0.12 and 0.26). The disagreement exposed a real flaw: DODI can't tell an honest subscription from a deceptive "Buy" button. Version 1.1 (September 2026) counts whole words and validates against reviewed ToS;DR grades only. <a class="textlink" href="writing/dodi-v2/">Version 2</a> reads the archived store page first: an ownership promise only counts if the store made one.</p>
           <p>Shipped end to end, not just analysed: the scorer runs as a public web service, a Dockerized FastAPI app with tests and CI. It's also an MCP server over Streamable HTTP, deployed on Render, so an AI agent can call the scorer as a tool. I've tested it inside a Microsoft Copilot Studio agent.</p>
           <div class="stack">Python · textstat · SciPy · FastAPI · Docker · CI (GitHub Actions) · MCP · LLM-as-judge · ToS;DR validation</div>
           <div class="links">
@@ -171,6 +171,19 @@
             <a class="textlink" href="https://github.com/Axwolf13/dodi-analysis" target="_blank" rel="noopener">Code →</a>
             <a class="textlink" href="writing/dodi/">Write-up →</a>
             <a class="textlink" href="writing/llm-judge/">Judge write-up →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="proj">
+        <div class="tag">Process mining · Purchase-to-pay</div>
+        <div>
+          <h3>Mining a real purchase-to-pay log</h3>
+          <p>A process mining pass over the public BPI Challenge 2019 log: one year of purchasing at a large coatings company, 251,734 purchase-order items and 1.6 million events. I streamed the 728&nbsp;MB XES file into Parquet and measured what process teams ask first. Orders take a median of 77 days from item to cleared invoice. 22% need a payment block lifted, 1.7% were ordered only after the invoice existed and 96% of invoice steps are still done by hand. 11,938 distinct paths, of which 45 cover 80% of items.</p>
+          <div class="stack">Python · pandas · XES streaming · variant analysis · conformance rules · matplotlib</div>
+          <div class="links">
+            <a class="textlink" href="writing/purchase-to-pay/">Write-up →</a>
+            <a class="textlink" href="https://github.com/Axwolf13/p2p-process-mining" target="_blank" rel="noopener">Code →</a>
           </div>
         </div>
       </div>
@@ -196,7 +209,7 @@
           <div class="pill-row">
             <span class="pill">Python</span><span class="pill">PyTorch</span><span class="pill">TensorFlow/Keras</span>
             <span class="pill">Hugging Face Transformers</span><span class="pill">scikit-learn</span><span class="pill">spaCy</span>
-            <span class="pill">pandas</span><span class="pill">NumPy</span><span class="pill">SQL</span>
+            <span class="pill">pandas</span><span class="pill">NumPy</span><span class="pill">SQL</span><span class="pill">process mining</span>
             <span class="pill">R</span><span class="pill">Git</span><span class="pill">LaTeX</span>
           </div>
           <h4 style="margin-top:26px">LLM work, daily</h4>
