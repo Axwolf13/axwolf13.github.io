@@ -22,12 +22,17 @@
 <meta property="og:url" content="https://axwolf13.github.io/writing/arabic-ocr-benchmarks/">
 <meta property="og:title" content="Benchmarking Arabic OCR and translation on an 8 GB laptop GPU">
 <meta property="og:description" content="What Surya and PaddleOCR actually do on KITAB-Bench, why the licence picked the translation model and how a triage pipeline learns to distrust itself.">
-<meta property="og:image" content="https://axwolf13.github.io/og.png">
+<meta property="og:image" content="https://axwolf13.github.io/writing/arabic-ocr-benchmarks/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../style.css">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Benchmarking Arabic OCR and translation on an 8 GB laptop GPU", "description": "What Surya and PaddleOCR actually do on KITAB-Bench, why Opus-MT replaced NLLB for licence reasons, the failure modes that only appear on long legal text and how to know when your pipeline is wrong.", "datePublished": "2026-07-03", "dateModified": "2026-07-03", "url": "https://axwolf13.github.io/writing/arabic-ocr-benchmarks/", "image": "https://axwolf13.github.io/writing/arabic-ocr-benchmarks/og.png", "author": {"@type": "Person", "name": "Akshay Ashok", "url": "https://axwolf13.github.io/"}}
+</script>
 </head>
 <body>
 
@@ -70,7 +75,7 @@
 
       <p>Here's the thing: every model comparison should start with the question nobody puts on the leaderboard. <strong>What are you actually allowed to ship?</strong></p>
 
-      <p>The Apache-2.0 candidate was Opus-MT-ar-de from Helsinki-NLP. Roughly 300&nbsp;MB against NLLB-1.3B's multi-gigabyte footprint. On short sentences it matched NLLB (BLEU 43.8 against 42.4) at about a ninth of the memory, 2.4x the speed, running happily on CPU. Tempting conclusion: migration free of charge.</p>
+      <p>The Apache-2.0 candidate was Opus-MT-ar-de from Helsinki-NLP. Roughly 300&nbsp;MB against NLLB&#8209;1.3B's multi-gigabyte footprint. On short sentences it matched NLLB (BLEU 43.8 against 42.4) at about a ninth of the memory, 2.4x the speed, running happily on CPU. Tempting conclusion: migration free of charge.</p>
 
       <p>It doesn't hold. On long legal text Opus-MT fell apart in ways the short-sentence benchmark never hinted at:</p>
 

@@ -75,7 +75,7 @@
         </div>
 
         <div class="demo-result">
-          <h4>Detected asana</h4>
+          <h2>Detected asana</h2>
           <div class="asana-name" id="asanaName">—</div>
           <div class="asana-sub" id="asanaSub">start the camera and hold a pose</div>
           <div class="conf-bar" aria-hidden="true"><div class="conf-fill" id="confFill"></div></div>
@@ -88,14 +88,14 @@
     </section>
 
     <section>
-      <div class="sec-head"><b>—</b> What you're looking at</div>
+      <h2 class="sec-head"><b aria-hidden="true">—</b> What you're looking at</h2>
       <div class="cols">
         <div>
-          <h4>The architecture</h4>
+          <h3>The architecture</h3>
           <p>The paper's design splits training and inference deliberately. MoveNet Thunder, the accurate variant, extracted keypoints to train a small classifier head (51 inputs, two dense layers, 11-way softmax). At inference the backbone swaps to MoveNet Lightning for speed. The weights running here were extracted from the paper's trained 28&nbsp;KB TFLite classifier and verified to agree with it on every one of the 571 held-out test samples, where it scores 98.4%.</p>
         </div>
         <div>
-          <h4>The plumbing</h4>
+          <h3>The plumbing</h3>
           <p>TensorFlow.js runs Lightning on your GPU through WebGL. The classifier head is small enough to run as plain JavaScript: hip-centered keypoint normalization plus three matrix multiplies per frame, so it doesn't care about your camera resolution. Predictions are smoothed over the last few frames to stop the label flickering. A low-visibility gate refuses to guess when your legs or torso aren't in frame. The classifier itself only discriminates, it can't judge quality, so the form readout compares your skeleton to the training set's average geometry for the detected pose: a rough typicality hint, not coaching.</p>
         </div>
       </div>

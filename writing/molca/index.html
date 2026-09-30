@@ -22,20 +22,17 @@
 <meta property="og:url" content="https://axwolf13.github.io/writing/molca/">
 <meta property="og:title" content="I made a molecule model's two inputs disagree. It believed the graph.">
 <meta property="og:description" content="A reproduction of MolCA (EMNLP 2023) on two machines, then the experiment the paper never ran: one molecule's text, a different molecule's graph. The model described the graph.">
-<meta property="og:image" content="https://axwolf13.github.io/og.png">
+<meta property="og:image" content="https://axwolf13.github.io/writing/molca/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../style.css">
-<style>
-.article table{width:100%;border-collapse:collapse;margin:1.6rem 0;font-size:.95rem;}
-.article th,.article td{text-align:left;padding:.55rem .7rem;border-bottom:1px solid rgba(128,128,128,.25);}
-.article th{font-weight:600;}
-.article td.num{font-variant-numeric:tabular-nums;}
-.article .tablewrap{overflow-x:auto;}
-.article pre{overflow-x:auto;padding:1rem 1.1rem;border-radius:10px;background:rgba(128,128,128,.1);font-size:.85rem;line-height:1.55;}
-</style>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "I made a molecule model's two inputs disagree. It believed the graph.", "description": "MolCA reads a molecule as text and as a graph at the same time. I reproduced it on two machines, then gave it one molecule's text and a different molecule's graph. It described the graph about 90% of the time.", "datePublished": "2026-09-30", "dateModified": "2026-09-30", "url": "https://axwolf13.github.io/writing/molca/", "image": "https://axwolf13.github.io/writing/molca/og.png", "author": {"@type": "Person", "name": "Akshay Ashok", "url": "https://axwolf13.github.io/"}}
+</script>
 </head>
 <body>
 
@@ -140,16 +137,66 @@ the model wrote          : "The molecule is a branched amino tetrasaccharide ...
 
       <p>This is the result I find most telling. If the graph were a weak side channel, feeding it garbage should cost about the same as feeding it nothing. It doesn't:</p>
 
-      <div class="tablewrap">
-      <table>
-        <thead><tr><th>Graph condition</th><th>BLEU-2</th></tr></thead>
-        <tbody>
-          <tr><td>Uninformative (atom features zeroed)</td><td class="num">28.19</td></tr>
-          <tr><td>Wrong (a different real molecule)</td><td class="num">25.71</td></tr>
-          <tr><td>Incoherent (bonds randomly rewired)</td><td class="num">20.46</td></tr>
-        </tbody>
-      </table>
-      </div>
+      <figure class="chart bars">
+        <div class="chart-title">BLEU-2 on 1,000 test molecules, by what I altered</div>
+        <div class="chart-legend" aria-hidden="true"><span><span class="key accent"></span>graph altered</span><span><span class="key muted"></span>graph intact</span></div>
+        <div class="chart-rows">
+        <div class="chart-row" tabindex="0" aria-label="Nothing altered: BLEU-2 62.65, baseline">
+          <span class="lbl">Nothing altered</span>
+          <span class="plot" aria-hidden="true">
+            <span class="bar" style="width:78.3%"></span>
+            <span class="bar-val" style="left:78.3%">62.65</span>
+            <span class="tip"><b>62.65</b>baseline</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="SMILES from another molecule: BLEU-2 48.05, costs 14.60">
+          <span class="lbl">SMILES from another molecule</span>
+          <span class="plot" aria-hidden="true">
+            <span class="bar" style="width:60.1%"></span>
+            <span class="bar-val" style="left:60.1%">48.05</span>
+            <span class="tip"><b>48.05</b>costs 14.60</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="Graph features zeroed: BLEU-2 28.19, costs 34.46">
+          <span class="lbl">Graph features zeroed</span>
+          <span class="plot" aria-hidden="true">
+            <span class="bar accent" style="width:35.2%"></span>
+            <span class="bar-val" style="left:35.2%">28.19</span>
+            <span class="tip"><b>28.19</b>costs 34.46</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="Graph from another molecule: BLEU-2 25.71, costs 36.94">
+          <span class="lbl">Graph from another molecule</span>
+          <span class="plot" aria-hidden="true">
+            <span class="bar accent" style="width:32.1%"></span>
+            <span class="bar-val" style="left:32.1%">25.71</span>
+            <span class="tip"><b>25.71</b>costs 36.94</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="Graph randomly rewired: BLEU-2 20.46, costs 42.19">
+          <span class="lbl">Graph randomly rewired</span>
+          <span class="plot" aria-hidden="true">
+            <span class="bar accent" style="width:25.6%"></span>
+            <span class="bar-val" style="left:25.6%">20.46</span>
+            <span class="tip"><b>20.46</b>costs 42.19</span>
+          </span>
+        </div>
+        </div>
+        <figcaption>Higher is better. Swapping the text costs 14.6 points. Every way of breaking the graph costs more than 34. The wrong graph scores below the empty one.</figcaption>
+        <details class="chart-data">
+          <summary>Show the numbers</summary>
+          <div class="tablewrap"><table>
+            <thead><tr><th>What I altered</th><th>BLEU-2</th><th>Cost</th></tr></thead>
+            <tbody>
+            <tr><td>Nothing altered</td><td class="num">62.65</td><td class="num"></td></tr>
+            <tr><td>SMILES from another molecule</td><td class="num">48.05</td><td class="num">14.60</td></tr>
+            <tr><td>Graph features zeroed</td><td class="num">28.19</td><td class="num">34.46</td></tr>
+            <tr><td>Graph from another molecule</td><td class="num">25.71</td><td class="num">36.94</td></tr>
+            <tr><td>Graph randomly rewired</td><td class="num">20.46</td><td class="num">42.19</td></tr>
+            </tbody>
+          </table></div>
+        </details>
+      </figure>
 
       <p>A real but wrong graph hurts more than an empty one. A scrambled one hurts more still. The model isn't hedging between two sources. It treats those eight graph prompts as authoritative evidence and follows them wherever they point.</p>
 

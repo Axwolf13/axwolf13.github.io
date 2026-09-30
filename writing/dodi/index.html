@@ -22,17 +22,17 @@
 <meta property="og:url" content="https://axwolf13.github.io/writing/dodi/">
 <meta property="og:title" content="Buying nothing: scoring a decade of ownership deception in Terms of Service">
 <meta property="og:description" content="A deterministic index of how hard a platform's ToS works to hide that 'Buy now' means 'revocable licence'. Ten platforms, 2015–2024, validated against ToS;DR. And the language got worse.">
-<meta property="og:image" content="https://axwolf13.github.io/og.png">
+<meta property="og:image" content="https://axwolf13.github.io/writing/dodi/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../style.css">
-<style>
-.article figure{margin:2rem 0;}
-.article figure img{width:100%;height:auto;border-radius:10px;display:block;}
-.article figcaption{font-size:.85rem;opacity:.7;margin-top:.6rem;}
-</style>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Buying nothing: scoring a decade of ownership deception in Terms of Service", "description": "DODI is a deterministic 0–100 index of how hard a platform's ToS works to hide that 'Buy now' means 'revocable licence'. Ten platforms, four snapshots each from 2015 to 2024, validated against ToS;DR. And the language got worse.", "datePublished": "2026-07-12", "dateModified": "2026-09-30", "url": "https://axwolf13.github.io/writing/dodi/", "image": "https://axwolf13.github.io/writing/dodi/og.png", "author": {"@type": "Person", "name": "Akshay Ashok", "url": "https://axwolf13.github.io/"}}
+</script>
 </head>
 <body>
 
@@ -73,7 +73,9 @@
 
       <p>Here's the design choice I'll defend the hardest: DODI contains no model. No API calls. Nothing random. It's a plain function of the document text:</p>
 
-      <pre><code>DODI = 0.25 × readability penalty + 0.50 × licence ratio + 0.25 × red-flag score</code></pre>
+      <pre><code>DODI = 0.25 × readability penalty
+     + 0.50 × licence ratio
+     + 0.25 × red-flag score</code></pre>
 
       <p>Three ingredients:</p>
 
@@ -93,9 +95,131 @@
 
       <p>The corpus: 40 documents. Ten major platforms, four ToS snapshots each (2015, 2018, 2021, 2024) pulled from the Wayback Machine.</p>
 
-      <figure>
-        <img src="temporal-analysis.png" alt="Four-panel figure: DODI scores per platform over time, average score by industry, per-platform change from 2015 to 2024 and the score distribution by year" loading="lazy">
-        <figcaption>DODI across ten platforms, 2015–2024. The mean rises from 77.5 to 81.7. Seven of ten platforms drift upward.</figcaption>
+      <figure class="chart dumbbell">
+        <div class="chart-title">DODI score by platform, 2015 and 2024</div>
+        <div class="chart-legend" aria-hidden="true"><span><span class="key dot muted"></span>2015</span><span><span class="key dot accent"></span>2024</span></div>
+        <div class="chart-rows">
+        <div class="chart-row" tabindex="0" aria-label="Twitter: 95.5 in 2015, 99.5 in 2024">
+          <span class="lbl">Twitter</span>
+          <span class="plot" aria-hidden="true">
+            <span class="db-line" style="left:95.5%;width:4.0%"></span>
+            <span class="db-dot then" style="left:95.5%"></span>
+            <span class="db-dot now" style="left:99.5%"></span>
+            <span class="tip"><b>95.5 to 99.5</b>Twitter, +4.0</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="Adobe: 85.7 in 2015, 95.7 in 2024">
+          <span class="lbl">Adobe</span>
+          <span class="plot" aria-hidden="true">
+            <span class="db-line" style="left:85.7%;width:10.0%"></span>
+            <span class="db-dot then" style="left:85.7%"></span>
+            <span class="db-dot now" style="left:95.7%"></span>
+            <span class="tip"><b>85.7 to 95.7</b>Adobe, +10.0</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="Steam: 81.5 in 2015, 94.1 in 2024">
+          <span class="lbl">Steam</span>
+          <span class="plot" aria-hidden="true">
+            <span class="db-line" style="left:81.5%;width:12.6%"></span>
+            <span class="db-dot then" style="left:81.5%"></span>
+            <span class="db-dot now" style="left:94.1%"></span>
+            <span class="tip"><b>81.5 to 94.1</b>Steam, +12.6</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="Spotify: 100.0 in 2015, 87.2 in 2024">
+          <span class="lbl">Spotify</span>
+          <span class="plot" aria-hidden="true">
+            <span class="db-line" style="left:87.2%;width:12.8%"></span>
+            <span class="db-dot then" style="left:100.0%"></span>
+            <span class="db-dot now" style="left:87.2%"></span>
+            <span class="tip"><b>100.0 to 87.2</b>Spotify, -12.8</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="Facebook: 72.1 in 2015, 84.3 in 2024">
+          <span class="lbl">Facebook</span>
+          <span class="plot" aria-hidden="true">
+            <span class="db-line" style="left:72.1%;width:12.2%"></span>
+            <span class="db-dot then" style="left:72.1%"></span>
+            <span class="db-dot now" style="left:84.3%"></span>
+            <span class="tip"><b>72.1 to 84.3</b>Facebook, +12.2</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="Microsoft: 75.3 in 2015, 82.6 in 2024">
+          <span class="lbl">Microsoft</span>
+          <span class="plot" aria-hidden="true">
+            <span class="db-line" style="left:75.3%;width:7.3%"></span>
+            <span class="db-dot then" style="left:75.3%"></span>
+            <span class="db-dot now" style="left:82.6%"></span>
+            <span class="tip"><b>75.3 to 82.6</b>Microsoft, +7.3</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="Netflix: 72.9 in 2015, 82.4 in 2024">
+          <span class="lbl">Netflix</span>
+          <span class="plot" aria-hidden="true">
+            <span class="db-line" style="left:72.9%;width:9.5%"></span>
+            <span class="db-dot then" style="left:72.9%"></span>
+            <span class="db-dot now" style="left:82.4%"></span>
+            <span class="tip"><b>72.9 to 82.4</b>Netflix, +9.5</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="Ubisoft: 91.8 in 2015, 80.0 in 2024">
+          <span class="lbl">Ubisoft</span>
+          <span class="plot" aria-hidden="true">
+            <span class="db-line" style="left:80.0%;width:11.8%"></span>
+            <span class="db-dot then" style="left:91.8%"></span>
+            <span class="db-dot now" style="left:80.0%"></span>
+            <span class="tip"><b>91.8 to 80.0</b>Ubisoft, -11.8</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="Amazon: 73.1 in 2015, 63.4 in 2024">
+          <span class="lbl">Amazon</span>
+          <span class="plot" aria-hidden="true">
+            <span class="db-line" style="left:63.4%;width:9.7%"></span>
+            <span class="db-dot then" style="left:73.1%"></span>
+            <span class="db-dot now" style="left:63.4%"></span>
+            <span class="tip"><b>73.1 to 63.4</b>Amazon, -9.7</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="GOG: 27.4 in 2015, 47.7 in 2024">
+          <span class="lbl">GOG</span>
+          <span class="plot" aria-hidden="true">
+            <span class="db-line" style="left:27.4%;width:20.3%"></span>
+            <span class="db-dot then" style="left:27.4%"></span>
+            <span class="db-dot now" style="left:47.7%"></span>
+            <span class="tip"><b>27.4 to 47.7</b>GOG, +20.3</span>
+          </span>
+        </div>
+        <div class="chart-row total" tabindex="0" aria-label="Mean of ten: 77.5 in 2015, 81.7 in 2024">
+          <span class="lbl">Mean of ten</span>
+          <span class="plot" aria-hidden="true">
+            <span class="db-line" style="left:77.5%;width:4.2%"></span>
+            <span class="db-dot then" style="left:77.5%"></span>
+            <span class="db-dot now" style="left:81.7%"></span>
+            <span class="tip"><b>77.5 to 81.7</b>Mean of ten, +4.2</span>
+          </span>
+        </div>
+        </div>
+        <div class="chart-axis" aria-hidden="true"><span></span><span class="ticks"><span style="left:0">0</span><span style="left:25%">25</span><span style="left:50%">50</span><span style="left:75%">75</span><span style="left:100%">100</span></span></div>
+        <figcaption>The mean rises from 77.5 to 81.7 and seven of ten platforms drift upward. Higher means more deceptive. GOG, the DRM-free store in the set, stays lowest in every year.</figcaption>
+        <details class="chart-data">
+          <summary>Show the numbers, all four snapshots</summary>
+          <div class="tablewrap"><table>
+            <thead><tr><th>Platform</th><th>2015</th><th>2018</th><th>2021</th><th>2024</th></tr></thead>
+            <tbody>
+            <tr><td>Twitter</td><td class="num">95.5</td><td class="num">98.5</td><td class="num">100.0</td><td class="num">99.5</td></tr>
+            <tr><td>Adobe</td><td class="num">85.7</td><td class="num">90.1</td><td class="num">94.5</td><td class="num">95.7</td></tr>
+            <tr><td>Steam</td><td class="num">81.5</td><td class="num">77.2</td><td class="num">79.8</td><td class="num">94.1</td></tr>
+            <tr><td>Spotify</td><td class="num">100.0</td><td class="num">100.0</td><td class="num">90.2</td><td class="num">87.2</td></tr>
+            <tr><td>Facebook</td><td class="num">72.1</td><td class="num">77.3</td><td class="num">80.2</td><td class="num">84.3</td></tr>
+            <tr><td>Microsoft</td><td class="num">75.3</td><td class="num">76.0</td><td class="num">73.4</td><td class="num">82.6</td></tr>
+            <tr><td>Netflix</td><td class="num">72.9</td><td class="num">74.9</td><td class="num">94.5</td><td class="num">82.4</td></tr>
+            <tr><td>Ubisoft</td><td class="num">91.8</td><td class="num">98.4</td><td class="num">81.6</td><td class="num">80.0</td></tr>
+            <tr><td>Amazon</td><td class="num">73.1</td><td class="num">69.9</td><td class="num">63.7</td><td class="num">63.4</td></tr>
+            <tr><td>GOG</td><td class="num">27.4</td><td class="num">39.4</td><td class="num">45.1</td><td class="num">47.7</td></tr>
+            <tr><td><strong>Mean</strong></td><td class="num">77.5</td><td class="num">80.2</td><td class="num">80.3</td><td class="num">81.7</td></tr>
+            </tbody>
+          </table></div>
+        </details>
       </figure>
 
       <p><strong>The language got worse.</strong> This is the decade regulators started taking dark patterns seriously. The mean DODI score still rose from 77.5 to 81.7 and seven of ten platforms drifted toward more licence-heavy, less readable, more aggressive terms.</p>
@@ -109,6 +233,103 @@
       <p>Weakly. And I'd rather tell you that than dress it up.</p>
 
       <p>I validated DODI against <a class="textlink" href="https://tosdr.org/" target="_blank" rel="noopener">ToS;DR</a>, the project where humans grade Terms of Service. On the ten documents with reviewed ToS;DR grades, DODI correlates at Spearman ρ = 0.45 (p = 0.19). Pearson r = 0.20. That's a weak signal and it isn't significant.</p>
+
+      <figure class="chart dumbbell grades">
+        <div class="chart-title">DODI score against the human ToS;DR grade</div>
+        <div class="chart-note">Letters are ToS;DR grades, A best to E worst. Sorted by DODI.</div>
+        <div class="chart-rows">
+        <div class="chart-row" tabindex="0" aria-label="Twitter: DODI 95.7, ToS;DR grade E">
+          <span class="lbl">Twitter <span class="grade">E</span></span>
+          <span class="plot" aria-hidden="true">
+            <span class="db-dot now" style="left:95.7%"></span>
+            <span class="tip"><b>95.7</b>Twitter, grade E</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="Reddit: DODI 90.1, ToS;DR grade E">
+          <span class="lbl">Reddit <span class="grade">E</span></span>
+          <span class="plot" aria-hidden="true">
+            <span class="db-dot now" style="left:90.1%"></span>
+            <span class="tip"><b>90.1</b>Reddit, grade E</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="Microsoft: DODI 90.0, ToS;DR grade E">
+          <span class="lbl">Microsoft <span class="grade">E</span></span>
+          <span class="plot" aria-hidden="true">
+            <span class="db-dot now" style="left:90.0%"></span>
+            <span class="tip"><b>90.0</b>Microsoft, grade E</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="Wikipedia: DODI 87.8, ToS;DR grade B">
+          <span class="lbl">Wikipedia <span class="grade">B</span></span>
+          <span class="plot" aria-hidden="true">
+            <span class="db-dot now" style="left:87.8%"></span>
+            <span class="tip"><b>87.8</b>Wikipedia, grade B</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="YouTube: DODI 87.8, ToS;DR grade E">
+          <span class="lbl">YouTube <span class="grade">E</span></span>
+          <span class="plot" aria-hidden="true">
+            <span class="db-dot now" style="left:87.8%"></span>
+            <span class="tip"><b>87.8</b>YouTube, grade E</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="Google: DODI 83.0, ToS;DR grade E">
+          <span class="lbl">Google <span class="grade">E</span></span>
+          <span class="plot" aria-hidden="true">
+            <span class="db-dot now" style="left:83.0%"></span>
+            <span class="tip"><b>83.0</b>Google, grade E</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="Instagram: DODI 83.0, ToS;DR grade E">
+          <span class="lbl">Instagram <span class="grade">E</span></span>
+          <span class="plot" aria-hidden="true">
+            <span class="db-dot now" style="left:83.0%"></span>
+            <span class="tip"><b>83.0</b>Instagram, grade E</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="Facebook: DODI 79.5, ToS;DR grade E">
+          <span class="lbl">Facebook <span class="grade">E</span></span>
+          <span class="plot" aria-hidden="true">
+            <span class="db-dot now" style="left:79.5%"></span>
+            <span class="tip"><b>79.5</b>Facebook, grade E</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="Netflix: DODI 76.0, ToS;DR grade D">
+          <span class="lbl">Netflix <span class="grade">D</span></span>
+          <span class="plot" aria-hidden="true">
+            <span class="db-dot now" style="left:76.0%"></span>
+            <span class="tip"><b>76.0</b>Netflix, grade D</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="Discord: DODI 46.8, ToS;DR grade D">
+          <span class="lbl">Discord <span class="grade">D</span></span>
+          <span class="plot" aria-hidden="true">
+            <span class="db-dot now" style="left:46.8%"></span>
+            <span class="tip"><b>46.8</b>Discord, grade D</span>
+          </span>
+        </div>
+        </div>
+        <div class="chart-axis" aria-hidden="true"><span></span><span class="ticks"><span style="left:0">0</span><span style="left:25%">25</span><span style="left:50%">50</span><span style="left:75%">75</span><span style="left:100%">100</span></span></div>
+        <figcaption>If DODI agreed with the humans, the letters would sort themselves: every E above every D, the B at the bottom. They half do. Both D grades score lowest, but the only B ties for fourth.</figcaption>
+        <details class="chart-data">
+          <summary>Show the numbers</summary>
+          <div class="tablewrap"><table>
+            <thead><tr><th>Service</th><th>ToS;DR grade</th><th>DODI</th></tr></thead>
+            <tbody>
+            <tr><td>Twitter</td><td>E</td><td class="num">95.7</td></tr>
+            <tr><td>Reddit</td><td>E</td><td class="num">90.1</td></tr>
+            <tr><td>Microsoft</td><td>E</td><td class="num">90.0</td></tr>
+            <tr><td>Wikipedia</td><td>B</td><td class="num">87.8</td></tr>
+            <tr><td>YouTube</td><td>E</td><td class="num">87.8</td></tr>
+            <tr><td>Google</td><td>E</td><td class="num">83.0</td></tr>
+            <tr><td>Instagram</td><td>E</td><td class="num">83.0</td></tr>
+            <tr><td>Facebook</td><td>E</td><td class="num">79.5</td></tr>
+            <tr><td>Netflix</td><td>D</td><td class="num">76.0</td></tr>
+            <tr><td>Discord</td><td>D</td><td class="num">46.8</td></tr>
+            </tbody>
+          </table></div>
+        </details>
+      </figure>
 
       <p>The first version of this post said ρ = 0.54 on twelve documents. That run used different weights from the index. Two of its twelve documents weren't what their labels said: one was a second copy of Reddit and one was Salesforce's terms with an unreviewed grade. Fixed, the number went down. It's the number I should have published.</p>
 
