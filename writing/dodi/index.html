@@ -31,7 +31,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../style.css">
 <script type="application/ld+json">
-{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Buying nothing: scoring a decade of ownership deception in Terms of Service", "description": "DODI is a deterministic 0–100 index of how hard a platform's ToS works to hide that 'Buy now' means 'revocable licence'. Ten platforms, four snapshots each from 2015 to 2024, validated against ToS;DR. And the language got worse.", "datePublished": "2026-07-12", "dateModified": "2026-09-30", "url": "https://axwolf13.github.io/writing/dodi/", "image": "https://axwolf13.github.io/writing/dodi/og.png", "author": {"@type": "Person", "name": "Akshay Ashok", "url": "https://axwolf13.github.io/"}}
+{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Buying nothing: scoring a decade of ownership deception in Terms of Service", "description": "DODI is a deterministic 0–100 index of how hard a platform's ToS works to hide that 'Buy now' means 'revocable licence'. Ten platforms, four snapshots each from 2015 to 2024, validated against ToS;DR. And the language got worse.", "datePublished": "2026-07-12", "dateModified": "2026-10-01", "url": "https://axwolf13.github.io/writing/dodi/", "image": "https://axwolf13.github.io/writing/dodi/og.png", "author": {"@type": "Person", "name": "Akshay Ashok", "url": "https://axwolf13.github.io/"}}
 </script>
 </head>
 <body>
@@ -71,7 +71,7 @@
 
       <p>Here's the design choice I'll defend the hardest: DODI contains no model. No API calls. Nothing random. It's a plain function of the document text:</p>
 
-      <pre><code>DODI = 0.25 × readability penalty
+      <pre tabindex="0"><code>DODI = 0.25 × readability penalty
      + 0.50 × licence ratio
      + 0.25 × red-flag score</code></pre>
 
@@ -201,7 +201,7 @@
         <figcaption>The mean rises from 77.5 to 81.7 and seven of ten platforms drift upward. Higher means more deceptive. GOG, the DRM-free store in the set, stays lowest in every year.</figcaption>
         <details class="chart-data">
           <summary>Show the numbers, all four snapshots</summary>
-          <div class="tablewrap"><table>
+          <div class="tablewrap" tabindex="0"><table>
             <thead><tr><th>Platform</th><th>2015</th><th>2018</th><th>2021</th><th>2024</th></tr></thead>
             <tbody>
             <tr><td>Twitter</td><td class="num">95.5</td><td class="num">98.5</td><td class="num">100.0</td><td class="num">99.5</td></tr>
@@ -311,7 +311,7 @@
         <figcaption>If DODI agreed with the humans, the letters would sort themselves: every E above every D, the B at the bottom. They half do. Both D grades score lowest, but the only B ties for fourth.</figcaption>
         <details class="chart-data">
           <summary>Show the numbers</summary>
-          <div class="tablewrap"><table>
+          <div class="tablewrap" tabindex="0"><table>
             <thead><tr><th>Service</th><th>ToS;DR grade</th><th>DODI</th></tr></thead>
             <tbody>
             <tr><td>Twitter</td><td>E</td><td class="num">95.7</td></tr>
@@ -347,7 +347,7 @@
 
       <h2>What I'd build next</h2>
 
-      <p>Negation-aware clause parsing with spaCy dependency trees would close the biggest blind spot. I've since checked DODI against two LLM judges. They barely agree with it (<a class="textlink" href="../llm-judge/">write-up</a>). Clause-level embeddings could trace how licence clauses copy themselves between platforms over time.</p>
+      <p>Negation-aware clause parsing with spaCy dependency trees would close the biggest blind spot. I've since checked DODI against three LLM judges from two vendors. They barely agree with it (<a class="textlink" href="../llm-judge/">write-up</a>). Clause-level embeddings could trace how licence clauses copy themselves between platforms over time.</p>
 
       <p>But the metric I actually want? The <strong>marketing-vs-ToS gap</strong>. The deception is largest exactly where the storefront screams "buy" and the contract whispers "licence". That gap is measurable. Someone should measure it at scale.</p>
 

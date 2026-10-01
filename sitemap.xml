@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://axwolf13.github.io/</loc></url>
-  <url><loc>https://axwolf13.github.io/demo/</loc></url>
-  <url><loc>https://axwolf13.github.io/writing/</loc></url>
-  <url><loc>https://axwolf13.github.io/writing/arabic-ocr-benchmarks/</loc></url>
-  <url><loc>https://axwolf13.github.io/writing/dodi/</loc></url>
-  <url><loc>https://axwolf13.github.io/writing/llm-judge/</loc></url>
-  <url><loc>https://axwolf13.github.io/writing/molca/</loc></url>
-  <url><loc>https://axwolf13.github.io/writing/dodi-v2/</loc></url>
-  <url><loc>https://axwolf13.github.io/writing/purchase-to-pay/</loc></url>
+  <url><loc>https://axwolf13.github.io/</loc><lastmod>2026-10-01</lastmod></url>
+  <url><loc>https://axwolf13.github.io/demo/</loc><lastmod>2026-09-30</lastmod></url>
+  <url><loc>https://axwolf13.github.io/writing/</loc><lastmod>2026-09-30</lastmod></url>
+  <url><loc>https://axwolf13.github.io/writing/arabic-ocr-benchmarks/</loc><lastmod>2026-09-30</lastmod></url>
+  <url><loc>https://axwolf13.github.io/writing/dodi/</loc><lastmod>2026-10-01</lastmod></url>
+  <url><loc>https://axwolf13.github.io/writing/llm-judge/</loc><lastmod>2026-10-01</lastmod></url>
+  <url><loc>https://axwolf13.github.io/writing/molca/</loc><lastmod>2026-10-01</lastmod></url>
+  <url><loc>https://axwolf13.github.io/writing/dodi-v2/</loc><lastmod>2026-09-30</lastmod></url>
+  <url><loc>https://axwolf13.github.io/writing/purchase-to-pay/</loc><lastmod>2026-10-01</lastmod></url>
 </urlset>

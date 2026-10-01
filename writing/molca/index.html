@@ -31,7 +31,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../style.css">
 <script type="application/ld+json">
-{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "I made a molecule model's two inputs disagree. It believed the graph.", "description": "MolCA reads a molecule as text and as a graph at the same time. I reproduced it on two machines, then gave it one molecule's text and a different molecule's graph. It described the graph about 90% of the time.", "datePublished": "2026-09-30", "dateModified": "2026-09-30", "url": "https://axwolf13.github.io/writing/molca/", "image": "https://axwolf13.github.io/writing/molca/og.png", "author": {"@type": "Person", "name": "Akshay Ashok", "url": "https://axwolf13.github.io/"}}
+{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "I made a molecule model's two inputs disagree. It believed the graph.", "description": "MolCA reads a molecule as text and as a graph at the same time. I reproduced it on two machines, then gave it one molecule's text and a different molecule's graph. It described the graph about 90% of the time.", "datePublished": "2026-09-30", "dateModified": "2026-10-01", "url": "https://axwolf13.github.io/writing/molca/", "image": "https://axwolf13.github.io/writing/molca/og.png", "author": {"@type": "Person", "name": "Akshay Ashok", "url": "https://axwolf13.github.io/"}}
 </script>
 </head>
 <body>
@@ -56,7 +56,7 @@
 <div class="wrap">
   <main id="top">
     <article class="article">
-      <div class="meta">September 2026 · 8 min read · <a class="textlink" href="https://github.com/Axwolf13/molca-reproduction" target="_blank" rel="noopener">code on GitHub →</a> · <a class="textlink" href="https://openreview.net/forum?id=14WRhMNq7H" target="_blank" rel="noopener">the paper →</a></div>
+      <div class="meta">September 2026 · 9 min read · <a class="textlink" href="https://github.com/Axwolf13/molca-reproduction" target="_blank" rel="noopener">code on GitHub →</a> · <a class="textlink" href="https://openreview.net/forum?id=14WRhMNq7H" target="_blank" rel="noopener">the paper →</a></div>
       <h1>I made a molecule model's two inputs disagree. It believed the graph.</h1>
 
       <p class="lede">A molecule can be written down two ways. As a line of text called a SMILES string, where aspirin is <code>CC(=O)Oc1ccccc1C(=O)O</code>. Or as a graph, atoms as nodes and bonds as edges. MolCA reads both at once and writes an English description of the molecule. The paper treats the two views as partners. Nobody had checked which one the model actually believes when they disagree.</p>
@@ -77,7 +77,7 @@
 
       <p>Before you can make a claim about a model, you have to show you're running the model the paper describes. I evaluated the released checkpoint on the full 3,300-molecule ChEBI-20 test split, twice, on hardware that could hardly be further apart.</p>
 
-      <div class="tablewrap">
+      <div class="tablewrap" tabindex="0">
       <table>
         <thead><tr><th>Source</th><th>BLEU-2</th></tr></thead>
         <tbody>
@@ -110,7 +110,7 @@
 
       <p>With a faithful reproduction in hand, the experiment is simple. For each test molecule, keep its own SMILES string but swap in the graph of the next molecule in the list. Then read what the model writes. Here's the first test molecule:</p>
 
-<pre>its own SMILES describes : a steroid ester
+<pre tabindex="0">its own SMILES describes : a steroid ester
 the graph it was given   : a branched amino tetrasaccharide
 the model wrote          : "The molecule is a branched amino tetrasaccharide ..."</pre>
 
@@ -120,7 +120,7 @@ the model wrote          : "The molecule is a branched amino tetrasaccharide ...
 
       <p>Then the cost of breaking each channel, with the same kind of damage applied to each:</p>
 
-      <div class="tablewrap">
+      <div class="tablewrap" tabindex="0">
       <table>
         <thead><tr><th>What I swapped</th><th>BLEU-2</th><th>Cost</th></tr></thead>
         <tbody>
@@ -185,7 +185,7 @@ the model wrote          : "The molecule is a branched amino tetrasaccharide ...
         <figcaption>Higher is better. Swapping the text costs 14.6 points. Every way of breaking the graph costs more than 34. The wrong graph scores below the empty one.</figcaption>
         <details class="chart-data">
           <summary>Show the numbers</summary>
-          <div class="tablewrap"><table>
+          <div class="tablewrap" tabindex="0"><table>
             <thead><tr><th>What I altered</th><th>BLEU-2</th><th>Cost</th></tr></thead>
             <tbody>
             <tr><td>Nothing altered</td><td class="num">62.65</td><td class="num"></td></tr>
@@ -210,13 +210,59 @@ the model wrote          : "The molecule is a branched amino tetrasaccharide ...
 
       <p>The test that worked was gentler. I pushed the SMILES text 37 tokens further from the generation point and left everything else alone. Recency is real: the text loses a little influence when it's further away. But it's far too small to be the mechanism. The ratio between the two channels only moves from 2.46 to 2.74, so recency can't produce a 2.5-times dominance.</p>
 
+      <p>Two points show that recency exists, not how it behaves. So I added a middle distance and reran all three on my laptop, so no point compares two machines. Corrupting the SMILES costs 25.1% of the clean score when it sits where it shipped, 23.2% at 13 tokens away and 21.3% at 37. Every step down is significant. That's about a tenth of a point per token.</p>
+
+      <figure class="chart bars">
+        <div class="chart-title">What corrupting the SMILES costs, by how far it sits from the output</div>
+        <div class="chart-rows">
+        <div class="chart-row" tabindex="0" aria-label="Adjacent, as shipped: corrupting the SMILES costs 25.1% of a clean 62.77, 95% interval 23.8 to 26.4">
+          <span class="lbl">Adjacent, as shipped</span>
+          <span class="plot" aria-hidden="true">
+            <span class="bar accent" style="width:83.6%"></span>
+            <span class="bar-val" style="left:83.6%">25.1%</span>
+            <span class="tip"><b>25.1%</b>95% CI 23.8 to 26.4</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="13 tokens away: corrupting the SMILES costs 23.2% of a clean 60.86, 95% interval 22.4 to 24.2">
+          <span class="lbl">13 tokens away</span>
+          <span class="plot" aria-hidden="true">
+            <span class="bar accent" style="width:77.5%"></span>
+            <span class="bar-val" style="left:77.5%">23.2%</span>
+            <span class="tip"><b>23.2%</b>95% CI 22.4 to 24.2</span>
+          </span>
+        </div>
+        <div class="chart-row" tabindex="0" aria-label="37 tokens away: corrupting the SMILES costs 21.3% of a clean 55.40, 95% interval 20.4 to 22.3">
+          <span class="lbl">37 tokens away</span>
+          <span class="plot" aria-hidden="true">
+            <span class="bar accent" style="width:71.1%"></span>
+            <span class="bar-val" style="left:71.1%">21.3%</span>
+            <span class="tip"><b>21.3%</b>95% CI 20.4 to 22.3</span>
+          </span>
+        </div>
+        </div>
+        <figcaption>Share of each distance's own clean BLEU-2 lost when the SMILES comes from another molecule. 3,300 test molecules, every run on the same laptop.</figcaption>
+        <details class="chart-data">
+          <summary>Show the numbers</summary>
+          <div class="tablewrap" tabindex="0"><table>
+            <thead><tr><th>SMILES position</th><th>Clean BLEU-2</th><th>Cost</th><th>95% CI</th></tr></thead>
+            <tbody>
+            <tr><td>Adjacent, as shipped</td><td class="num">62.77</td><td class="num">25.1%</td><td class="num">23.8 to 26.4</td></tr>
+            <tr><td>13 tokens away</td><td class="num">60.86</td><td class="num">23.2%</td><td class="num">22.4 to 24.2</td></tr>
+            <tr><td>37 tokens away</td><td class="num">55.40</td><td class="num">21.3%</td><td class="num">20.4 to 22.3</td></tr>
+            </tbody>
+          </table></div>
+        </details>
+      </figure>
+
+      <p>In the shipped prompt the graph sits eight tokens nearer the output than the end of the SMILES. At a tenth of a point per token, those eight tokens are worth under a point. The gap between the two channels is about 35.</p>
+
       <h2>Does it survive a second dataset?</h2>
 
       <p>I pointed the ChEBI-20 checkpoint at a different dataset, PubChem324kV2, a pairing the authors never ran. The raw score came out at 49.04 BLEU-2. That looks wonderful, because the paper reports 38.7 for a model trained on PubChem itself.</p>
 
       <p>It's wrong. Finding out why was the most useful part of the project. <strong>49.25% of that test set is structurally present in ChEBI-20's training data.</strong> The model had seen half the exam. Split it cleanly and the story changes:</p>
 
-      <div class="tablewrap">
+      <div class="tablewrap" tabindex="0">
       <table>
         <thead><tr><th>Subset of the 2,000 test molecules</th><th>Normal</th><th>Neighbour's graph</th></tr></thead>
         <tbody>
@@ -240,7 +286,7 @@ the model wrote          : "The molecule is a branched amino tetrasaccharide ...
 
       <ul>
         <li><strong>One of my controls turned out not to be independent.</strong> I designed a mirror condition that swaps the text instead of the graph. It turns out rotating one list forward and the other backward produces the same pairing: 983 of 1,000 predictions match exactly. It's a consistency check between two code paths, not extra evidence.</li>
-        <li><strong>The position confound isn't fully closed.</strong> The displacement test says recency is small, but the clean reordering test failed, so the strongest version of that argument isn't available.</li>
+        <li><strong>The distance curve only runs one way.</strong> I can push the SMILES further out but can't pull the graph back, because reordering broke the model. So "eight tokens are worth under a point" assumes the slope holds at close range.</li>
         <li><strong>My chemical-class extractor has a ceiling.</strong> It's built on regular expressions over ChEBI's phrasing and only matches 76.3% of <em>correct</em> captions. The absolute rates are underestimates. The ratios between conditions hold.</li>
         <li><strong>One checkpoint, no training variance.</strong> The bootstrap measures which molecules happened to be in the test set, not what happens if you retrain. The authors released one fine-tuned captioning model, so that's the one I could test.</li>
         <li><strong>Captioning and retrieval only.</strong> The paper also reports property prediction and IUPAC naming, but the weights for those tasks were never released. The release, not my budget, set the boundary.</li>
