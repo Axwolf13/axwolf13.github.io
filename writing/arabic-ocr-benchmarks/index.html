@@ -31,7 +31,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../style.css">
 <script type="application/ld+json">
-{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Benchmarking Arabic OCR and translation on an 8 GB laptop GPU", "description": "What Surya and PaddleOCR actually do on KITAB-Bench, why Opus-MT replaced NLLB for licence reasons, the failure modes that only appear on long legal text and how to know when your pipeline is wrong.", "datePublished": "2026-07-03", "dateModified": "2026-09-30", "url": "https://axwolf13.github.io/writing/arabic-ocr-benchmarks/", "image": "https://axwolf13.github.io/writing/arabic-ocr-benchmarks/og.png", "author": {"@type": "Person", "name": "Akshay Ashok", "url": "https://axwolf13.github.io/"}}
+{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Benchmarking Arabic OCR and translation on an 8 GB laptop GPU", "description": "What Surya and PaddleOCR actually do on KITAB-Bench, why Opus-MT replaced NLLB for licence reasons, the failure modes that only appear on long legal text and how to know when your pipeline is wrong.", "datePublished": "2026-07-03", "dateModified": "2026-10-01", "url": "https://axwolf13.github.io/writing/arabic-ocr-benchmarks/", "image": "https://axwolf13.github.io/writing/arabic-ocr-benchmarks/og.png", "author": {"@type": "Person", "name": "Akshay Ashok", "url": "https://axwolf13.github.io/"}}
 </script>
 </head>
 <body>
@@ -56,7 +56,7 @@
 <div class="wrap">
   <main id="top">
     <article class="article">
-      <div class="meta">July 2026, updated September 2026 · 9 min read · <a class="textlink" href="https://github.com/Axwolf13/arabic-doc-triage-research" target="_blank" rel="noopener">notebooks on GitHub →</a></div>
+      <div class="meta">July 2026, updated October 2026 · 9 min read · <a class="textlink" href="https://github.com/Axwolf13/arabic-doc-triage-research" target="_blank" rel="noopener">notebooks on GitHub →</a></div>
       <h1>Benchmarking Arabic OCR and translation on an 8&nbsp;GB laptop GPU</h1>
 
       <p>A police officer gets handed a document in Arabic. No interpreter in the building. What happens next?</p>
@@ -111,16 +111,17 @@
 
       <p>Mostly, yes. Surya's per-line confidence genuinely predicts failure: a document-level confidence router flagged all 4 catastrophic OCR failures I tested it on. Run later over all 50 samples at the same threshold, it flags all 5 documents above 30% error and 9 of the 11 above 10%, with one false alarm. That router is the heart of the design: a low-confidence document becomes an automatic "call an interpreter", never a wrong translation delivered confidently.</p>
 
-      <p>Confidence alone has blind spots, so the final design layers four signals:</p>
+      <p>Confidence alone has blind spots, so the final design layers three signals:</p>
 
       <ul>
         <li><strong>Confidence routing</strong> catches the failures the engine knows about.</li>
         <li><strong>Perplexity scoring</strong> catches implausible text, after I fixed a confound where Arabic diacritics inflated perplexity on perfectly good text.</li>
         <li><strong>Script-ratio and repetition heuristics</strong> catch contamination plus the hallucination loops generative OCR falls into. Perplexity misses those.</li>
-        <li><strong>Model disagreement:</strong> run PaddleOCR as an independent second engine and flag documents where the two diverge. Two different architectures rarely hallucinate the same way.</li>
       </ul>
 
-      <p>One sample in fifty evaded all four signals. Wrong but confident, plausible, clean, consistent across engines. I consider that the most valuable result in the project, because it's the empirical answer to "can we remove the human from the loop?"</p>
+      <p>I also tried a fourth: run PaddleOCR as an independent second engine and flag documents where the two diverge. It doesn't work as a flag. On the 14 samples Surya read perfectly, PaddleOCR still disagreed by 39 to 95%, so a disagreement says more about PaddleOCR than about the document.</p>
+
+      <p>One sample in fifty evaded all three signals. Wrong but confident, plausible and clean. I consider that the most valuable result in the project, because it's the empirical answer to "can we remove the human from the loop?"</p>
 
       <p>No. And under the EU AI Act's human-oversight requirements for high-risk systems, that answer needed to be demonstrated, not assumed.</p>
 
@@ -150,7 +151,7 @@
 
   <footer id="contact">
     <h2>Let's talk.</h2>
-    <p>Open to a Master's thesis topic from late 2027, research collaborations and conversations about evaluating models and agents.</p>
+    <p>Open to a Master's thesis topic for summer 2027, research collaborations and conversations about evaluating models and agents.</p>
     <div class="foot-links">
       <a class="btn btn-primary" href="mailto:akshay57ax@gmail.com">akshay57ax@gmail.com</a>
       <a class="btn btn-ghost" href="https://github.com/Axwolf13" target="_blank" rel="noopener">GitHub</a>

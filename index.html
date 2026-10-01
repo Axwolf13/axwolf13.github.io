@@ -135,7 +135,7 @@
         <div>
           <h3>MolCA reproduction: which input does a molecule LLM believe?</h3>
           <p>Graduate seminar with Prof. Dietrich Klakow, Saarland University. MolCA (Liu et al., EMNLP 2023) reads a molecule both as SMILES text and as a graph, wiring a graph encoder into Galactica through a Q-Former projector. I reproduced its released checkpoint on two very different machines: 62.32 and 62.77 BLEU-2 against the paper's 62.0, with 93.8% of captions character-identical across them. All 32 published retrieval metrics came back within 0.5 points, the 16 on the full test set within 0.12. Getting there took 14 patches to the released code, several fixing bugs nobody had reported upstream.</p>
-          <p>Then the experiment the paper never ran: give the model one molecule's text and a different molecule's graph. It describes the graph's molecule about 90% of the time. Breaking the graph costs 2.5 times what breaking the text costs. A wrong graph does more damage than no graph at all. The effect holds on a second dataset once I controlled for the 49% of its test set that leaks from the training data.</p>
+          <p>Then the experiment the paper never ran: give the model one molecule's text and a different molecule's graph. It describes the graph's molecule in about 90% of the cases where it clearly picks one. Breaking the graph costs 2.5 times what breaking the text costs. A wrong graph does more damage than no graph at all. The effect holds on a second dataset once I controlled for the 49% of its test set that leaks from the training data.</p>
           <div class="stack">PyTorch · Lightning · Hugging Face Transformers · Q-Former · LoRA · paired bootstrap · HTCondor cluster</div>
           <div class="links">
             <a class="textlink" href="writing/molca/">Write-up →</a>
@@ -265,7 +265,7 @@
 
   <footer id="contact">
     <h2>Let's talk.</h2>
-    <p>Open to a Master's thesis topic from late 2027, research collaborations and conversations about evaluating models and agents.</p>
+    <p>Open to a Master's thesis topic for summer 2027, research collaborations and conversations about evaluating models and agents.</p>
     <p lang="de">Ich lerne aktiv Deutsch (aktuell A2, auf dem Weg zu B1). Gespräche gerne auf Englisch.</p>
     <div class="foot-links">
       <a class="btn btn-primary" href="mailto:akshay57ax@gmail.com">akshay57ax@gmail.com</a>
