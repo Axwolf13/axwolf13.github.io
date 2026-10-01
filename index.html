@@ -27,7 +27,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Person","name":"Akshay Ashok","url":"https://axwolf13.github.io/","email":"mailto:akshay57ax@gmail.com","jobTitle":"Data Science & AI Master's student","affiliation":{"@type":"CollegeOrUniversity","name":"Saarland University"},"alumniOf":{"@type":"CollegeOrUniversity","name":"Bannari Amman Institute of Technology"},"address":{"@type":"PostalAddress","addressLocality":"Saarbrücken","addressCountry":"DE"},"knowsLanguage":["en","de","ta","hi"],"knowsAbout":["Machine Learning","Natural Language Processing","Computer Vision","Data Science"],"sameAs":["https://github.com/Axwolf13","https://linkedin.com/in/akshay-a-ax13"]}
+{"@context":"https://schema.org","@type":"Person","name":"Akshay Ashok","url":"https://axwolf13.github.io/","email":"mailto:akshay57ax@gmail.com","jobTitle":"Data Science & AI Master's student","worksFor":{"@type":"Organization","name":"ORBIS Value+"},"affiliation":{"@type":"CollegeOrUniversity","name":"Saarland University"},"alumniOf":{"@type":"CollegeOrUniversity","name":"Bannari Amman Institute of Technology"},"address":{"@type":"PostalAddress","addressLocality":"Saarbrücken","addressCountry":"DE"},"knowsLanguage":["en","de","ta","hi"],"knowsAbout":["Machine Learning","Natural Language Processing","Computer Vision","Data Science"],"sameAs":["https://github.com/Axwolf13","https://linkedin.com/in/akshay-a-ax13"]}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -60,7 +60,7 @@
         <div class="eyebrow">M.Sc. Data Science &amp; AI · Saarland University</div>
         <h1>Machine learning, <span class="hl">end to end.</span></h1>
         <p class="lede">I work across NLP, computer vision and applied ML, taking problems from dataset construction through model benchmarking to a documented, reproducible result. First author of a peer-reviewed computer vision paper (Sādhanā, Springer 2025). Python is my daily driver, with the OpenAI and Anthropic APIs for LLM tooling and agentic workflows.</p>
-        <span class="badge"><span class="dot" aria-hidden="true"></span>Saarbrücken · open to thesis topics and research collaborations</span>
+        <span class="badge"><span class="dot" aria-hidden="true"></span>Saarbrücken · working student at ORBIS Value+ · open to thesis topics</span>
         <span class="badge"><span class="dot" aria-hidden="true"></span>Latest: reproduced MolCA (EMNLP 2023) and tested which input it believes</span>
         <div class="cta-row">
           <a class="btn btn-primary" href="mailto:akshay57ax@gmail.com">Email me</a>
@@ -108,7 +108,7 @@
     </div>
 
     <section id="publication">
-      <div class="sec-head"><b>—</b> Peer-reviewed</div>
+      <div class="sec-head"><b aria-hidden="true">—</b> Peer-reviewed</div>
       <div class="pub">
         <h2>Real-time yoga pose estimation with a hybrid MoveNet architecture</h2>
         <div class="venue">Sādhanā · Indian Academy of Sciences, Springer · 2025 · First author</div>
@@ -128,7 +128,7 @@
     </section>
 
     <section id="work">
-      <div class="sec-head"><b>—</b> Selected work</div>
+      <div class="sec-head"><b aria-hidden="true">—</b> Selected work</div>
 
       <div class="proj">
         <div class="tag">Reproduction · LLMs × Graphs</div>
@@ -163,7 +163,7 @@
         <div>
           <h3>DODI: deception scoring for Terms-of-Service documents</h3>
           <p>DODI (Digital Ownership Deception Index) quantifies the gap between "Buy now" marketing and "you're only licensing this" fine print in consumer ToS documents. A deterministic, fully reproducible scorer (Flesch–Kincaid readability, licence-vs-ownership term ratio, red-flag clause detection, weighted 25/50/25) compared against ToS;DR human expert grades (Spearman ρ = 0.45, n = 10, not significant) and applied as a temporal study: 10 platforms, four Wayback Machine snapshots each (2015–2024). The index passes its face-validity test: GOG, the DRM-free "you own your games" store, scores lowest of all ten platforms in every year.</p>
-          <p>Then I checked my own index with two LLM judges. They barely agree with it (ρ = 0.12 and 0.26). The disagreement exposed a real flaw: DODI can't tell an honest subscription from a deceptive "Buy" button. Version 1.1 (September 2026) counts whole words and validates against reviewed ToS;DR grades only. <a class="textlink" href="writing/dodi-v2/">Version 2</a> reads the archived store page first: an ownership promise only counts if the store made one.</p>
+          <p>Then I checked my own index with three LLM judges from two vendors. They barely agree with it (ρ = 0.05 to 0.26). The disagreement exposed a real flaw: DODI can't tell an honest subscription from a deceptive "Buy" button. Version 1.1 (September 2026) counts whole words and validates against reviewed ToS;DR grades only. <a class="textlink" href="writing/dodi-v2/">Version 2</a> reads the archived store page first: an ownership promise only counts if the store made one.</p>
           <p>Shipped end to end, not just analysed: the scorer runs as a public web service, a Dockerized FastAPI app with tests and CI. It's also an MCP server over Streamable HTTP, deployed on Render, so an AI agent can call the scorer as a tool. I've tested it inside a Microsoft Copilot Studio agent.</p>
           <div class="stack">Python · textstat · SciPy · FastAPI · Docker · CI (GitHub Actions) · MCP · LLM-as-judge · ToS;DR validation</div>
           <div class="links">
@@ -202,7 +202,7 @@
     </section>
 
     <section id="stack">
-      <div class="sec-head"><b>—</b> Tooling &amp; stack</div>
+      <div class="sec-head"><b aria-hidden="true">—</b> Tooling &amp; stack</div>
       <div class="cols">
         <div>
           <h4>Build with</h4>
@@ -229,8 +229,12 @@
     </section>
 
     <section id="path">
-      <div class="sec-head"><b>—</b> Path</div>
+      <div class="sec-head"><b aria-hidden="true">—</b> Path</div>
       <div class="tl">
+        <div class="tl-item">
+          <div class="tl-year">2026</div>
+          <b>Working student, Data Science &amp; Process Intelligence, ORBIS Value+</b>, Saarbrücken. Data science in the Process Intelligence team, alongside the M.Sc.
+        </div>
         <div class="tl-item">
           <div class="tl-year">2026</div>
           <b>MolCA reproduction</b>, graduate seminar with Prof. Dietrich Klakow, Saarland University. Reproduced a graph-augmented LLM paper (EMNLP 2023) on two machines and showed the model trusts the graph over the text.
