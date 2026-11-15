@@ -194,8 +194,8 @@
       if(!detector) await loadModels();
     }catch(e){
       console.error(e);
+      stop();   // resets the status line, so the message goes after it
       setStatus('model failed to load. Check your connection and reload.');
-      stop();
       return;
     }
     stageMsg.hidden = true;
@@ -367,7 +367,7 @@
         dbg.gate = 'neutral stand';
         dbg.top3 = '';
         probHistory = [];
-    formHistory = [];
+        formHistory = [];
         updateResult(null, 'standing detected; strike one of the 11 asanas below');
       }else if(torsoOk && legsOk){
         dbg.gate = 'open';
@@ -376,7 +376,7 @@
         dbg.gate = torsoOk ? 'legs low' : 'torso low';
         dbg.top3 = '';
         probHistory = [];
-    formHistory = [];
+        formHistory = [];
         updateResult(null, torsoOk
           ? 'legs not visible; step back so knees and ankles are in frame'
           : 'upper body not visible; face the camera and step back');

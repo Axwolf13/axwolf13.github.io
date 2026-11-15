@@ -8,18 +8,22 @@
   }catch(e){}
 
   // theme toggle (boot script in <head> sets the initial data-theme)
+  var toggle = document.querySelector('.theme-toggle');
   function applyTheme(t){
     document.documentElement.setAttribute('data-theme', t);
     var meta = document.querySelector('meta[name="theme-color"]');
     if(meta) meta.setAttribute('content', t === 'dark' ? '#0F1626' : '#FAFAF6');
+    if(toggle) toggle.setAttribute('aria-pressed', t === 'dark' ? 'true' : 'false');
   }
   function flipTheme(){
     var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     applyTheme(next);
     try{ localStorage.setItem('theme', next); }catch(e){}
   }
-  var toggle = document.querySelector('.theme-toggle');
-  if(toggle) toggle.addEventListener('click', flipTheme);
+  if(toggle){
+    toggle.setAttribute('aria-pressed', document.documentElement.getAttribute('data-theme') === 'dark' ? 'true' : 'false');
+    toggle.addEventListener('click', flipTheme);
+  }
 
   // vision mode: draw detection boxes over the page's structure
   var cvMap = [
@@ -45,7 +49,8 @@
     document.body.classList.add('vision');
   }
   addEventListener('keydown', function(e){
-    if(e.ctrlKey || e.metaKey || e.altKey) return;
+    // e.repeat: a held key must not strobe the whole page between themes
+    if(e.ctrlKey || e.metaKey || e.altKey || e.repeat) return;
     if(e.key === 't') flipTheme();
     if(e.key === 'v'){
       if(document.body.classList.contains('vision')){
@@ -139,16 +144,18 @@
 
   // stat count-up
   function countUp(el){
-    var m = el.textContent.trim().match(/^([\d,]+)(%?)$/);
+    var m = el.textContent.trim().match(/^([\d,]+)(\.\d+)?(%?)$/);
     if(!m) return;
-    var target = parseInt(m[1].replace(/,/g,''), 10);
-    var suffix = m[2];
+    var target = parseFloat((m[1] + (m[2] || '')).replace(/,/g,''));
+    var dec = m[2] ? m[2].length - 1 : 0;
+    var fmt = {minimumFractionDigits: dec, maximumFractionDigits: dec};
+    var suffix = m[3];
     var t0 = null;
     function step(t){
       if(!t0) t0 = t;
       var p = Math.min((t - t0) / 900, 1);
       var eased = 1 - Math.pow(1 - p, 3);
-      el.textContent = Math.round(target * eased).toLocaleString('en-US') + suffix;
+      el.textContent = (target * eased).toLocaleString('en-US', fmt) + suffix;
       if(p < 1) requestAnimationFrame(step);
     }
     requestAnimationFrame(step);

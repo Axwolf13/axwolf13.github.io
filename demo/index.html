@@ -61,7 +61,7 @@
         <div>
           <div class="demo-stage">
             <video id="cam" playsinline muted aria-hidden="true"></video>
-            <canvas id="stage"></canvas>
+            <canvas id="stage" role="img" aria-label="Your webcam feed with the detected pose skeleton drawn over it"></canvas>
             <div class="stage-msg" id="stageMsg">
               <p>Camera stays off until you start it.</p>
               <button class="btn btn-primary" id="startBtn" type="button">Start camera</button>
@@ -121,8 +121,8 @@
   </footer>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection@2.1.3/dist/pose-detection.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js" integrity="sha256-MA364nPSC0BG9GoG1zVojwNnWoB1Yem8tfZk6y89KDE=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection@2.1.3/dist/pose-detection.min.js" integrity="sha256-7ts4JUQh3iFXHojbICOCEEuY823iIalPlW170B9Dq80=" crossorigin="anonymous"></script>
 <script src="../script.js"></script>
 <script src="demo.js"></script>
 <script data-goatcounter="https://akshayashok.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
