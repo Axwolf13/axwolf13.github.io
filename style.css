@@ -33,6 +33,7 @@ html[data-theme="dark"]{
 }
 *{box-sizing:border-box;margin:0;padding:0}
 h1,h2,h3{text-wrap:balance}
+p,li{text-wrap:pretty}
 body{
   background:var(--paper);
   background-image:radial-gradient(rgba(26,39,64,.05) 1px,transparent 1px);
@@ -129,9 +130,17 @@ h1 .hl{background:linear-gradient(transparent 66%,rgba(17,160,90,.28) 66%)}
   display:inline-flex;align-items:center;gap:8px;margin-top:26px;
   font-family:'IBM Plex Mono',monospace;font-size:12.5px;letter-spacing:.03em;
   color:var(--ink);background:var(--card);border:1px solid var(--hairline);
-  border-radius:999px;padding:8px 16px;
+  border-radius:18px;padding:8px 16px; /* a full pill on one line, a tidy box when it wraps on phones */
 }
 .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex:none;position:relative}
+.latest{
+  display:block;margin-top:16px;
+  font-family:'IBM Plex Mono',monospace;font-size:12.5px;letter-spacing:.03em;
+  color:var(--ink);text-decoration:none;
+  transition:color .15s ease;
+}
+.latest b{font-weight:500;color:var(--accent-ink);text-transform:uppercase;letter-spacing:.12em;margin-right:8px}
+.latest:hover,.latest:focus-visible{color:var(--accent-ink)}
 .cta-row{margin-top:30px;display:flex;flex-wrap:wrap;gap:12px}
 .btn{
   font-family:'IBM Plex Mono',monospace;font-size:13.5px;text-decoration:none;
@@ -174,12 +183,13 @@ html[data-theme="dark"] .btn-primary:hover{background:#25A765}
   html{scroll-behavior:smooth}
   .reveal{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
   .reveal.in{opacity:1;transform:none}
-  .hero .eyebrow,.hero h1,.hero .lede,.hero .badge,.hero .cta-row{
+  .hero .eyebrow,.hero h1,.hero .lede,.hero .badge,.hero .latest,.hero .cta-row{
     opacity:0;transform:translateY(12px);animation:rise .6s ease forwards;
   }
   .hero h1{animation-delay:.08s}
   .hero .lede{animation-delay:.16s}
   .hero .badge{animation-delay:.24s}
+  .hero .latest{animation-delay:.28s}
   .hero .cta-row{animation-delay:.32s}
   .badge .dot::after{
     content:"";position:absolute;inset:0;border-radius:50%;
@@ -251,6 +261,11 @@ section{padding:56px 0;border-top:1px solid var(--hairline);scroll-margin-top:76
   border-radius:8px;padding:18px 22px;margin-top:22px;
 }
 .article .backlink{margin-top:44px}
+.article h2{scroll-margin-top:84px}
+.toc{margin-top:22px;font-size:.92rem}
+.toc summary{cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--accent-ink)}
+.toc ol{margin-top:8px}
+.toc li{margin-top:5px}
 
 /* charts (colors validated: light #11A05A/#838EA2 on paper, dark #24AC68/#63738E) */
 :root{--chart-accent:#11A05A;--chart-muted:#838EA2;--chart-hover:rgba(26,39,64,.045)}
@@ -337,7 +352,11 @@ p .textlink,li .textlink,.callout .textlink{margin-right:0;white-space:normal}
 .proj .tag{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-ink);padding-top:5px}
 .proj h3{font-family:'Archivo',sans-serif;font-weight:700;font-size:1.22rem;letter-spacing:-.01em}
 .proj p{margin-top:10px;color:var(--ink);max-width:44em}
-.proj .stack{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--muted);margin-top:12px}
+/* three key figures per project, a smaller echo of the paper card's stats */
+.figs{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:14px 28px;margin-top:18px;max-width:44em}
+.figs li{font-family:'IBM Plex Mono',monospace;font-size:11.5px;line-height:1.5;letter-spacing:.02em;color:var(--muted)}
+.figs b{display:block;margin-bottom:3px;font-family:'Archivo',sans-serif;font-weight:900;font-size:1.3rem;line-height:1.15;letter-spacing:-.01em;color:var(--ink);white-space:nowrap}
+.proj .stack{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--muted);margin-top:16px}
 .proj .links{margin-top:12px}
 
 /* timeline */
@@ -370,6 +389,9 @@ p .textlink,li .textlink,.callout .textlink{margin-right:0;white-space:normal}
   border-radius:6px;padding:6px 12px;color:var(--ink);
 }
 .cols p{max-width:34em}
+.how{list-style:none;max-width:34em}
+.how li+li{margin-top:12px}
+.how b{font-weight:600}
 .cols .lang{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--muted);margin-top:14px}
 
 /* footer */
@@ -435,9 +457,9 @@ html[data-theme="dark"] .fineprint{color:rgba(232,236,244,.5)}
 .demo-hint{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--muted);margin-top:26px;max-width:52em}
 
 @media (max-width:760px){
-  .hero{grid-template-columns:1fr;padding:52px 0 44px}
+  .hero{grid-template-columns:1fr;gap:26px;padding:34px 0 44px}
   .demo-grid{grid-template-columns:1fr}
-  .pose{max-width:190px;order:-1}
+  .pose{max-width:132px;order:-1} /* small enough that the headline stays on the first screen */
   .proj{grid-template-columns:1fr;gap:8px}
   .cols{grid-template-columns:1fr}
   nav a{margin-left:14px}
@@ -447,6 +469,10 @@ html[data-theme="dark"] .fineprint{color:rgba(232,236,244,.5)}
   footer{padding:36px 24px;border-radius:12px}
 }
 @media (max-width:480px){
+  /* on phones each figure is one row: number left, label right */
+  .figs{grid-template-columns:1fr;gap:8px}
+  .figs li{display:grid;grid-template-columns:7.6rem 1fr;gap:12px;align-items:baseline}
+  .figs b{margin:0;font-size:1.1rem}
   .article table{font-size:.84em}
   .article th,.article td{padding:6px 8px}
   .bars .chart-row{grid-template-columns:1fr;gap:0}
@@ -487,7 +513,8 @@ html[data-theme="dark"] .fineprint{color:rgba(232,236,244,.5)}
   header{position:static;background:none;border-bottom:0;-webkit-backdrop-filter:none;backdrop-filter:none}
   nav,.skip,#progress,.backlink,footer .textlink{display:none}
   /* sections below the fold never met the scroll observer, so they would print blank */
-  .reveal,.hero .eyebrow,.hero h1,.hero .lede,.hero .badge,.hero .cta-row{opacity:1!important;transform:none!important;animation:none!important}
+  .reveal,.hero .eyebrow,.hero h1,.hero .lede,.hero .badge,.hero .latest,.hero .cta-row{opacity:1!important;transform:none!important;animation:none!important}
+  .toc{display:none}
   .pose,.badge .dot::after{animation:none}
   .pose line{animation:none;stroke-dashoffset:0}
   .pose circle,.pose .kp-label{animation:none;opacity:1}

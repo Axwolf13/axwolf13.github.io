@@ -30,6 +30,8 @@
     ['h1', 'headline'],
     ['.lede', 'text_block'],
     ['.badge', 'status_chip'],
+    ['.latest', 'latest_link'],
+    ['.figs', 'key_figures'],
     ['.pose', 'pose_input'],
     ['.pub', 'publication_card'],
     ['.proj', 'work_item'],
@@ -67,6 +69,37 @@
       try{ stored = localStorage.getItem('theme'); }catch(err){}
       if(!stored) applyTheme(e.matches ? 'dark' : 'light');
     });
+  }
+
+  // long posts get a collapsed "On this page" list built from their h2s
+  var article = document.querySelector('.article');
+  var heads = article ? article.querySelectorAll('h2') : [];
+  if(heads.length >= 5){
+    var toc = document.createElement('details');
+    toc.className = 'toc';
+    var tocLabel = document.createElement('summary');
+    tocLabel.textContent = 'On this page';
+    var tocList = document.createElement('ol');
+    heads.forEach(function(h, i){
+      if(!h.id){
+        var slug = h.textContent.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'section';
+        h.id = document.getElementById(slug) ? slug + '-' + (i + 1) : slug;
+      }
+      var item = document.createElement('li');
+      var link = document.createElement('a');
+      link.className = 'textlink';
+      link.href = '#' + h.id;
+      link.textContent = h.textContent;
+      item.appendChild(link);
+      tocList.appendChild(item);
+    });
+    toc.appendChild(tocLabel);
+    toc.appendChild(tocList);
+    var after = article.querySelector('.lede') || article.querySelector('h1');
+    after.parentNode.insertBefore(toc, after.nextSibling);
+    // the ids did not exist when the browser first looked for the hash
+    var wanted = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if(wanted) wanted.scrollIntoView();
   }
 
   // scroll reveal, with stagger for list items

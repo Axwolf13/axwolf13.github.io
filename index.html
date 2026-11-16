@@ -58,10 +58,10 @@
     <div class="hero">
       <div>
         <div class="eyebrow">M.Sc. Data Science &amp; AI · Saarland University</div>
-        <h1>Machine learning, <span class="hl">end to end.</span></h1>
-        <p class="lede">I work across NLP, computer vision and applied ML, taking problems from dataset construction through model benchmarking to a documented, reproducible result. First author of a peer-reviewed computer vision paper (Sādhanā, Springer 2025). Python is my daily driver, with the OpenAI and Anthropic APIs for LLM tooling and agentic workflows.</p>
-        <span class="badge"><span class="dot" aria-hidden="true"></span>Saarbrücken · working student at ORBIS Value+ · open to thesis topics</span>
-        <span class="badge"><span class="dot" aria-hidden="true"></span>Latest: reproduced MolCA (EMNLP 2023) and tested which input it believes</span>
+        <h1>I check if the numbers <span class="hl">hold up.</span></h1>
+        <p class="lede">I reproduce papers, benchmark models and report what breaks next to what works, across NLP, computer vision and applied ML. First author of a peer-reviewed computer vision paper (Sādhanā, Springer 2025). Python is my daily driver, with the OpenAI and Anthropic APIs for LLM tooling and agentic workflows.</p>
+        <span class="badge"><span class="dot" aria-hidden="true"></span>Working student at ORBIS Value+ · open to thesis topics</span>
+        <a class="latest" href="writing/molca/"><b>Latest</b> Reproduced MolCA and tested which input it believes <span aria-hidden="true">→</span></a>
         <div class="cta-row">
           <a class="btn btn-primary" href="mailto:akshay57ax@gmail.com">Email me</a>
           <a class="btn btn-ghost" href="Akshay_Ashok_CV.pdf" target="_blank" rel="noopener">CV (PDF)</a>
@@ -112,7 +112,8 @@
       <div class="pub">
         <h3>Real-time yoga pose estimation with a hybrid MoveNet architecture</h3>
         <div class="venue">Sādhanā · Indian Academy of Sciences, Springer · 2025 · First author</div>
-        <p>Built during a computer vision research internship at NIT Puducherry. The architecture splits deliberately: MoveNet Thunder generates high-fidelity keypoints for training, while MoveNet Lightning handles inference at 30+ FPS on consumer hardware: accuracy where the model learns, speed where the user waits. I owned the dataset end to end, consolidating and curating 3,435 images across 11 asanas from Kaggle and Yoga-82 sources, then trained the keypoint-embedding classifier, ran the misclassification analysis and carried the paper through two rounds of peer review.</p>
+        <p>Built during a computer vision research internship at NIT Puducherry. The architecture splits deliberately: MoveNet Thunder generates high-fidelity keypoints for training, while MoveNet Lightning handles inference at 30+ FPS on consumer hardware. Accuracy where the model learns, speed where the user waits.</p>
+        <p>I owned the dataset end to end: consolidated and curated 3,435 images across 11 asanas from Kaggle and Yoga-82 sources, trained the keypoint-embedding classifier, ran the misclassification analysis and carried the paper through two rounds of peer review.</p>
         <div class="stats">
           <div class="stat"><div class="n">98.8%</div><div class="l">test accuracy · 98.4% on-device, verifiable</div></div>
           <div class="stat"><div class="n">11</div><div class="l">asana classes</div></div>
@@ -134,8 +135,13 @@
         <div class="tag">Reproduction · LLMs × Graphs</div>
         <div>
           <h3>MolCA reproduction: which input does a molecule LLM believe?</h3>
-          <p>Graduate seminar with Prof. Dietrich Klakow, Saarland University. MolCA (Liu et al., EMNLP 2023) reads a molecule both as SMILES text and as a graph, wiring a graph encoder into Galactica through a Q-Former projector. I reproduced its released checkpoint on two very different machines: 62.32 and 62.77 BLEU-2 against the paper's 62.0, with 93.8% of captions character-identical across them. All 32 published retrieval metrics came back within 0.5 points, the 16 on the full test set within 0.12. Getting there took 14 patches to the released code, several fixing bugs nobody had reported upstream.</p>
-          <p>Then the experiment the paper never ran: give the model one molecule's text and a different molecule's graph. It describes the graph's molecule in about 90% of the cases where it clearly picks one. Breaking the graph costs 2.5 times what breaking the text costs. A wrong graph does more damage than no graph at all. The effect holds on a second dataset once I controlled for the 49% of its test set that leaks from the training data.</p>
+          <p>MolCA (Liu et al., EMNLP 2023) reads a molecule as SMILES text and as a graph at the same time. For a graduate seminar with Prof. Dietrich Klakow I reproduced its released checkpoint on two very different machines. Several of the patches it took fix bugs nobody had reported upstream.</p>
+          <p>Then the experiment the paper never ran: give the model one molecule's text and a different molecule's graph. It describes the graph's molecule in about 90% of the cases where it clearly picks one. A wrong graph does more damage than no graph at all.</p>
+          <ul class="figs">
+            <li><b>62.32 / 62.77</b> BLEU-2 on two machines. The paper reports 62.0.</li>
+            <li><b>14</b> patches to the released code</li>
+            <li><b>2.5×</b> the cost of breaking the graph, relative to breaking the text</li>
+          </ul>
           <div class="stack">PyTorch · Lightning · Hugging Face Transformers · Q-Former · LoRA · paired bootstrap · HTCondor cluster</div>
           <div class="links">
             <a class="textlink" href="writing/molca/">Write-up →</a>
@@ -148,12 +154,17 @@
         <div class="tag">Applied ML · Consulting</div>
         <div>
           <h3>Lingomatch, AI document triage for a Gov/Justice-Tech platform</h3>
-          <p>Student consultant (AI/Data Science) via the UdS Innovation Center's Triathlon startup programme: I built the ML backend of an AI-driven document-triage feasibility study for Lingomatch, turning photos of foreign-language documents into usable German gist translations for public authorities. I built and benchmarked the Arabic-to-German pipeline: Surya OCR evaluated on KITAB-Bench with CER/WER and confidence calibration; evaluated PaddleOCR as an independent second engine for disagreement-based flagging and documented its failure mode on Arabic due to engine-asymmetry; and benchmarked Opus-MT against NLLB&#8209;1.3B, matching translation quality (BLEU 43.8 vs 42.4) at a ninth of the memory, after catching the licence issue that ruled NLLB out for production.</p>
-          <p>Delivered the live demo in the final case-study presentation to the company's CEO.</p>
+          <p>Student consultant (AI/Data Science) via the UdS Innovation Center's Triathlon startup programme. I built the ML backend of a document-triage feasibility study for Lingomatch: photos of foreign-language documents in, usable German gist translations for public authorities out.</p>
+          <p>I built and benchmarked the Arabic-to-German pipeline: Surya OCR on KITAB-Bench, PaddleOCR as a second engine for disagreement-based flagging (its failure mode on Arabic is documented) and Opus-MT against NLLB&#8209;1.3B. I caught the licence issue that ruled NLLB out for production and delivered the live demo to the company's CEO in the final case-study presentation.</p>
+          <ul class="figs">
+            <li><b>43.8</b> BLEU for Opus-MT. NLLB&#8209;1.3B scores 42.4.</li>
+            <li><b>1/9</b> of NLLB's memory for matching quality</li>
+            <li><b>8&nbsp;GB</b> laptop GPU the whole benchmark ran on</li>
+          </ul>
           <div class="stack">Python · Hugging Face Transformers · Surya OCR · PaddleOCR · Opus-MT · NLLB · BLEU / CER evaluation</div>
           <div class="links">
-            <a class="textlink" href="https://github.com/Axwolf13/arabic-doc-triage-research" target="_blank" rel="noopener">Code →</a>
             <a class="textlink" href="writing/arabic-ocr-benchmarks/">Write-up →</a>
+            <a class="textlink" href="https://github.com/Axwolf13/arabic-doc-triage-research" target="_blank" rel="noopener">Code →</a>
           </div>
         </div>
       </div>
@@ -162,15 +173,20 @@
         <div class="tag">NLP · Shipped web service</div>
         <div>
           <h3>DODI: deception scoring for Terms-of-Service documents</h3>
-          <p>DODI (Digital Ownership Deception Index) quantifies the gap between "Buy now" marketing and "you're only licensing this" fine print in consumer ToS documents. A deterministic, fully reproducible scorer (Flesch–Kincaid readability, licence-vs-ownership term ratio, red-flag clause detection, weighted 25/50/25) compared against ToS;DR human expert grades (Spearman ρ = 0.45, n = 10, not significant) and applied as a temporal study: 10 platforms, four Wayback Machine snapshots each (2015–2024). The index passes its face-validity test: GOG, the DRM-free "you own your games" store, scores lowest of all ten platforms in every year.</p>
-          <p>Then I checked my own index with three LLM judges from two vendors. They barely agree with it (ρ = 0.05 to 0.26). The disagreement exposed a real flaw: DODI can't tell an honest subscription from a deceptive "Buy" button. Version 1.1 (September 2026) counts whole words and validates against reviewed ToS;DR grades only. <a class="textlink" href="writing/dodi-v2/">Version 2</a> reads the archived store page first: an ownership promise only counts if the store made one.</p>
-          <p>Shipped end to end, not just analysed: the scorer runs as a public web service, a Dockerized FastAPI app with tests and CI. It's also an MCP server over Streamable HTTP, deployed on Render, so an AI agent can call the scorer as a tool. I've tested it inside a Microsoft Copilot Studio agent.</p>
+          <p>DODI (Digital Ownership Deception Index) scores the gap between "Buy now" marketing and "you're only licensing this" fine print in consumer ToS documents. It's deterministic and fully reproducible, built from readability, licence-vs-ownership wording and red-flag clauses. It passes its face-validity test: GOG, the DRM-free "you own your games" store, scores lowest of all ten platforms in every year.</p>
+          <p>Then I checked my own index with three LLM judges from two vendors. They barely agree with it (ρ = 0.05 to 0.26) and the disagreement exposed a real flaw: DODI can't tell an honest subscription from a deceptive "Buy" button. Version 1.1 (September 2026) counts whole words and validates against reviewed ToS;DR grades only. <a class="textlink" href="writing/dodi-v2/">Version 2</a> reads the archived store page first: an ownership promise only counts if the store made one.</p>
+          <p>Shipped, not just analysed: a public web service (Dockerized FastAPI, tests, CI) and an MCP server on Render that an AI agent can call as a tool, tested inside a Microsoft Copilot Studio agent.</p>
+          <ul class="figs">
+            <li><b>10</b> platforms, four Wayback snapshots each, 2015 to 2024</li>
+            <li><b>0.45</b> Spearman correlation with ToS;DR human grades (n = 10, not significant)</li>
+            <li><b>3</b> LLM judges from two vendors checking the index</li>
+          </ul>
           <div class="stack">Python · textstat · SciPy · FastAPI · Docker · CI (GitHub Actions) · MCP · LLM-as-judge · ToS;DR validation</div>
           <div class="links">
             <a class="textlink" href="https://dodi-web.onrender.com/" target="_blank" rel="noopener">Live scorer →</a>
-            <a class="textlink" href="https://github.com/Axwolf13/dodi-analysis" target="_blank" rel="noopener">Code →</a>
             <a class="textlink" href="writing/dodi/">Write-up →</a>
             <a class="textlink" href="writing/llm-judge/">Judge write-up →</a>
+            <a class="textlink" href="https://github.com/Axwolf13/dodi-analysis" target="_blank" rel="noopener">Code →</a>
           </div>
         </div>
       </div>
@@ -179,7 +195,12 @@
         <div class="tag">Process mining · Purchase-to-pay</div>
         <div>
           <h3>Mining a real purchase-to-pay log</h3>
-          <p>A process mining pass over the public BPI Challenge 2019 log: one year of purchasing at a large coatings company, 251,734 purchase-order items and 1.6 million events. I streamed the 728&nbsp;MB XES file into Parquet and measured what process teams ask first. Orders take a median of 77 days from item to cleared invoice. 22% need a payment block lifted, 1.7% were ordered only after the invoice existed and 96% of invoice steps are still done by hand. 11,938 distinct paths, of which 45 cover 80% of items.</p>
+          <p>A process mining pass over the public BPI Challenge 2019 log: one year of purchasing at a large coatings company, 251,734 purchase-order items and 1.6 million events. I streamed the 728&nbsp;MB XES file into Parquet and measured what process teams ask first. 1.7% of items were ordered only after the invoice existed. 11,938 distinct paths, of which 45 cover 80% of items.</p>
+          <ul class="figs">
+            <li><b>77 days</b> median from order item to cleared invoice</li>
+            <li><b>22%</b> of items need a payment block lifted</li>
+            <li><b>96%</b> of invoice steps still done by hand</li>
+          </ul>
           <div class="stack">Python · pandas · XES streaming · variant analysis · conformance rules · matplotlib</div>
           <div class="links">
             <a class="textlink" href="writing/purchase-to-pay/">Write-up →</a>
@@ -192,7 +213,13 @@
         <div class="tag">Data analysis · Economics</div>
         <div>
           <h3>Shadow Correction: piracy as a market signal</h3>
-          <p>Quantitative study (team of 3) testing whether piracy behaves as a market-correction signal, structured as three testable barriers. The primary parameter: streaming-market fragmentation, measured with the Herfindahl–Hirschman Index on Parrot Analytics demand-share data. The supporting parameters were designed as falsification tests: piracy-intent indices built from Google Trends (pytrends) aligned with income per hour worked (World Bank GDP per capita over annual working hours) across 122 countries. That correlation is statistically zero (Spearman ρ = −0.001, p = 0.99), which rules out affordability as the explanation. Fragmentation tracks the rise in piracy visits, though on six years of data the trend isn't significant. The third test is an event study of piracy spikes after content delistings.</p>
+          <p>Quantitative study (team of 3) testing whether piracy behaves as a market-correction signal, structured as three testable barriers. The primary one is streaming-market fragmentation, measured with the Herfindahl–Hirschman Index on Parrot Analytics demand-share data. It tracks the rise in piracy visits, though on six years of data the trend isn't significant.</p>
+          <p>Affordability was the falsification test: piracy-intent indices built from Google Trends against income per hour worked. That correlation is statistically zero, which rules out affordability as the explanation. The third test is an event study of piracy spikes after content delistings.</p>
+          <ul class="figs">
+            <li><b>122</b> countries in the affordability test</li>
+            <li><b>−0.001</b> Spearman correlation of piracy intent with income (p = 0.99)</li>
+            <li><b>3</b> testable barriers: fragmentation, affordability, delistings</li>
+          </ul>
           <div class="stack">Python · pandas · pytrends · HHI · Parrot Analytics / World Bank data · event-study design</div>
           <div class="links">
             <a class="textlink" href="https://github.com/Axwolf13/Shadow-Correction-DaS-Project" target="_blank" rel="noopener">Code →</a>
@@ -222,7 +249,12 @@
         </div>
         <div>
           <h3>How I work</h3>
-          <p>I benchmark before I recommend: models get tested on realistic inputs and failure modes go in the report next to the wins; a translation model that degrades on long legal text is a finding, not a footnote. I take deployment constraints seriously from day one: model licences, GDPR, EU AI Act obligations and what actually fits in 8&nbsp;GB of VRAM. Everything ships version-controlled and documented so it survives handover. Where I'm still building depth I say so and pick it up fast: Docker, CI/CD and cloud deployment were on that list until I shipped DODI's live scorer as a Dockerized FastAPI service with CI on every push.</p>
+          <ul class="how">
+            <li><b>I benchmark before I recommend.</b> Models get tested on realistic inputs and failure modes go in the report next to the wins. A translation model that degrades on long legal text is a finding, not a footnote.</li>
+            <li><b>Deployment constraints count from day one.</b> Model licences, GDPR, EU AI Act obligations and what actually fits in 8&nbsp;GB of VRAM.</li>
+            <li><b>Everything survives handover.</b> It ships version-controlled and documented.</li>
+            <li><b>Where I'm still building depth I say so.</b> Then I pick it up fast: Docker, CI/CD and cloud deployment were on that list until I shipped DODI's live scorer as a Dockerized FastAPI service with CI on every push.</li>
+          </ul>
           <div class="lang">EN: C1 fluent · DE: A2, in active study toward B1 · Tamil: native · Hindi: conversational</div>
         </div>
       </div>
