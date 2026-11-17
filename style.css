@@ -261,6 +261,12 @@ section{padding:56px 0;border-top:1px solid var(--hairline);scroll-margin-top:76
   border-radius:8px;padding:18px 22px;margin-top:22px;
 }
 .article .backlink{margin-top:44px}
+.postnav{display:grid;grid-template-columns:1fr 1fr;gap:18px 32px;margin-top:48px;padding-top:24px;border-top:1px solid var(--hairline)}
+.postnav a{display:block;color:var(--ink);text-decoration:none;font-weight:600;line-height:1.35;transition:color .15s ease}
+.postnav a:hover,.postnav a:focus-visible{color:var(--accent-ink)}
+.postnav span{display:block;margin-bottom:5px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:400;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-ink)}
+.postnav .next{grid-column:2;text-align:right}
+.postnav + .backlink{margin-top:26px}
 .article h2{scroll-margin-top:84px}
 .toc{margin-top:22px;font-size:.92rem}
 .toc summary{cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--accent-ink)}
@@ -469,6 +475,8 @@ html[data-theme="dark"] .fineprint{color:rgba(232,236,244,.5)}
   footer{padding:36px 24px;border-radius:12px}
 }
 @media (max-width:480px){
+  .postnav{grid-template-columns:1fr}
+  .postnav .next{grid-column:1;text-align:left}
   /* on phones each figure is one row: number left, label right */
   .figs{grid-template-columns:1fr;gap:8px}
   .figs li{display:grid;grid-template-columns:7.6rem 1fr;gap:12px;align-items:baseline}
@@ -514,7 +522,7 @@ html[data-theme="dark"] .fineprint{color:rgba(232,236,244,.5)}
   nav,.skip,#progress,.backlink,footer .textlink{display:none}
   /* sections below the fold never met the scroll observer, so they would print blank */
   .reveal,.hero .eyebrow,.hero h1,.hero .lede,.hero .badge,.hero .latest,.hero .cta-row{opacity:1!important;transform:none!important;animation:none!important}
-  .toc{display:none}
+  .toc,.postnav{display:none}
   .pose,.badge .dot::after{animation:none}
   .pose line{animation:none;stroke-dashoffset:0}
   .pose circle,.pose .kp-label{animation:none;opacity:1}

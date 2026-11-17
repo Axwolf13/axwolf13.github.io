@@ -214,13 +214,15 @@
 
       <h2>The strongest reader ranks them like v2</h2>
 
-      <p>In November I ran the strongest model I can get, Claude Fable 5.2, over the same ten contracts. It never saw a store page. Against v1 its scores correlate at ρ = −0.12. Against v2: <strong>ρ = 0.90</strong> (p &lt; 0.001).</p>
+      <p>In November I ran the strongest model I can get, Claude Fable 5.2, over the same ten contracts. It never saw a store page. Against v1 its scores correlate at ρ = −0.12. Against v2: <strong>ρ = 0.90</strong> (permutation p = 0.001).</p>
+
+      <p>One reading is one draw from a noisy judge, so I ran it three times. Its scores moved by 2.2 points on average between passes and the correlation came out at 0.90 every time. Leave any one contract out and it stays between 0.86 and 0.93.</p>
 
       <p>It puts the same four stores on top (Xbox, Ubisoft, Steam, Amazon), Adobe in the middle and Facebook and Netflix at the bottom. Inside those groups the order shifts a little and it ranks Spotify above GOG.</p>
 
       <p>Why would a reader that only sees the contract agree with a score built from store pages? Because the stores that sell titles write the sale into the contract too. Fable's note on Xbox: the terms use "purchase", "purchased" and "acquired" throughout for digital content, while "licensed, not sold" sits in a software clause and an appendix. Its note on Spotify: "framed throughout as a streaming subscription", so there's "little buy-versus-licence deception".</p>
 
-      <p>Read that number with care. It's ten contracts and one run each. v2 grew out of what the first judges said about Adobe, so I expected a reader to like it better than v1. I didn't expect 0.90. What I can say is that v2 was fixed in September and these scores didn't exist until November.</p>
+      <p>Read that number with care. It's ten contracts and one model. v2 grew out of what the first judges said about Adobe, so I expected a reader to like it better than v1. I didn't expect 0.90. What I can say is that v2 was fixed in September and these scores didn't exist until November.</p>
 
       <h2>The stores are already changing</h2>
 
@@ -243,7 +245,7 @@ By placing an order, you're purchasing a content license
         <li><strong>The coding is mine.</strong> Three promise levels and a 0.5 disclosure weight are choices, not estimates. The quotes are in the repo so you can disagree with a specific call.</li>
         <li><strong>Only 2024 contracts are scored.</strong> Running v2 across 2015 to 2024 needs archived store pages for every year.</li>
         <li><strong>Stores vary by region.</strong> What an EU visitor sees isn't what a Californian sees.</li>
-        <li><strong>One strong reader, one run.</strong> The 0.90 is a single pass of one model over ten contracts. Haiku on the same ten reaches 0.42.</li>
+        <li><strong>One strong reader.</strong> The 0.90 is one model reading ten contracts three times. Haiku on the same ten reaches 0.42.</li>
       </ul>
 
       <p>The code, the coding sheet and every snapshot link are in <a class="textlink" href="https://github.com/Axwolf13/dodi-analysis#dodi-v2-what-the-store-promises-against-what-the-contract-grants" target="_blank" rel="noopener">the repo</a>.</p>

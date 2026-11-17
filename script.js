@@ -102,6 +102,39 @@
     if(wanted) wanted.scrollIntoView();
   }
 
+  // previous / next post. One ordered list, oldest first: add new posts at the end.
+  var POSTS = [
+    ['arabic-ocr-benchmarks', 'Benchmarking Arabic OCR and translation on an 8 GB laptop GPU'],
+    ['dodi', 'Buying nothing: scoring a decade of ownership deception in Terms of Service'],
+    ['llm-judge', 'I built an LLM judge to check my own scorer. It disagreed with me.'],
+    ['molca', "I made a molecule model's two inputs disagree. It believed the graph."],
+    ['dodi-v2', 'The store says Buy. The contract says licence. DODI v2 scores the gap.'],
+    ['purchase-to-pay', 'What 1.6 million purchasing events say about how a company actually buys things']
+  ];
+  var here = (location.pathname.match(/\/writing\/([^\/]+)\//) || [])[1];
+  var at = POSTS.map(function(p){ return p[0]; }).indexOf(here);
+  var backlink = article && article.querySelector('.backlink');
+  if(at > -1 && backlink){
+    // a div, not a <nav>: the header's "nav a" styles would leak into these links
+    var postnav = document.createElement('div');
+    postnav.className = 'postnav';
+    postnav.setAttribute('role', 'navigation');
+    postnav.setAttribute('aria-label', 'More writing');
+    [[at - 1, 'Older', 'prev'], [at + 1, 'Newer', 'next']].forEach(function(side){
+      var post = POSTS[side[0]];
+      if(!post) return;
+      var link = document.createElement('a');
+      link.className = side[2];
+      link.href = '../' + post[0] + '/';
+      var label = document.createElement('span');
+      label.textContent = side[1];
+      link.appendChild(label);
+      link.appendChild(document.createTextNode(post[1]));
+      postnav.appendChild(link);
+    });
+    backlink.parentNode.insertBefore(postnav, backlink);
+  }
+
   // scroll reveal, with stagger for list items
   if(!reduce && 'IntersectionObserver' in window){
     var els = document.querySelectorAll('section, footer');
