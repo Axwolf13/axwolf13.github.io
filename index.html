@@ -174,12 +174,12 @@
         <div>
           <h3>DODI: deception scoring for Terms-of-Service documents</h3>
           <p>DODI (Digital Ownership Deception Index) scores the gap between "Buy now" marketing and "you're only licensing this" fine print in consumer ToS documents. It's deterministic and fully reproducible, built from readability, licence-vs-ownership wording and red-flag clauses. It passes its face-validity test: GOG, the DRM-free "you own your games" store, scores lowest of all ten platforms in every year.</p>
-          <p>Then I checked my own index with three LLM judges from two vendors. They barely agree with it (ρ = 0.05 to 0.26) and the disagreement exposed a real flaw: DODI can't tell an honest subscription from a deceptive "Buy" button. Version 1.1 (September 2026) counts whole words and validates against reviewed ToS;DR grades only. <a class="textlink" href="writing/dodi-v2/">Version 2</a> reads the archived store page first: an ownership promise only counts if the store made one.</p>
+          <p>Then I checked my own index with four LLM judges from two vendors. They barely agree with it (ρ = 0.05 to 0.26) and the disagreement exposed a real flaw: DODI can't tell an honest subscription from a deceptive "Buy" button. Version 1.1 (September 2026) counts whole words and validates against reviewed ToS;DR grades only. <a class="textlink" href="writing/dodi-v2/">Version 2</a> reads the archived store page first: an ownership promise only counts if the store made one.</p>
           <p>Shipped, not just analysed: a public web service (Dockerized FastAPI, tests, CI) and an MCP server on Render that an AI agent can call as a tool, tested inside a Microsoft Copilot Studio agent.</p>
           <ul class="figs">
             <li><b>10</b> platforms, four Wayback snapshots each, 2015 to 2024</li>
             <li><b>0.45</b> Spearman correlation with ToS;DR human grades (n = 10, not significant)</li>
-            <li><b>3</b> LLM judges from two vendors checking the index</li>
+            <li><b>4</b> LLM judges from two vendors checking the index</li>
           </ul>
           <div class="stack">Python · textstat · SciPy · FastAPI · Docker · CI (GitHub Actions) · MCP · LLM-as-judge · ToS;DR validation</div>
           <div class="links">

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>I built an LLM judge to check my own scorer. It disagreed with me. · Akshay Ashok</title>
-<meta name="description" content="I had three language models from two vendors grade the same Terms of Service documents as my deterministic index. The correlations ran from 0.05 to 0.26. Here is what the disagreement taught me about both instruments.">
+<meta name="description" content="I had four language models from two vendors grade the same Terms of Service documents as my deterministic index. The correlations ran from 0.05 to 0.26. Here is what the disagreement taught me about both instruments.">
 <link rel="canonical" href="https://axwolf13.github.io/writing/llm-judge/">
 <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <meta name="theme-color" content="#FAFAF6">
@@ -21,7 +21,7 @@
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://axwolf13.github.io/writing/llm-judge/">
 <meta property="og:title" content="I built an LLM judge to check my own scorer. It disagreed with me.">
-<meta property="og:description" content="Three language models from two vendors graded the same ToS documents as my deterministic index. The correlations ran from 0.05 to 0.26. The disagreement was more useful than agreement would have been.">
+<meta property="og:description" content="Four language models from two vendors graded the same ToS documents as my deterministic index. The correlations ran from 0.05 to 0.26. The disagreement was more useful than agreement would have been.">
 <meta property="og:image" content="https://axwolf13.github.io/writing/llm-judge/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -31,7 +31,7 @@
 <link rel="preload" href="../../fonts/ibm-plex-mono-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../../style.css">
 <script type="application/ld+json">
-{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "I built an LLM judge to check my own scorer. It disagreed with me.", "description": "I had three language models from two vendors grade the same Terms of Service documents as my deterministic index. The correlations ran from 0.05 to 0.26. Here is what the disagreement taught me about both instruments.", "datePublished": "2026-08-08", "dateModified": "2026-10-01", "url": "https://axwolf13.github.io/writing/llm-judge/", "image": "https://axwolf13.github.io/writing/llm-judge/og.png", "author": {"@type": "Person", "name": "Akshay Ashok", "url": "https://axwolf13.github.io/"}}
+{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "I built an LLM judge to check my own scorer. It disagreed with me.", "description": "I had four language models from two vendors grade the same Terms of Service documents as my deterministic index. The correlations ran from 0.05 to 0.26. Here is what the disagreement taught me about both instruments.", "datePublished": "2026-08-08", "dateModified": "2026-11-16", "url": "https://axwolf13.github.io/writing/llm-judge/", "image": "https://axwolf13.github.io/writing/llm-judge/og.png", "author": {"@type": "Person", "name": "Akshay Ashok", "url": "https://axwolf13.github.io/"}}
 </script>
 </head>
 <body>
@@ -56,7 +56,7 @@
 <div class="wrap">
   <main id="top">
     <article class="article">
-      <div class="meta">August 2026, updated October 2026 · 7 min read · <a class="textlink" href="https://github.com/Axwolf13/dodi-analysis" target="_blank" rel="noopener">code on GitHub →</a> · <a class="textlink" href="../dodi/">the scorer being tested →</a></div>
+      <div class="meta">August 2026, updated November 2026 · 7 min read · <a class="textlink" href="https://github.com/Axwolf13/dodi-analysis" target="_blank" rel="noopener">code on GitHub →</a> · <a class="textlink" href="../dodi/">the scorer being tested →</a></div>
       <h1>I built an LLM judge to check my own scorer. It disagreed with me.</h1>
 
       <p class="lede">I wrote a deterministic index that scores how hard a Terms of Service document works to hide that "Buy now" means "revocable licence". Then I had language models read the same documents and score them independently. I expected a nice validation number. I got a correlation of 0.12.</p>
@@ -71,7 +71,7 @@
 
       <p>The judge is the opposite kind of instrument. Each document goes to a language model with a rubric that mirrors DODI's three components. The model returns structured JSON: subscores, an overall deception score, a letter grade and a short rationale. Every response is cached to disk, so the analysis reruns without touching a model. Anyone can check my numbers without paying for tokens.</p>
 
-      <p>Three judges. Claude Haiku, small and fast, on all 51 documents. Claude Sonnet, considerably stronger, on the 11 validation documents, ten of which have reviewed human grades from <a class="textlink" href="https://tosdr.org/" target="_blank" rel="noopener">ToS;DR</a>. Then Google's Gemini 3.5 Flash on the same 11, so the check doesn't rest on one vendor. The Claude judges ran locally through the CLI on my normal subscription and Gemini on its free tier, so this cost me nothing but time.</p>
+      <p>Four judges. Claude Haiku, small and fast, on all 51 documents. Claude Sonnet, considerably stronger, on the 11 validation documents, ten of which have reviewed human grades from <a class="textlink" href="https://tosdr.org/" target="_blank" rel="noopener">ToS;DR</a>. Then Google's Gemini 3.5 Flash on the same 11, so the check doesn't rest on one vendor. Last came Claude Fable 5.2, the strongest model I can run, on the same 11 again. The Claude judges ran locally through the CLI on my normal subscription and Gemini on its free tier, so this cost me nothing but time.</p>
 
       <p>Before looking at agreement I checked the judge was stable at all. Ten documents, three runs each: mean per-document standard deviation of 6.3 points, worst spread 20. Not noise-free, but nowhere near enough noise to explain what came next.</p>
 
@@ -84,33 +84,39 @@
           <tr><td>DODI (counts words)</td><td class="num"></td><td class="num">0.45</td></tr>
           <tr><td>Claude Sonnet (reads)</td><td class="num">0.26 (n=11)</td><td class="num">0.34</td></tr>
           <tr><td>Claude Haiku (reads)</td><td class="num">0.12 (n=51)</td><td class="num">0.34</td></tr>
+          <tr><td>Claude Fable 5.2 (reads)</td><td class="num">0.06 (n=11)</td><td class="num">0.20</td></tr>
           <tr><td>Gemini 3.5 Flash (reads)</td><td class="num">0.05 (n=11)</td><td class="num">0.34</td></tr>
           <tr><td>Sonnet vs Haiku</td><td class="num">0.50 (n=11)</td><td class="num"></td></tr>
-          <tr><td>Gemini vs Sonnet</td><td class="num">0.72 (n=11)</td><td class="num"></td></tr>
+          <tr><td>Fable vs Haiku</td><td class="num">0.36 (n=11)</td><td class="num"></td></tr>
           <tr><td>Gemini vs Haiku</td><td class="num">0.46 (n=11)</td><td class="num"></td></tr>
+          <tr><td>Fable vs Sonnet</td><td class="num">0.69 (n=11)</td><td class="num"></td></tr>
+          <tr><td>Gemini vs Sonnet</td><td class="num">0.72 (n=11)</td><td class="num"></td></tr>
+          <tr><td>Gemini vs Fable</td><td class="num">0.70 (n=11)</td><td class="num"></td></tr>
         </tbody>
       </table>
       </div>
 
       <p>Spearman rank correlations. Three things fall out of that table. I trust them in this order.</p>
 
-      <p><strong>One: the disagreement isn't a small-model artifact.</strong> This was my main worry. Cheap model, sloppy scores, case closed. So I ran a much stronger model over the validation set. It landed at 0.26: a bit higher, still weak, nowhere near significant. The two models even fail differently. Haiku scores high and narrow, handing out a lot of 68s. Sonnet scores lower and wider, putting most mainstream contracts at "moderate". Different distributions, same verdict: neither of them reads these documents the way DODI counts them.</p>
+      <p><strong>One: the disagreement isn't a small-model artifact.</strong> This was my main worry. Cheap model, sloppy scores, case closed. So I ran a much stronger model over the validation set. It landed at 0.26: a bit higher, still weak, nowhere near significant. The two models even fail differently. Haiku scores high and narrow, handing out a lot of 68s. Sonnet scores lower and wider, putting most mainstream contracts at "moderate". Different distributions, same verdict: neither of them reads these documents the way DODI counts them. Then I went up a size again. Fable 5.2 landed at 0.06.</p>
 
-      <p><strong>Two: the readers agree with each other more than any of them agrees with me.</strong> Sonnet and Haiku correlate at 0.50. Gemini and Sonnet, from different companies, correlate at 0.72. Against DODI the three manage 0.12, 0.26 and 0.05. There's a rough LLM consensus about these documents. It crosses vendors. My index isn't part of it.</p>
+      <p><strong>Two: the readers agree with each other more than any of them agrees with me.</strong> Sonnet and Haiku correlate at 0.50. The three larger models sit closer still: Gemini and Sonnet at 0.72, Gemini and Fable at 0.70, Sonnet and Fable at 0.69. Two of those pairs cross companies. Against DODI the four manage 0.12, 0.26, 0.06 and 0.05. There's a rough LLM consensus about these documents. It crosses vendors. My index isn't part of it.</p>
 
-      <p><strong>Three: nobody wins against the humans.</strong> DODI reaches 0.45 against the human grades and all three judges' scores 0.34. The letter grades do better: 0.56 for Haiku, 0.65 for Gemini. At ten documents and this many comparisons you can't rank these at all.</p>
+      <p><strong>Three: nobody wins against the humans.</strong> DODI reaches 0.45 against the human grades. Three of the judges' scores reach 0.34 and Fable's 0.20. The letter grades do better: 0.56 for Haiku and Fable, 0.65 for Gemini. At ten documents and this many comparisons you can't rank these at all.</p>
 
       <p>So this isn't a story about the LLM being right and my scorer being wrong. It's messier and more interesting than that.</p>
 
       <h2>Adobe is where you can see it</h2>
 
-      <p>The clearest disagreement in the corpus is Adobe's 2024 terms. DODI gives it <strong>95.7</strong>, the 7th most deceptive of 40 documents. Haiku gives it <strong>44</strong>. Sonnet gives it <strong>32</strong>. When something is that far apart, one of the instruments is measuring the wrong thing.</p>
+      <p>The clearest disagreement in the corpus is Adobe's 2024 terms. DODI gives it <strong>95.7</strong>, the 7th most deceptive of 40 documents. Haiku gives it <strong>44</strong>. Fable gives it <strong>36</strong>. Sonnet gives it <strong>32</strong>. When something is that far apart, one of the instruments is measuring the wrong thing.</p>
 
-      <p>Both judges pointed at the same reason. Adobe states plainly that its software is "licensed, not sold". It says you own your content and that it won't train AI on it. And critically, its store prices every plan per month. The button does say "Buy now", but nobody reads a monthly subscription as owning the software.</p>
+      <p>All three pointed at the same reason. Adobe states plainly that its software is "licensed, not sold". It says you own your content and that it won't train AI on it. And critically, its store prices every plan per month. The button does say "Buy now", but nobody reads a monthly subscription as owning the software.</p>
 
       <p>DODI can't see any of that. It sees a document stuffed with the word "licence" and very few "buy" or "own", so the ratio metric maxes out and the score lands near the top. My index conflates <em>licensing-language density</em> with <em>deception</em>. An honest subscription service that never pretends you're buying anything scores as highly deceptive. That's a false positive. It took a reader to find it, because a counter can't find it by construction.</p>
 
       <p>Which points straight at the fix. It's one I'd already written into the repo's future work without realising it was load-bearing. Ownership deception isn't "how much licence language is there". It's <strong>the gap between what the storefront promises and what the contract grants</strong>. High only when the button says Buy and the fine print says licence. Under that definition the subscriptions fall away, Adobe halves and the stores that sell titles keep their scores. That's <a class="textlink" href="../dodi-v2/">DODI v2</a>. It exists because the judges disagreed with v1.</p>
+
+      <p>When I added Fable 5.2 in November, it was already reading the documents that way. It scored six of the eleven validation documents at 10 or under. Its reason for Facebook: the terms are "not a digital content store: nothing is sold", so there's no purchase to misrepresent. It only scores high where a document sells something in buying language. Discord, which opens with "Thank you for buying something", gets 62.</p>
 
       <h2>The judges also caught something I got wrong</h2>
 
@@ -118,22 +124,22 @@
 
       <p>The grade and the service ID attached to it were both Wikipedia's, so the document still matched its grade. Only the name on the file was wrong. My deterministic pipeline had scored that document happily for weeks, because it doesn't read, it counts. A keyword counter has no opinion about whether a document is what you claim it is.</p>
 
-      <p>Both judges scored it 6 out of 100 and described a nonprofit agreement for content licensed under copyleft terms. Not a messaging app. The mismatch was obvious the second something actually read the text.</p>
+      <p>Haiku and Sonnet both scored it 6 out of 100 and described a nonprofit agreement for content licensed under copyleft terms. Not a messaging app. The mismatch was obvious the second something actually read the text.</p>
 
       <p>That's the argument for a second instrument in one paragraph. The deterministic scorer is reproducible and blind. The reader is fallible and awake. You want both. You especially want them when they disagree.</p>
 
       <h2>What I actually believe now</h2>
 
-      <p>Three defensible methods for measuring the same construct barely converge. A keyword index, three language models and a panel of human volunteers produce five different rankings of the same ten contracts. None of them agrees convincingly with the humans.</p>
+      <p>Three defensible methods for measuring the same construct barely converge. A keyword index, four language models and a panel of human volunteers produce six different rankings of the same ten contracts. None of them agrees convincingly with the humans.</p>
 
       <p>The honest conclusion isn't "use the LLM" or "use the counter". It's that <strong>ownership deception isn't one number</strong>. Any single automated ToS score, including mine, should be read as one instrument's opinion rather than a measurement. I'd rather publish that than a tidy validation plot.</p>
 
       <h2>Where this is weak</h2>
 
       <ul>
-        <li><strong>Ten documents.</strong> Every human comparison in that table is n=10 and not one of them is statistically significant (p = 0.19, 0.34, 0.34). Only the Haiku-vs-DODI number rests on the full 51.</li>
+        <li><strong>Ten documents.</strong> Every human comparison in that table is n=10 and not one of them is statistically significant (p from 0.19 to 0.57). Only the Haiku-vs-DODI number rests on the full 51.</li>
         <li><strong>Uncontrolled temperature.</strong> The judges run through the CLI, so I can't pin sampling. The three-run consistency check measures the judge as deployed, not the judge at temperature zero. Defensible, but it isn't the cleaner experiment.</li>
-        <li><strong>One rubric.</strong> All three judges read the same prompt. Some of their agreement with each other could be agreement with my rubric.</li>
+        <li><strong>One rubric.</strong> All four judges read the same prompt. Some of their agreement with each other could be agreement with my rubric.</li>
         <li><strong>The rubric is mine.</strong> I wrote both the index and the prompt that grades it. Some shared bias between them is likely, which if anything makes a 0.12 correlation stranger, not safer.</li>
       </ul>
 
