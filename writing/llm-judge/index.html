@@ -31,7 +31,7 @@
 <link rel="preload" href="../../fonts/ibm-plex-mono-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../../style.css">
 <script type="application/ld+json">
-{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "I built an LLM judge to check my own scorer. It disagreed with me.", "description": "I had four language models from two vendors grade the same Terms of Service documents as my deterministic index. The correlations ran from 0.05 to 0.26. Here is what the disagreement taught me about both instruments.", "datePublished": "2026-08-08", "dateModified": "2026-11-16", "url": "https://axwolf13.github.io/writing/llm-judge/", "image": "https://axwolf13.github.io/writing/llm-judge/og.png", "author": {"@type": "Person", "name": "Akshay Ashok", "url": "https://axwolf13.github.io/"}}
+{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "I built an LLM judge to check my own scorer. It disagreed with me.", "description": "I had four language models from two vendors grade the same Terms of Service documents as my deterministic index. The correlations ran from 0.05 to 0.26. Here is what the disagreement taught me about both instruments.", "datePublished": "2026-08-08", "dateModified": "2026-11-17", "url": "https://axwolf13.github.io/writing/llm-judge/", "image": "https://axwolf13.github.io/writing/llm-judge/og.png", "author": {"@type": "Person", "name": "Akshay Ashok", "url": "https://axwolf13.github.io/"}}
 </script>
 </head>
 <body>
@@ -116,7 +116,7 @@
 
       <p>Which points straight at the fix. It's one I'd already written into the repo's future work without realising it was load-bearing. Ownership deception isn't "how much licence language is there". It's <strong>the gap between what the storefront promises and what the contract grants</strong>. High only when the button says Buy and the fine print says licence. Under that definition the subscriptions fall away, Adobe halves and the stores that sell titles keep their scores. That's <a class="textlink" href="../dodi-v2/">DODI v2</a>. It exists because the judges disagreed with v1.</p>
 
-      <p>When I added Fable 5.2 in November, it was already reading the documents that way. It scored six of the eleven validation documents at 10 or under. Its reason for Facebook: the terms are "not a digital content store: nothing is sold", so there's no purchase to misrepresent. It only scores high where a document sells something in buying language. Discord, which opens with "Thank you for buying something", gets 62.</p>
+      <p>When I added Fable 5.2 in November, it was already reading the documents that way. It scored six of the eleven validation documents at 10 or under. Its reason for Facebook: the terms are "not a digital content store: nothing is sold", so there's no purchase to misrepresent. It only scores high where a document sells something in buying language. Discord, which opens with "Thank you for buying something", gets 62. So I ran it over the ten 2024 contracts that v2 scores. Against v1 it correlates at −0.12. Against v2 at 0.90 (<a class="textlink" href="../dodi-v2/">details in the v2 post</a>).</p>
 
       <h2>The judges also caught something I got wrong</h2>
 

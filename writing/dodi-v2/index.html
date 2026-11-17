@@ -31,7 +31,7 @@
 <link rel="preload" href="../../fonts/ibm-plex-mono-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../../style.css">
 <script type="application/ld+json">
-{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "The store says Buy. The contract says licence. DODI v2 scores the gap.", "description": "DODI v1 read the contract and nothing else, so honest subscriptions looked deceptive. v2 reads the archived store page first. X drops from 99.5 to 0, Steam stays at 94.1.", "datePublished": "2026-09-30", "dateModified": "2026-09-30", "url": "https://axwolf13.github.io/writing/dodi-v2/", "image": "https://axwolf13.github.io/writing/dodi-v2/og.png", "author": {"@type": "Person", "name": "Akshay Ashok", "url": "https://axwolf13.github.io/"}}
+{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "The store says Buy. The contract says licence. DODI v2 scores the gap.", "description": "DODI v1 read the contract and nothing else, so honest subscriptions looked deceptive. v2 reads the archived store page first. X drops from 99.5 to 0, Steam stays at 94.1.", "datePublished": "2026-09-30", "dateModified": "2026-11-17", "url": "https://axwolf13.github.io/writing/dodi-v2/", "image": "https://axwolf13.github.io/writing/dodi-v2/og.png", "author": {"@type": "Person", "name": "Akshay Ashok", "url": "https://axwolf13.github.io/"}}
 </script>
 </head>
 <body>
@@ -56,7 +56,7 @@
 <div class="wrap">
   <main id="top">
     <article class="article">
-      <div class="meta">September 2026 · 5 min read · <a class="textlink" href="https://github.com/Axwolf13/dodi-analysis#dodi-v2-what-the-store-promises-against-what-the-contract-grants" target="_blank" rel="noopener">code on GitHub →</a> · <a class="textlink" href="https://github.com/Axwolf13/dodi-analysis/blob/main/data/storefront/coding.csv" target="_blank" rel="noopener">every coded store page →</a></div>
+      <div class="meta">September 2026, updated November 2026 · 6 min read · <a class="textlink" href="https://github.com/Axwolf13/dodi-analysis#dodi-v2-what-the-store-promises-against-what-the-contract-grants" target="_blank" rel="noopener">code on GitHub →</a> · <a class="textlink" href="https://github.com/Axwolf13/dodi-analysis/blob/main/data/storefront/coding.csv" target="_blank" rel="noopener">every coded store page →</a></div>
       <h1>The store says Buy. The contract says licence. DODI v2 scores the gap.</h1>
 
       <p class="lede">DODI v1 read the contract and nothing else. That made an honest subscription look like a con. v2 reads the store first.</p>
@@ -212,6 +212,16 @@
 
       <p>v2 is deliberately narrower than the judges. It only asks whether a promise of ownership gets broken, while the judges still see other problems in X's and Spotify's terms. Even so, the ranking lines up better with the LLM reader: on the same ten contracts, agreement with the Haiku judge goes from ρ = 0.19 to 0.42. That's ten data points and p = 0.23, so it's a hint, not a result.</p>
 
+      <h2>The strongest reader ranks them like v2</h2>
+
+      <p>In November I ran the strongest model I can get, Claude Fable 5.2, over the same ten contracts. It never saw a store page. Against v1 its scores correlate at ρ = −0.12. Against v2: <strong>ρ = 0.90</strong> (p &lt; 0.001).</p>
+
+      <p>It puts the same four stores on top (Xbox, Ubisoft, Steam, Amazon), Adobe in the middle and Facebook and Netflix at the bottom. Inside those groups the order shifts a little and it ranks Spotify above GOG.</p>
+
+      <p>Why would a reader that only sees the contract agree with a score built from store pages? Because the stores that sell titles write the sale into the contract too. Fable's note on Xbox: the terms use "purchase", "purchased" and "acquired" throughout for digital content, while "licensed, not sold" sits in a software clause and an appendix. Its note on Spotify: "framed throughout as a streaming subscription", so there's "little buy-versus-licence deception".</p>
+
+      <p>Read that number with care. It's ten contracts and one run each. v2 grew out of what the first judges said about Adobe, so I expected a reader to like it better than v1. I didn't expect 0.90. What I can say is that v2 was fixed in September and these scores didn't exist until November.</p>
+
       <h2>The stores are already changing</h2>
 
       <p>The most interesting thing in the archive isn't a score. It's Amazon's Kindle button. In April 2024 it read:</p>
@@ -233,6 +243,7 @@ By placing an order, you're purchasing a content license
         <li><strong>The coding is mine.</strong> Three promise levels and a 0.5 disclosure weight are choices, not estimates. The quotes are in the repo so you can disagree with a specific call.</li>
         <li><strong>Only 2024 contracts are scored.</strong> Running v2 across 2015 to 2024 needs archived store pages for every year.</li>
         <li><strong>Stores vary by region.</strong> What an EU visitor sees isn't what a Californian sees.</li>
+        <li><strong>One strong reader, one run.</strong> The 0.90 is a single pass of one model over ten contracts. Haiku on the same ten reaches 0.42.</li>
       </ul>
 
       <p>The code, the coding sheet and every snapshot link are in <a class="textlink" href="https://github.com/Axwolf13/dodi-analysis#dodi-v2-what-the-store-promises-against-what-the-contract-grants" target="_blank" rel="noopener">the repo</a>.</p>
